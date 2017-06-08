@@ -3,14 +3,14 @@
 </p>
 
 <p align="center">
-<img src="http://cocoapod-badges.herokuapp.com/p/Cupcake/badge.png" alt="Platform" />
 <img src="https://camo.githubusercontent.com/085452dbb9eb9e76211db29ac23078836560bbae/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f6c616e67756167652d7377696674253230332d3442433531442e7376673f7374796c653d666c6174" alt="Language" />
+<img src="https://camo.githubusercontent.com/1d276aa371242346c77c3a5b8db34beaa2014722/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f694f532d382e302532422d626c75652e737667" alt="Platform" />
 <img src="http://cocoapod-badges.herokuapp.com/v/Cupcake/badge.png" alt="Version" />
 <img src="http://cocoapod-badges.herokuapp.com/l/Cupcake/badge.png" alt="License" />
 </p>
 
 ## Introduction
-Cupcake is a framework that allow you to easily create and layout UI components for iOS 8 and above. It use chaining syntax and provides some frequent used functionalities that are missing in UIKit. 
+Cupcake is a framework that allow you to easily create and layout UI components for iOS 8.0+. It use chaining syntax and provides some frequent used functionalities that are missing in UIKit. 
 
 ---
 ## Easy way to create UIFont, UIImage and UIColor objects
@@ -76,7 +76,7 @@ You can create UIView, UILabel, UIImageView and UIButton objects simply by using
         print("click")
 	}).img("cat").padding(10).border(1, "#CFC8AC")
 	
-As you can see, `.font()`, `.img()` and `.color()` can take the same parameters as `Font()`, `Img()` and `Color()`. Also you can pass String, NSAttributedString and any other values to `.str()`.
+As you can see, `.font()`, `.img()` and `.color()` can take the same parameters as `Font()`, `Img()` and `Color()`. Also you can pass String, NSAttributedString or any other values to `.str()`.
 
 
 ## Enhancements
