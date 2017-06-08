@@ -28,15 +28,13 @@ class StaticViewController: BaseViewController {
             
             Section(
                 Row.img("general").str("General").arrow().custom({ row in
-                    let badge = Button.pin(22, 22, .maxX(-5), .centerY(0)).radius(-1).str("1").font(14).bg("red")
+                    let badge = Button.pin(22, 22, .maxX(-5), .centerY(0)).radius(-1).str(1).font(14).bg("red")
                     badge.isUserInteractionEnabled = false
                     row.cell.contentView.addSubview(badge)
                 }).onClick({ _ in
                     weakSelf?.push(GeneralViewController())
                 }),
                 Row.img("display").str("Display & Brightness").arrow().onClick({ _ in
-                    
-                }).onClick({ _ in
                     weakSelf?.push(DisplayViewController())
                 })
             )
@@ -51,21 +49,21 @@ class WLANViewController: BaseViewController {
         let footer = "Known networks will be joined automatically. If no known networks are available, you will have to manually select a network."
         
         GroupTable(
-            Section(
-                Row.str("WLAN").switchOn().onChange({ row in
-                    print(row.switchView.isOn)
-                })
-            ),
+            Row.str("WLAN").switchOn().onChange({ row in
+                print(row.switchView.isOn)
+            }),
             
             Section(
                 Row.str("Wireless 1").detail("\u{0001F512} \u{268C}").accessory(.detailButton).onButton({ _ in
-                    Alert.title("Wireless 1").message("detail button tapped").action("OK").show()
+                    Alert.title("Wireless 1").message("detail button tapped").action("OK", {
+                        print("OK")
+                    }).cancel("Cancel").show()
                 }).onClick({ _ in
                     print("Wireless 1")
                 }),
                 
                 Row.str("Wireless 2").detail("\u{0001F513} \u{2630}").accessory(.detailButton).onButton({ _ in
-                    Alert.title("Wireless 2").message("detail button tapped").action("OK", {
+                    ActionSheet.title("Wireless 2").message("detail button tapped").action("OK", {
                         print("OK")
                     }).cancel("Cancel").show()
                 }).onClick({ _ in
@@ -103,7 +101,7 @@ class DisturbViewController: BaseViewController {
                 Row.str("Only while iPhone is locked").onClick({ _ in
                     print("only locked")
                 })
-                ).singleCheck().header("SILENCE:").footer(footer2)
+            ).singleCheck().header("SILENCE:").footer(footer2)
             
         ).embedIn(self.view)
     }
@@ -137,34 +135,6 @@ class GeneralViewController: BaseViewController {
 }
 
 
-class DisplayViewController: BaseViewController {
-    var autoLockRow: StaticRow!
-    
-    override func setupUI() {
-        autoLockRow = Row.str("Auto-Lock").detail("").arrow().onClick({ [unowned self] _ in
-            self.push(AutoLockViewController())
-        })
-        
-        GroupTable(
-            Section(
-                Row.custom({ row in
-                    let slider = UISlider().embedIn(row.cell.contentView, 0, 15)
-                    slider.minimumValueImage = Img("$candle").resize(0.5)
-                    slider.maximumValueImage = Img("$candle").resize(0.7)
-                })
-            ).header("BRIGHTNESS"),
-            
-            Section(autoLockRow)
-        ).embedIn(self.view)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        autoLockRow.detail(AutoLockViewController.selectedOption())
-    }
-}
-
-
 class NameViewController: BaseViewController {
     static var name = "My-iPhone"
     var textField: UITextField!
@@ -193,7 +163,6 @@ class UpdateViewController: BaseViewController {
     override func setupUI() {
         let desc = "iOS 10.3.1 introduces new features including the ability to locate AirPods using Find my iPhone and more ways to use Siri with payment, ride booking and automaker apps.\n\nFor information on the security content of Apple software update, please visit this website: https://support.apple.com/kb/HT201222"
         
-        let attDesc = AttStr(desc).font(15).select(.url).link()
         
         GroupTable(
             Section(
@@ -203,15 +172,13 @@ class UpdateViewController: BaseViewController {
                     let cops = Label.str("Apple Inc.").font(13)
                     let status = Label.str("Downloaded").font(13)
                     
+                    let attDesc = AttStr(desc).font(15).select(.url).link()
                     let desc = Label.str(attDesc).lines().onLink({ text in
                         print(text)
                     })
                     
-                    VStack(
-                        HStack( icon, VStack(title, cops, status).gap(2) ).gap(10),
-                        12,
-                        desc
-                    ).embedIn(row.cell.contentView, 10, 15)
+                    let head = HStack( icon, VStack(title, cops, status).gap(2) ).gap(10)
+                    VStack(head, 12, desc).embedIn(row.cell.contentView, 10, 15)
                 }).height(-1),
                 
                 Row.str("Learn More").arrow().onClick({ _ in
@@ -225,6 +192,34 @@ class UpdateViewController: BaseViewController {
                 })
             )
         ).embedIn(self.view)
+    }
+}
+
+
+class DisplayViewController: BaseViewController {
+    var autoLockRow: StaticRow!
+    
+    override func setupUI() {
+        autoLockRow = Row.str("Auto-Lock").detail("").arrow().onClick({ [unowned self] _ in
+            self.push(AutoLockViewController())
+        })
+        
+        GroupTable(
+            Section(
+                Row.custom({ row in
+                    let slider = UISlider().embedIn(row.cell.contentView, 0, 15)
+                    slider.minimumValueImage = Img("$candle").resize(0.5)
+                    slider.maximumValueImage = Img("$candle").resize(0.7)
+                })
+            ).header("BRIGHTNESS"),
+            
+            Section(autoLockRow)
+        ).embedIn(self.view)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        autoLockRow.detail(AutoLockViewController.selectedOption())
     }
 }
 

@@ -44,19 +44,19 @@ class SignupViewController: BaseViewController {
         let card = View.bg("white").radius(4).embedIn(self.view, iphone5 ? 40 : 60, 30)
         
         let inputStyle = Styles.pin(40, .lowHugging).font(14)
-        Styles("ruler").bg("#C7C7CD").pin(1)
+        Styles("separator").bg("#C7C7CD").pin(1)
         
         let name = Label.str("FULL NAME").font(17)
         let nameField = TextField.hint("Enter your full name").maxLength(15).styles(inputStyle)
-        let line1 = View.styles("ruler")
+        let line1 = View.styles("separator")
         
         let email = Label.str("E-MAIL").font(17)
         let emailField = TextField.hint("Your E-mail goes here").keyboard(.emailAddress).styles(inputStyle)
-        let line2 = View.styles("ruler")
+        let line2 = View.styles("separator")
         
         let pw = Label.str("Password").font(17)
         let pwField = TextField.hint("Enter your password").maxLength(10).secure().styles(inputStyle)
-        let line3 = View.styles("ruler")
+        let line3 = View.styles("separator")
         
         let statement = Label.str("☑️  I agree all statements in").color("lightGray").font(12)
         let term = Button.str( AttStr("Terms of service").color("#8DD6E5").font("12").underline() ).margin(0, -22)
