@@ -12,7 +12,7 @@
 		841B2C771E7BC5900084B37C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 841B2C751E7BC5900084B37C /* Main.storyboard */; };
 		841B2C791E7BC5900084B37C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 841B2C781E7BC5900084B37C /* Assets.xcassets */; };
 		841B2C7C1E7BC5900084B37C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 841B2C7A1E7BC5900084B37C /* LaunchScreen.storyboard */; };
-		8429690F1EE900EC0060C61D /* __Privates__Implementation__.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842968FD1EE900EC0060C61D /* __Privates__Implementation__.swift */; };
+		8429690F1EE900EC0060C61D /* __Private__Implementations__.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842968FD1EE900EC0060C61D /* __Private__Implementations__.swift */; };
 		842969101EE900EC0060C61D /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842968FE1EE900EC0060C61D /* Alert.swift */; };
 		842969111EE900EC0060C61D /* AttStr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842968FF1EE900EC0060C61D /* AttStr.swift */; };
 		842969121EE900EC0060C61D /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842969001EE900EC0060C61D /* Button.swift */; };
@@ -47,7 +47,7 @@
 		841B2C781E7BC5900084B37C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		841B2C7B1E7BC5900084B37C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		841B2C7D1E7BC5900084B37C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		842968FD1EE900EC0060C61D /* __Privates__Implementation__.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = __Privates__Implementation__.swift; sourceTree = "<group>"; };
+		842968FD1EE900EC0060C61D /* __Private__Implementations__.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = __Private__Implementations__.swift; sourceTree = "<group>"; };
 		842968FE1EE900EC0060C61D /* Alert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		842968FF1EE900EC0060C61D /* AttStr.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttStr.swift; sourceTree = "<group>"; };
 		842969001EE900EC0060C61D /* Button.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
@@ -142,7 +142,7 @@
 				842969021EE900EC0060C61D /* Cons.swift */,
 				8429690B1EE900EC0060C61D /* Styles.swift */,
 				842969031EE900EC0060C61D /* CPKStackView.swift */,
-				842968FD1EE900EC0060C61D /* __Privates__Implementation__.swift */,
+				842968FD1EE900EC0060C61D /* __Private__Implementations__.swift */,
 			);
 			name = Cupcake;
 			path = ../../Cupcake;
@@ -242,7 +242,7 @@
 				842969121EE900EC0060C61D /* Button.swift in Sources */,
 				842969111EE900EC0060C61D /* AttStr.swift in Sources */,
 				842969161EE900EC0060C61D /* Font.swift in Sources */,
-				8429690F1EE900EC0060C61D /* __Privates__Implementation__.swift in Sources */,
+				8429690F1EE900EC0060C61D /* __Private__Implementations__.swift in Sources */,
 				8429691A1EE900EC0060C61D /* Stack.swift in Sources */,
 				842969181EE900EC0060C61D /* Img.swift in Sources */,
 				842969101EE900EC0060C61D /* Alert.swift in Sources */,

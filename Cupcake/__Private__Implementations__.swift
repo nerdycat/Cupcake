@@ -1,5 +1,5 @@
 //
-//  __Privates__.swift
+//  __Private__Implementations.swift
 //  Cupcake
 //
 //  Created by nerdycat on 2017/6/8.
@@ -44,6 +44,7 @@ func CPKFloat(_ any: Any?) -> CGFloat {
         return result
     } else {
         assert(false, "invalid float")
+        return 0
     }
 }
 
