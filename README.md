@@ -176,9 +176,9 @@ Setup constraints for every views manually could be tedious. Luckily, you can bu
  <img src="./res/appstore.png" alt="appStore" width="50%" />
 
 
-## Lightweight Styling
+## Lightweight Style
 
-Some of the chaining properties can be set as style.
+Some of the chainable properties can be set as style.
 
 	//local style
 	let style1 = Styles.color("darkGray").font(15)
