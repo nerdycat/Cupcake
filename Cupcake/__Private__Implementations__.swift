@@ -599,6 +599,35 @@ extension NSMutableAttributedString {
 }
 
 
+fileprivate var __flagForMethodSwizzle__: Bool = false
+
+extension UIApplication {
+    open override var next: UIResponder? {
+        if !__flagForMethodSwizzle__ {
+            __flagForMethodSwizzle__ = true
+            
+            UIView.cpk_swizzle(method1: "setBounds:",
+                               method2: #selector(UIView.cpk_setBounds))
+            UIView.cpk_swizzle(method1: #selector(UIView.point(inside:with:)),
+                               method2: #selector(UIView.cpk_point(inside:with:)))
+            
+            UILabel.cpk_swizzle(method1: #selector(setter: UILabel.text),
+                                method2: #selector(UILabel.ner_setText(_:)))
+            
+            
+            UITextField.cpk_swizzle(method1: #selector(UITextField.textRect(forBounds:)),
+                                    method2: #selector(UITextField.cpk_textRect(forBounds:)))
+            UITextField.cpk_swizzle(method1: #selector(UITextField.editingRect(forBounds:)),
+                                    method2: #selector(UITextField.cpk_editingRect(forBounds:)))
+            
+            UITextView.cpk_swizzle(method1: "dealloc", method2: #selector(UITextView.cpk_deinit))
+        }
+        
+        return super.next
+    }
+}
+
+
 extension UIView {
     
     var cpkAutoRoundingRadius: Bool {
@@ -609,13 +638,6 @@ extension UIView {
     var cpkTouchInsets: UIEdgeInsets? {
         get { return cpk_associatedObjectFor(key: #function) as? UIEdgeInsets }
         set { cpk_setAssociated(object: newValue, forKey: #function) }
-    }
-    
-    override open class func initialize() {
-        if self == UIView.self {
-            cpk_swizzle(method1: "setBounds:", method2: #selector(UIView.cpk_setBounds))
-            cpk_swizzle(method1: #selector(UIView.point(inside:with:)), method2: #selector(UIView.cpk_point(inside:with:)))
-        }
     }
     
     func cpk_setBounds(_ frame: CGRect) {
@@ -770,16 +792,6 @@ extension UITextField {
     var cpkDidEndOnExistClosure: Any? {
         get { return cpk_associatedObjectFor(key: #function) }
         set { cpk_setAssociated(object: newValue, forKey: #function); cpk_watchOnEndEvent() }
-    }
-    
-    override open class func initialize() {
-        if self == UITextField.self {
-            cpk_swizzle(method1: #selector(UITextField.textRect(forBounds:)),
-                        method2: #selector(UITextField.cpk_textRect(forBounds:)))
-            
-            cpk_swizzle(method1: #selector(UITextField.editingRect(forBounds:)),
-                        method2: #selector(UITextField.cpk_editingRect(forBounds:)))
-        }
     }
     
     public func cpk_textRect(forBounds bounds: CGRect) -> CGRect {
@@ -2191,12 +2203,6 @@ extension UITextView {
         return self.viewWithTag(31415) as? UITextViewPlaceholder
     }
     
-    override open class func initialize() {
-        if self == UITextView.self {
-            cpk_swizzle(method1: "dealloc", method2: #selector(UITextView.cpk_deinit))
-        }
-    }
-    
     public func cpk_deinit() {
         if let label = self.cpkPlaceholderLabel {
             for keyPath in cpkTextViewObservingKeys {
@@ -2458,12 +2464,6 @@ extension UILabel {
     fileprivate var cpkSelectionLayers: [CALayer] {
         get { return (cpk_associatedObjectFor(key: #function) as? [CALayer]) ?? [CALayer]() }
         set { cpk_setAssociated(object: newValue, forKey: #function) }
-    }
-    
-    override open static func initialize() {
-        if self === UILabel.self {
-            cpk_swizzle(method1: #selector(setter: UILabel.text), method2: #selector(UILabel.ner_setText(_:)))
-        }
     }
     
     public func ner_setText(_ text: String) {
