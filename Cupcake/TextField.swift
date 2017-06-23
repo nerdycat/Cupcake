@@ -8,14 +8,14 @@
 
 import UIKit
 
-var TextField: UITextField  {
+public var TextField: UITextField  {
     let textField = UITextField()
     textField.enablesReturnKeyAutomatically = true
     textField.returnKeyType = .done
     return textField
 }
 
-extension UITextField {
+public extension UITextField {
     
     /**
      * Setting text or attributedText
@@ -174,7 +174,7 @@ extension UITextField {
         .onChange({ _ in /* ... */ })
         .onChange({ [weak self] textField in /* ... */ }) //capture self as weak reference when needed
      */
-    @discardableResult func onChange(_ closure: @escaping (UITextField)->()) -> Self {
+    @discardableResult public func onChange(_ closure: @escaping (UITextField)->()) -> Self {
         self.cpkTextChangedClosure = cpk_generateCallbackClosure(closure, nil)
         return self
     }
@@ -188,7 +188,7 @@ extension UITextField {
         .onFinish({ _ in /* ... */ })
         .onFinish({ [weak self] textField in /* ... */ })   //capture self as weak reference when needed
      */
-    @discardableResult func onFinish(_ closure: @escaping (UITextField)->()) -> Self {
+    @discardableResult public func onFinish(_ closure: @escaping (UITextField)->()) -> Self {
         self.cpkDidEndOnExistClosure = cpk_generateCallbackClosure(closure, nil)
         return self
     }

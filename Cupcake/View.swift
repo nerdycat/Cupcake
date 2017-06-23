@@ -13,7 +13,7 @@ public var View: UIView {
     return view
 }
 
-extension UIView {
+public extension UIView {
     
     /**
      * Setting background with Color or Image.
@@ -151,7 +151,7 @@ extension UIView {
         .onClick({ _ in /* ... */ })                //if you don't care at all
         .onClick({ [weak self] _ in /* ... */ })    //capture self as weak reference when needed
     */
-    @discardableResult func onClick(_ closure: @escaping (UIView)->()) -> Self {
+    @discardableResult public func onClick(_ closure: @escaping (UIView)->()) -> Self {
         cpk_onClick(closure, nil)
         return self
     }
@@ -296,10 +296,9 @@ public extension UIView {
         .embedIn(superview, 10, 20, 30, 40)     //top: 10, left: 20, bottom: 30, right: 40
         .embedIn(superview, 10, 20, nil)        //top: 10, left: 20
      */
-    @discardableResult
-    public func embedIn(_ superview: UIView,
-                        _ p1: Any? = "", _ p2: Any? = "",
-                        _ p3: Any? = "", _ p4: Any? = "") -> Self {
+    @discardableResult public func embedIn(_ superview: UIView,
+                                           _ p1: Any? = "", _ p2: Any? = "",
+                                           _ p3: Any? = "", _ p4: Any? = "") -> Self {
         
         superview.addSubview(self)
         let edge = cpk_edgeInsetsTupleFromParameters(p1, p2, p3, p4)

@@ -42,7 +42,7 @@ public func AttStr(_ objects: Any?...) -> NSMutableAttributedString {
 }
 
 
-extension NSMutableAttributedString {
+public extension NSMutableAttributedString {
     
     /**
      * NSFontAttributeName
@@ -145,8 +145,7 @@ extension NSMutableAttributedString {
         return self
     }
     
-    @discardableResult
-    public func strikethrough(_ color: Any) -> Self {
+    @discardableResult public func strikethrough(_ color: Any) -> Self {
         return strikethrough(.styleSingle, color)
     }
     
@@ -158,8 +157,7 @@ extension NSMutableAttributedString {
         .stroke(1)
         .stroke(-4, "red")
      */
-    @discardableResult
-    public func stroke(_ width: CGFloat, _ color: Any? = nil) -> Self {
+    @discardableResult public func stroke(_ width: CGFloat, _ color: Any? = nil) -> Self {
         cpk_addAttribute(name: NSStrokeWidthAttributeName, value: width)
         if let strokeColor = Color(color) {
             cpk_addAttribute(name: NSStrokeColorAttributeName, value: strokeColor)
@@ -173,8 +171,7 @@ extension NSMutableAttributedString {
         .oblique(0.3)
         .oblique(-0.3)
      */
-    @discardableResult
-    public func oblique(_ value: CGFloat) -> Self {
+    @discardableResult public func oblique(_ value: CGFloat) -> Self {
         cpk_addAttribute(name: NSObliquenessAttributeName, value: value)
         return self
     }
@@ -185,8 +182,7 @@ extension NSMutableAttributedString {
         .offset(20)
         .offset(-20)
      */
-    @discardableResult
-    public func offset(_ offset: CGFloat) -> Self {
+    @discardableResult public func offset(_ offset: CGFloat) -> Self {
         cpk_addAttribute(name: NSBaselineOffsetAttributeName, value: offset)
         return self
     }
@@ -198,8 +194,7 @@ extension NSMutableAttributedString {
         .link("http://www.google.com")
         .link()     //mark as link for UILabel
      */
-    @discardableResult
-    public func link(_ url: String? = nil) -> Self {
+    @discardableResult public func link(_ url: String? = nil) -> Self {
         if let urlString = url {
             cpk_addAttribute(name: NSLinkAttributeName, value: urlString)
         } else {
@@ -213,8 +208,7 @@ extension NSMutableAttributedString {
      * Usages:
         .lineGap(10)
      */
-    @discardableResult
-    public func lineGap(_ spacing: CGFloat) -> Self {
+    @discardableResult public func lineGap(_ spacing: CGFloat) -> Self {
         cpk_addParagraphAttribute(key: "lineSpacing", value: spacing)
         return self
     }
@@ -224,8 +218,7 @@ extension NSMutableAttributedString {
      * Usages:
         .indent(20)
      */
-    @discardableResult
-    public func indent(_ headIntent: CGFloat) -> Self {
+    @discardableResult public func indent(_ headIntent: CGFloat) -> Self {
         cpk_addParagraphAttribute(key: "firstLineHeadIndent", value: headIntent)
         return self
     }
@@ -237,8 +230,7 @@ extension NSMutableAttributedString {
         .align(.justified)
         ...
      */
-    @discardableResult
-    public func align(_ alignment: NSTextAlignment) -> Self {
+    @discardableResult public func align(_ alignment: NSTextAlignment) -> Self {
         cpk_addParagraphAttribute(key: "alignment", value: NSNumber(value: alignment.rawValue))
         return self
     }
@@ -261,8 +253,7 @@ extension NSMutableAttributedString {
      
      * .select("pattern") is just the shorthand of .select(.match("pattern"))
      */
-    @discardableResult
-    public func select(_ optionOrStringLiterals: AttStrSelectionOptions...) -> Self {
+    @discardableResult public func select(_ optionOrStringLiterals: AttStrSelectionOptions...) -> Self {
         
         for option in optionOrStringLiterals {
             var regExp: NSRegularExpression?
@@ -334,8 +325,7 @@ extension NSMutableAttributedString {
         AttStr(@"hello").color(@"red").color(@"green")                  //green color
         AttStr(@"hello").color(@"red").preventOverride.color(@"green")  //red color
      */
-    @discardableResult
-    public func preventOverride(_ flag: Bool = true) -> Self {
+    @discardableResult public func preventOverride(_ flag: Bool = true) -> Self {
         self.cpkPreventOverrideAttribute = flag
         return self
     }

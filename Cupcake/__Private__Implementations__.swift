@@ -2741,7 +2741,7 @@ extension UILabel {
     }
     
     @discardableResult
-    override func onClick(_ closure: @escaping (UILabel)->()) -> Self {
+    override public func onClick(_ closure: @escaping (UILabel)->()) -> Self {
         cpk_onClick(closure, nil)
         return self
     }
@@ -2830,7 +2830,7 @@ extension UIImageView {
     }
     
     @discardableResult
-    override func onClick(_ closure: @escaping (UIImageView)->()) -> Self {
+    override public func onClick(_ closure: @escaping (UIImageView)->()) -> Self {
         cpk_onClick(closure, nil)
         return self
     }
@@ -2913,7 +2913,7 @@ extension UIButton {
     }
     
     @discardableResult
-    override func onClick(_ closure: @escaping (UIButton)->()) -> Self {
+    override public func onClick(_ closure: @escaping (UIButton)->()) -> Self {
         cpk_onClick(closure, nil)
         return self
     }
@@ -3002,7 +3002,7 @@ extension UITextField {
     }
     
     @discardableResult
-    override func onClick(_ closure: @escaping (UITextField)->()) -> Self {
+    override public func onClick(_ closure: @escaping (UITextField)->()) -> Self {
         cpk_onClick(closure, nil)
         return self
     }
@@ -3091,7 +3091,7 @@ extension UITextView {
     }
     
     @discardableResult
-    override func onClick(_ closure: @escaping (UITextView)->()) -> Self {
+    override public func onClick(_ closure: @escaping (UITextView)->()) -> Self {
         cpk_onClick(closure, nil)
         return self
     }
@@ -3180,7 +3180,7 @@ extension CPKStackView {
     }
     
     @discardableResult
-    override func onClick(_ closure: @escaping (CPKStackView)->()) -> Self {
+    override public func onClick(_ closure: @escaping (CPKStackView)->()) -> Self {
         cpk_onClick(closure, nil)
         return self
     }

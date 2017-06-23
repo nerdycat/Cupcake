@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "Cupcake"
-  s.version      = "0.1.2"
+  s.version      = "1.0.0"
   s.summary      = "An easy way to create and layout UI components for iOS."
 
   s.description  = <<-DESC

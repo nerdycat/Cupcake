@@ -8,11 +8,11 @@
 
 import UIKit
 
-var TextView: UITextView  {
+public var TextView: UITextView  {
     return  UITextView().font(17)
 }
 
-extension UITextView {
+public extension UITextView {
     
     /**
      * Setting text or attributedText
@@ -120,7 +120,7 @@ extension UITextView {
         .onChange({ _ in /* ... */ })
         .onChange({ [weak self] textView in /* ... */ }) //capture self as weak reference when needed
      */
-    @discardableResult func onChange(_ closure: @escaping (UITextView)->()) -> Self {
+    @discardableResult public func onChange(_ closure: @escaping (UITextView)->()) -> Self {
         self.cpkTextChangedClosure = cpk_generateCallbackClosure(closure, nil)
         return self
     }

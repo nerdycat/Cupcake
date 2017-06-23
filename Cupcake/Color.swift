@@ -32,7 +32,7 @@ import UIKit
     Color(Img("image"))     //using image
     ...
  */
-func Color(_ any: Any?) -> UIColor? {
+public func Color(_ any: Any?) -> UIColor? {
     if any == nil {
         return nil
     }

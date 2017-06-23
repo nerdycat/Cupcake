@@ -34,6 +34,7 @@ public class CPKStackView: UIView {
     private var _alignment: CPKStackAlignment = .left
     private var _spacing: CGFloat = 0
     private var _axis: UILayoutConstraintAxis = .horizontal
+    private var _headAttachSpace: CGFloat?
     
     public private(set) var arrangedSubviews = [UIView]()
     
@@ -98,7 +99,7 @@ public class CPKStackView: UIView {
             let spacing = CPKFloat(sub)
             
             if index == 0 {
-                self.cpkAttachSpacing = spacing
+                _headAttachSpace = spacing
                 attachSpaceDidChangeForView(at: -1)
             } else {
                 let previousView = self.arrangedSubviews[index - 1]
@@ -400,6 +401,9 @@ public class CPKStackView: UIView {
         
         var spacing: CGFloat = 0
         
+        if item1 == self && _headAttachSpace != nil {
+            spacing = -_headAttachSpace!
+        }
         if let attachSpacing = item1.cpkAttachSpacing {
             spacing = -attachSpacing
         } else if item1 != self && item2 != self {
@@ -473,6 +477,15 @@ public class CPKStackView: UIView {
     private func attachSpaceDidChangeForView(at index: Int) {
         let item1 = itemAt(index: index)
         let item2 = itemAt(index: index + 1)
+        
+        if item1 == self && _headAttachSpace != nil {
+            for c in self.spacingConstraints {
+                if c.firstItem === item1 && c.secondItem === item2 {
+                    c.constant = -_headAttachSpace!
+                    break
+                }
+            }
+        }
         
         if let spacing = item1.cpkAttachSpacing {
             for c in self.spacingConstraints {

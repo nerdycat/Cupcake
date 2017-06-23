@@ -68,7 +68,7 @@ public extension StaticTableView {
         .font(someLabel.font)
         ...
      */
-    @discardableResult func font(_ any: Any) -> Self {
+    @discardableResult public func font(_ any: Any) -> Self {
         self.textFont = any
         return self
     }
@@ -85,7 +85,7 @@ public extension StaticTableView {
         .color(someLabel.textColor)
         ...
      */
-    @discardableResult func color(_ any: Any) -> Self {
+    @discardableResult public func color(_ any: Any) -> Self {
         self.textColor = any
         return self
     }
@@ -102,7 +102,7 @@ public extension StaticTableView {
         .font(someLabel.font)
         ...
      */
-    @discardableResult func detailFont(_ any: Any) -> Self {
+    @discardableResult public func detailFont(_ any: Any) -> Self {
         self.detailFont = any
         return self
     }
@@ -119,7 +119,7 @@ public extension StaticTableView {
         .color(someLabel.textColor)
         ...
      */
-    @discardableResult func detailColor(_ any: Any) -> Self {
+    @discardableResult public func detailColor(_ any: Any) -> Self {
         self.detailColor = any
         return self
     }
@@ -130,7 +130,7 @@ public extension StaticTableView {
         .rowHeight(50)
         .rowHeight(-1)  //negative value means use UITableViewAutomaticDimension
      */
-    @discardableResult func rowHeight(_ height: CGFloat) -> Self {
+    @discardableResult public func rowHeight(_ height: CGFloat) -> Self {
         self.cellHeight = height
         return self
     }
@@ -141,7 +141,7 @@ public extension StaticTableView {
         .lineIndent(0)
         .lineIndent(10)
      */
-    @discardableResult func lineIndent(_ indent: CGFloat) -> Self {
+    @discardableResult public func lineIndent(_ indent: CGFloat) -> Self {
         self.separatorIndent = indent
         return self
     }
@@ -152,7 +152,7 @@ public extension StaticTableView {
         .arrow()
         .arrow(false)
      */
-    @discardableResult func arrow(_ showArrow: Bool = true) -> Self {
+    @discardableResult public func arrow(_ showArrow: Bool = true) -> Self {
         self.accessoryType = (showArrow ? .disclosureIndicator : nil)
         return self
     }
@@ -168,7 +168,7 @@ public extension StaticTableView {
             ...
         })
      */
-    @discardableResult func custom(_ handler: @escaping (StaticRow)->()) -> Self {
+    @discardableResult public func custom(_ handler: @escaping (StaticRow)->()) -> Self {
         self.customHandler = handler
         return self
     }
@@ -184,7 +184,7 @@ public extension StaticTableView {
             ...
         })
      */
-    @discardableResult override func onClick(_ callback: @escaping (StaticRow)->()) -> Self {
+    @discardableResult override public func onClick(_ callback: @escaping (StaticRow)->()) -> Self {
         self.onClickHandler = callback
         return self
     }
@@ -202,7 +202,7 @@ public extension StaticSection {
         .header("Header1")  //header with string
         .header(headerView) //header with view
      */
-    @discardableResult func header(_ any: Any) -> Self {
+    @discardableResult public func header(_ any: Any) -> Self {
         self.headerValue = any
         return self
     }
@@ -216,7 +216,7 @@ public extension StaticSection {
         .footer("Footer1")  //footer with string
         .footer(footerView) //footer with view
      */
-    @discardableResult func footer(_ any: Any) -> Self {
+    @discardableResult public func footer(_ any: Any) -> Self {
         self.footerValue = any
         return self
     }
@@ -229,7 +229,7 @@ public extension StaticSection {
         .singleCheck("checked")                 //use custom image
         .singleCheck("checked", "unchecked")    //use custom images
      */
-    @discardableResult func singleCheck(_ checkedImage: Any? = nil, _ uncheckedImage: Any? = nil) -> Self {
+    @discardableResult public func singleCheck(_ checkedImage: Any? = nil, _ uncheckedImage: Any? = nil) -> Self {
         self.enableSingleCheck = true
         self.checkedImage = checkedImage != nil ? Img(checkedImage!) : nil
         self.uncheckedImage = uncheckedImage != nil ? Img(uncheckedImage!) : nil
@@ -244,7 +244,7 @@ public extension StaticSection {
         .multiCheck("checked")                  //use custom image
         .multiCheck("checked", "unchecked")     //use custom images
      */
-    @discardableResult func multiCheck(_ checkedImage: Any? = nil, _ uncheckedImage: Any? = nil) -> Self {
+    @discardableResult public func multiCheck(_ checkedImage: Any? = nil, _ uncheckedImage: Any? = nil) -> Self {
         self.enableMultiCheck = true
         self.checkedImage = checkedImage != nil ? Img(checkedImage!) : nil
         self.uncheckedImage = uncheckedImage != nil ? Img(uncheckedImage!) : nil
@@ -267,7 +267,7 @@ public extension StaticRow {
         .img(someImage)
         ...
      */
-    @discardableResult func img(_ any: Any) -> Self {
+    @discardableResult public func img(_ any: Any) -> Self {
         self.image = Img(any)
         return self
     }
@@ -281,7 +281,7 @@ public extension StaticRow {
         .str( AttStr("hello world").strikethrough() )
         ...
      */
-    @discardableResult func str(_ any: Any) -> Self {
+    @discardableResult public func str(_ any: Any) -> Self {
         self.text = any
         return self
     }
@@ -295,7 +295,7 @@ public extension StaticRow {
         .detail( AttStr("hello world").strikethrough() )
         ...
      */
-    @discardableResult func detail(_ any: Any) -> Self {
+    @discardableResult public func detail(_ any: Any) -> Self {
         self.detailText = any
         return self
     }
@@ -307,7 +307,7 @@ public extension StaticRow {
         .style(.value2)
         ...
      */
-    @discardableResult func style(_ style: UITableViewCellStyle) -> Self {
+    @discardableResult public func style(_ style: UITableViewCellStyle) -> Self {
         self.cellStyle = style
         return self
     }
@@ -320,7 +320,7 @@ public extension StaticRow {
         .accessory(.view(someView))         //setting accessoryView
         ...
      */
-    @discardableResult func accessory(_ type: CPKTableViewCellAccessoryType) -> Self {
+    @discardableResult public func accessory(_ type: CPKTableViewCellAccessoryType) -> Self {
         self.accessoryType = type
         return self
     }
@@ -331,7 +331,7 @@ public extension StaticRow {
         .arrow()
         .arrow(false)
      */
-    @discardableResult func arrow(_ showArrow: Bool = true) -> Self {
+    @discardableResult public func arrow(_ showArrow: Bool = true) -> Self {
         self.accessoryType = showArrow ? .disclosureIndicator : CPKTableViewCellAccessoryType.none
         return self
     }
@@ -342,7 +342,7 @@ public extension StaticRow {
         .check()
         .check(false)
      */
-    @discardableResult func check(_ checked: Bool = true) -> Self {
+    @discardableResult public func check(_ checked: Bool = true) -> Self {
         self.accessoryType = checked ? .checkmark : CPKTableViewCellAccessoryType.none
         return self
     }
@@ -353,7 +353,7 @@ public extension StaticRow {
         .switchOn()
         .switchOn(false)
      */
-    @discardableResult func switchOn(_ isOn: Bool = true) -> Self {
+    @discardableResult public func switchOn(_ isOn: Bool = true) -> Self {
         let sw: UISwitch! = self.switchView ?? {self.switchView = UISwitch(); return self.switchView}()
         sw.isOn = isOn
         self.accessory(.view(sw))
@@ -366,7 +366,7 @@ public extension StaticRow {
         .height(50)
         .height(-1)     //negative value means use UITableViewAutomaticDimension
      */
-    @discardableResult func height(_ height: CGFloat) -> Self {
+    @discardableResult public func height(_ height: CGFloat) -> Self {
         self.cellHeight = height
         return self
     }
@@ -376,7 +376,7 @@ public extension StaticRow {
      * Usages:
         .lineIndent(10)
      */
-    @discardableResult func lineIndent(_ indent: CGFloat) -> Self {
+    @discardableResult public func lineIndent(_ indent: CGFloat) -> Self {
         self.separatorIndent = indent
         return self
     }
@@ -392,7 +392,7 @@ public extension StaticRow {
             ...
         })
      */
-    @discardableResult override func onClick(_ callback: @escaping (StaticRow)->()) -> Self {
+    @discardableResult override public func onClick(_ callback: @escaping (StaticRow)->()) -> Self {
         self.onClickHandler = callback
         return self
     }
@@ -407,7 +407,7 @@ public extension StaticRow {
             ...
         })
      */
-    @discardableResult func onButton(_ callback: @escaping (StaticRow)->()) -> Self {
+    @discardableResult public func onButton(_ callback: @escaping (StaticRow)->()) -> Self {
         self.onButtonHandler = callback
         return self
     }
@@ -422,7 +422,7 @@ public extension StaticRow {
             ...
         })
      */
-    @discardableResult func onChange(_ callback: @escaping (StaticRow)->()) -> Self {
+    @discardableResult public func onChange(_ callback: @escaping (StaticRow)->()) -> Self {
         self.onChangeHandler = callback
         return self
     }
@@ -437,7 +437,7 @@ public extension StaticRow {
             ...
         })
      */
-    @discardableResult func custom(_ handler: @escaping (StaticRow)->()) -> Self {
+    @discardableResult public func custom(_ handler: @escaping (StaticRow)->()) -> Self {
         self.customHandler = handler
         return self
     }
