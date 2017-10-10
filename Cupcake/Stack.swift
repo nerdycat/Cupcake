@@ -68,6 +68,7 @@ public enum CPKStackAlignment : Int {
  */
 
 public func HStack(_ items: Any...) -> CPKStackView {
+    cpk_swizzleMethodsIfNeed()
     let stack = CPKStackView()
     stack.axis = .horizontal
     stack.alignment = .center
@@ -76,6 +77,7 @@ public func HStack(_ items: Any...) -> CPKStackView {
 }
 
 public func VStack(_ items: Any...) -> CPKStackView {
+    cpk_swizzleMethodsIfNeed()
     let stack = CPKStackView()
     stack.axis = .vertical
     stack.alignment = .left

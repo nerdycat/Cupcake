@@ -9,6 +9,7 @@
 import UIKit
 
 public var View: UIView {
+    cpk_swizzleMethodsIfNeed()
     let view = UIView()
     return view
 }

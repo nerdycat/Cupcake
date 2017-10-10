@@ -9,6 +9,7 @@
 import UIKit
 
 public var TextField: UITextField  {
+    cpk_swizzleMethodsIfNeed()
     let textField = UITextField()
     textField.enablesReturnKeyAutomatically = true
     textField.returnKeyType = .done

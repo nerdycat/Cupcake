@@ -9,6 +9,7 @@
 import UIKit
 
 public var Label: UILabel {
+    cpk_swizzleMethodsIfNeed()
     let label = UILabel()
     return label
 }

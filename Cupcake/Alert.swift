@@ -26,10 +26,12 @@ import UIKit
  */
 
 public var Alert: AlertMaker {
+    cpk_swizzleMethodsIfNeed()
     return AlertMaker(style: .alert)
 }
 
 public var ActionSheet: AlertMaker {
+    cpk_swizzleMethodsIfNeed()
     return AlertMaker(style: .actionSheet)
 }
 

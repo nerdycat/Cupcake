@@ -36,20 +36,24 @@ import UIKit
  */
 
 public func PlainTable(_ sectionsOrRows: Any...) -> StaticTableView {
+    cpk_swizzleMethodsIfNeed()
     let tableView = StaticTableView(sectionsOrRows: sectionsOrRows, style: .plain)
     tableView.tableFooterView = UIView()
     return tableView
 }
 
 public func GroupTable(_ sectionsOrRows: Any...) -> StaticTableView {
+    cpk_swizzleMethodsIfNeed()
     return StaticTableView(sectionsOrRows: sectionsOrRows, style: .grouped)
 }
 
 public func Section(_ rowsOrStrings: Any...) -> StaticSection {
+    cpk_swizzleMethodsIfNeed()
     return StaticSection(rowsOrStrings: rowsOrStrings)
 }
 
 public var Row: StaticRow {
+    cpk_swizzleMethodsIfNeed()
     return StaticRow()
 }
 

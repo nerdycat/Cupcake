@@ -601,28 +601,31 @@ extension NSMutableAttributedString {
 
 fileprivate var __flagForMethodSwizzle__: Bool = false
 
+func cpk_swizzleMethodsIfNeed() {
+    if !__flagForMethodSwizzle__ {
+        __flagForMethodSwizzle__ = true
+        
+        UIView.cpk_swizzle(method1: "setBounds:",
+                           method2: #selector(UIView.cpk_setBounds))
+        UIView.cpk_swizzle(method1: #selector(UIView.point(inside:with:)),
+                           method2: #selector(UIView.cpk_point(inside:with:)))
+        
+        UILabel.cpk_swizzle(method1: #selector(setter: UILabel.text),
+                            method2: #selector(UILabel.ner_setText(_:)))
+        
+        
+        UITextField.cpk_swizzle(method1: #selector(UITextField.textRect(forBounds:)),
+                                method2: #selector(UITextField.cpk_textRect(forBounds:)))
+        UITextField.cpk_swizzle(method1: #selector(UITextField.editingRect(forBounds:)),
+                                method2: #selector(UITextField.cpk_editingRect(forBounds:)))
+        
+        UITextView.cpk_swizzle(method1: "dealloc", method2: #selector(UITextView.cpk_deinit))
+    }
+}
+
 extension UIApplication {
     open override var next: UIResponder? {
-        if !__flagForMethodSwizzle__ {
-            __flagForMethodSwizzle__ = true
-            
-            UIView.cpk_swizzle(method1: "setBounds:",
-                               method2: #selector(UIView.cpk_setBounds))
-            UIView.cpk_swizzle(method1: #selector(UIView.point(inside:with:)),
-                               method2: #selector(UIView.cpk_point(inside:with:)))
-            
-            UILabel.cpk_swizzle(method1: #selector(setter: UILabel.text),
-                                method2: #selector(UILabel.ner_setText(_:)))
-            
-            
-            UITextField.cpk_swizzle(method1: #selector(UITextField.textRect(forBounds:)),
-                                    method2: #selector(UITextField.cpk_textRect(forBounds:)))
-            UITextField.cpk_swizzle(method1: #selector(UITextField.editingRect(forBounds:)),
-                                    method2: #selector(UITextField.cpk_editingRect(forBounds:)))
-            
-            UITextView.cpk_swizzle(method1: "dealloc", method2: #selector(UITextView.cpk_deinit))
-        }
-        
+        cpk_swizzleMethodsIfNeed()
         return super.next
     }
 }
@@ -1901,7 +1904,7 @@ public class StaticRow: UIView {
     }
     
     public override class var layerClass: Swift.AnyClass {
-        return CATransformLayer.self
+        return CPKTransformLayer.self
     }
     
     func switchDidChange() {

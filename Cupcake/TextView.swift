@@ -9,6 +9,7 @@
 import UIKit
 
 public var TextView: UITextView  {
+    cpk_swizzleMethodsIfNeed()
     return  UITextView().font(17)
 }
 

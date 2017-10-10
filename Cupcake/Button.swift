@@ -9,6 +9,7 @@
 import UIKit
 
 public var Button: UIButton {
+    cpk_swizzleMethodsIfNeed()
     let button = UIButton()
     cpk_higherHuggingAndResistance(forView: button)
     return button

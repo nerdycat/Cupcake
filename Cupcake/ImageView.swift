@@ -9,6 +9,7 @@
 import UIKit
 
 public var ImageView: UIImageView {
+    cpk_swizzleMethodsIfNeed()
     let imageView = UIImageView()
     cpk_higherHuggingAndResistance(forView: imageView)
     return imageView
