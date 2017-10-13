@@ -17,6 +17,7 @@ import UIKit
     Styles("GlobalStyleName").color("red").font(15)
    2) Local style:
     let localStyle = Styles.color("red").font(15)
+    let localStyleFromExistingView = Styles(someView)
  
  * After creation, you can apply styles to any UIView:
     Label.styles("GlobalStyleName", localStyle)
@@ -27,10 +28,16 @@ public var Styles: StylesMaker {
     return StylesMaker()
 }
 
-public func Styles(_ name: String) -> StylesMaker {
-    let makers = StylesMaker()
-    StylesMaker.globalStyles[name] = makers
-    return makers
+public func Styles(_ globalStyleNameOrView: Any) -> StylesMaker {
+    if let name = globalStyleNameOrView as? String {
+        let makers = StylesMaker()
+        StylesMaker.globalStyles[name] = makers
+        return makers
+    } else if let view = globalStyleNameOrView as? UIView {
+        return StylesMaker(view: view)
+    } else {
+        return StylesMaker()
+    }
 }
 
 
@@ -72,6 +79,14 @@ public extension StylesMaker {
     
     @discardableResult public func pin(_ options: CPKViewPinOptions...) -> Self {
         return addStyle(key: #function, value: options)
+    }
+    
+    @discardableResult public func touchInsets(_ p1: Any,
+                                               _ p2: Any? = nil,
+                                               _ p3: Any? = nil,
+                                               _ p4: Any? = nil) -> Self {
+        let insets = cpk_edgeInsetsFromParameters(p1, p2, p3, p4)
+        return addStyle(key: #function, value: insets)
     }
     
     
@@ -116,6 +131,10 @@ public extension StylesMaker {
         return addStyle(key: #function, value: any)
     }
     
+    @discardableResult public func highImg(_ any: Any) -> Self {
+        return addStyle(key: #function, value: any)
+    }
+    
     @discardableResult public func highBg(_ any: Any) -> Self {
         return addStyle(key: #function, value: any)
     }
@@ -134,6 +153,10 @@ public extension StylesMaker {
     
     
     //TextField
+    @discardableResult public func hint(_ any: Any) -> Self {
+        return addStyle(key: #function, value: any)
+    }
+    
     @discardableResult public func maxLength(_ length: CGFloat) -> Self {
         return addStyle(key: #function, value: length)
     }

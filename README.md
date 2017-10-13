@@ -187,7 +187,11 @@ Some of the chainable properties can be set as style.
 	//global style
 	Styles("style2").bg("red").padding(10).border(3, "#FC6560").radius(-1)
 	Button.styles(style1, "style2").str("hello world")
-
+	
+	//copy style from view
+	let style3 = Styles(someButton)
+	Button.styles(someButton).str("hello world")
+	
 
 ## Others
 

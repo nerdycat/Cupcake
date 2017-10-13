@@ -345,6 +345,7 @@ func cpk_pinOptions(_ options: [CPKViewPinOptions], forView view: UIView) {
                 
             case let .h(value):
                 view.frame.size.height = value
+                view.cpk_updateCornerRadiusIfNeed()
                 $0.height.equal(value).priority(priority)
             
             case let .xy(v1, v2):
@@ -361,10 +362,12 @@ func cpk_pinOptions(_ options: [CPKViewPinOptions], forView view: UIView) {
                 
             case let .wh(v1, v2):
                 view.frame.size = CGSize(width: v1, height: v2)
+                view.cpk_updateCornerRadiusIfNeed()
                 $0.width.height.equal(v1, v2).priority(priority)
                 
             case let .xywh(v1, v2, v3, v4):
                 view.frame = CGRect(x: v1, y: v2, width: v3, height: v4)
+                view.cpk_updateCornerRadiusIfNeed()
                 $0.left.top.width.height.equal(v1, v2, v3, v4).priority(priority);
             
             case let .maxX(offset):
@@ -430,12 +433,15 @@ func cpk_pinOptions(_ options: [CPKViewPinOptions], forView view: UIView) {
         
         if values.count == 1 {
             view.frame.size.height = values[0]
+            view.cpk_updateCornerRadiusIfNeed()
             $0.height.equal(values[0]).priority(priority)
         } else if values.count == 2 {
             view.frame.size = CGSize(width: values[0], height: values[1])
+            view.cpk_updateCornerRadiusIfNeed()
             $0.size.equal(values[0], values[1]).priority(priority)
         } else if values.count == 4 {
             view.frame = CGRect(x: values[0], y: values[1], width: values[2], height: values[3])
+            view.cpk_updateCornerRadiusIfNeed()
             $0.origin.size.equal(values[0], values[1], values[2], values[3]).priority(priority)
         }
     })
@@ -722,11 +728,7 @@ extension UIView {
     
     func cpk_setBounds(_ frame: CGRect) {
         cpk_setBounds(frame)
-        
-        if self.cpkAutoRoundingRadius {
-            self.layer.cornerRadius = self.bounds.height / 2
-            cpk_masksToBoundsIfNeed()
-        }
+        cpk_updateCornerRadiusIfNeed()
     }
     
     func cpk_point(inside point: CGPoint, with event: UIEvent?) -> Bool {
@@ -740,6 +742,13 @@ extension UIView {
     
     func cpk_masksToBoundsIfNeed() {
         self.layer.masksToBounds = false
+    }
+    
+    fileprivate func cpk_updateCornerRadiusIfNeed() {
+        if self.cpkAutoRoundingRadius {
+            self.layer.cornerRadius = self.bounds.height / 2
+            cpk_masksToBoundsIfNeed()
+        }
     }
     
     func cpk_onClick(_ closureOrTarget: Any, _ action: Any? = nil) {
@@ -1486,6 +1495,182 @@ public class StylesMaker: NSObject {
     
     private var styles = Dictionary<String, Any>()
     
+    convenience init(view: UIView) {
+        self.init()
+        
+        //UIView
+        if let bgColor = view.backgroundColor {
+            self.bg(bgColor)
+        }
+        
+        if view.cpkAutoRoundingRadius {
+            self.radius(-1)
+        } else {
+            self.radius(view.layer.cornerRadius)
+        }
+        
+        self.tint(view.tintColor)
+        self.border(view.layer.borderWidth, view.layer.borderColor)
+        
+        self.shadow(CGFloat(view.layer.shadowOpacity),
+                    view.layer.shadowRadius,
+                    view.layer.shadowOffset.width,
+                    view.layer.shadowOffset.height)
+        
+        if let touchInsets = view.cpkTouchInsets {
+            addStyle(key: "touchInsets", value: touchInsets)
+        }
+
+        
+        //UILabel
+        if let label = view as? UILabel {
+            if let attStr = label.attributedText {
+                self.str(attStr)
+            } else if let str = label.text {
+                self.str(str).font(label.font).color(label.textColor)
+            }
+            
+            self.lines(CGFloat(label.numberOfLines)).align(label.textAlignment)
+            
+            if let lineGap = label.cpkLineGap {
+                self.lineGap(lineGap)
+            }
+        }
+        
+        
+        //UIImageView
+        if let imageView = view as? UIImageView {
+            if let image = imageView.image {
+                self.img(image)
+            }
+            self.mode(imageView.contentMode)
+        }
+        
+        
+        //UIButton
+        if let button = view as? UIButton {
+            if let attStr = button.attributedTitle(for: .normal) {
+                self.str(attStr)
+            } else if let str = button.title(for: .normal) {
+                self.str(str)
+                
+                if let font = button.titleLabel?.font {
+                    self.font(font)
+                }
+                
+                if let color = button.titleColor(for: .normal) {
+                    self.color(color)
+                }
+            }
+            
+            if let highColor = button.titleColor(for: .highlighted) {
+                self.highColor(highColor)
+            }
+            
+            if let img = button.image(for: .normal) {
+                self.img(img)
+            }
+            
+            if let highImg = button.image(for: .highlighted) {
+                self.highImg(highImg)
+            }
+            
+            if let bg = button.backgroundImage(for: .normal) {
+                self.bg(bg)
+            }
+            
+            if let highBg = button.backgroundImage(for: .highlighted) {
+                self.highBg(highBg)
+            }
+            
+            self.padding(button.contentEdgeInsets.top,
+                         button.contentEdgeInsets.left,
+                         button.contentEdgeInsets.bottom,
+                         button.contentEdgeInsets.right)
+            
+            if let gap = button.cpkGap {
+                self.gap(gap)
+            }
+            
+            if CATransform3DEqualToTransform(button.layer.sublayerTransform, CATransform3DMakeScale(-1, 1, 1)) {
+                self.reversed(true)
+            }
+            
+            if let lines = button.titleLabel?.numberOfLines {
+                if (lines != 1) {
+                    self.lines(CGFloat(lines))
+                }
+            }
+        }
+        
+        
+        //UITextFiled
+        if let textField = view as? UITextField {
+            if let attStr = textField.attributedText {
+                self.str(attStr)
+            } else if let str = textField.text {
+                self.str(str)
+                
+                if let font = textField.font {
+                    self.font(font)
+                }
+                
+                if let color = textField.textColor {
+                    self.color(color)
+                }
+            }
+            
+            if let attHint = textField.attributedPlaceholder {
+                self.hint(attHint)
+            } else if let hint = textField.placeholder {
+                self.hint(hint)
+            }
+            
+            self.maxLength(CGFloat(textField.cpkMaxLength))
+            
+            let padding = textField.cpkPadding
+            self.padding(padding.top, padding.left, padding.bottom, padding.right)
+            
+            self.secure(textField.isSecureTextEntry).align(textField.textAlignment)
+            self.keyboard(textField.keyboardType).returnKey(textField.returnKeyType)
+            self.clearMode(textField.clearButtonMode)
+        }
+        
+        
+        //UITextView
+        if let textView = view as? UITextView {
+            if let attStr = textView.attributedText {
+                self.str(attStr)
+            } else if let str = textView.text {
+                self.str(str)
+                
+                if let font = textView.font {
+                    self.font(font)
+                }
+                
+                if let color = textView.textColor {
+                    self.color(color)
+                }
+            }
+            
+            if let hintLabel = textView.cpkPlaceholderLabel {
+                if let attHint = hintLabel.attributedText {
+                    self.hint(attHint)
+                } else if let hint = hintLabel.text {
+                    self.hint(hint)
+                }
+            }
+            
+            self.maxLength(CGFloat(textView.cpkMaxLength)).align(textView.textAlignment)
+            
+            if textView.textContainer.lineFragmentPadding == 0 {
+                let inset = textView.textContainerInset
+                self.padding(inset.top, inset.left, inset.bottom, inset.right)
+            }
+        }
+    }
+    
+    
     @discardableResult func addStyle(key: String, value: Any) -> Self {
         styles[key] = value
         return self
@@ -1494,7 +1679,37 @@ public class StylesMaker: NSObject {
     func applyTo(view: UIView) {
         for (key, value) in styles {
             
-            if key == "border" {
+            if key == "radius" {
+                view.radius(value as! CGFloat)
+                
+            } else if key == "lines" {
+                if let label = view as? UILabel {
+                    label.lines(value as! CGFloat)
+                } else if let button = view as? UIButton {
+                    button.lines(value as! CGFloat)
+                }
+                
+            } else if key == "lineGap" {
+                if let label = view as? UILabel {
+                    label.lineGap(value as! CGFloat)
+                }
+                
+            } else if key == "gap" {
+                if let button = view as? UIButton {
+                    button.gap(value as! CGFloat)
+                }
+                
+            } else if key == "reversed" {
+                if let button = view as? UIButton {
+                    button.reversed(value as! Bool)
+                }
+                
+            } else if key == "touchInsets" {
+                if let insets = value as? UIEdgeInsets {
+                    view.touchInsets(insets.top, insets.left, insets.bottom, insets.right)
+                }
+                
+            } else if key == "border" {
                 if let dict = value as? Dictionary<String, Any> {
                     view.border(CPKFloat(dict["borderWidth"]), dict["borderColor"])
                 }
@@ -1526,6 +1741,13 @@ public class StylesMaker: NSObject {
             } else if key == "reversed" {
                 if let button = view as? UIButton {
                     button.reversed(value as! Bool)
+                }
+                
+            } else if key == "maxLength" {
+                if let textField = view as? UITextField {
+                    textField.maxLength(value as! CGFloat)
+                } else if let textView = view as? UITextView {
+                    textView.maxLength(value as! CGFloat)
                 }
                 
             } else if key == "padding" {
@@ -2285,7 +2507,7 @@ extension UITextView {
         set { cpk_setAssociated(object: newValue, forKey: #function); cpk_watchTextChange() }
     }
     
-    private var cpkPlaceholderLabel: UITextViewPlaceholder? {
+    fileprivate var cpkPlaceholderLabel: UITextViewPlaceholder? {
         return self.viewWithTag(31415) as? UITextViewPlaceholder
     }
     

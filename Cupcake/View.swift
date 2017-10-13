@@ -55,12 +55,12 @@ public extension UIView {
         .radius(-1)   //passing negative number means using auto rounding
      */
     @discardableResult public func radius(_ cornerRadius: CGFloat) -> Self {
-        if cornerRadius >= 0.1 && cornerRadius < 9999999 {
-            self.layer.cornerRadius = cornerRadius
-            self.cpkAutoRoundingRadius = false
-        } else {
+        if cornerRadius < 0 {
             self.layer.cornerRadius = self.bounds.height / 2
             self.cpkAutoRoundingRadius = true
+        } else {
+            self.layer.cornerRadius = cornerRadius
+            self.cpkAutoRoundingRadius = false
         }
         
         cpk_masksToBoundsIfNeed()
@@ -106,6 +106,7 @@ public extension UIView {
      Usages:
         .styles(myStyle)
         .styles(myStyle1, myStyle2, "globalStyle1")
+        .styles(someView)       //retrieve styles direct from view
      */
     @discardableResult public func styles(_ s1: Any, _ s2: Any? = nil, _ s3: Any? = nil, _ s4: Any? = nil) -> Self {
         var array = Array<Any>()
@@ -123,6 +124,9 @@ public extension UIView {
                 if let style = StylesMaker.globalStyles[name] {
                     style.applyTo(view: self)
                 }
+                
+            } else if let view = styles as? UIView {
+                Styles(view).applyTo(view: self)
             }
         }
         return self
