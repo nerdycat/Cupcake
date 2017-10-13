@@ -41,7 +41,7 @@ class SignupViewController: BaseViewController {
         self.view.bg("#184367")
         
         let iphone5 = UIScreen.main.bounds.width == 320
-        let card = View.bg("white").radius(4).embedIn(self.view, iphone5 ? 40 : 60, 30)
+        let card = View.bg("white").radius(4).embedIn(self.view, iphone5 ? 40 : "60", 30)
         
         let inputStyle = Styles.pin(40, .lowHugging).font(14)
         Styles("separator").bg("#C7C7CD").pin(1)
@@ -68,7 +68,7 @@ class SignupViewController: BaseViewController {
         
         
         Button.str("X").font(13).color("#D2E0E8").bg("#EDF2F5").radius(-1).pin(16, 16, .maxX(-10), .y(10)).addTo(card)
-        Button.str("HELP").font(13).padding(10).pin(.centerX(0), .maxY(-5)).addTo(self.view)
+        Button.str("HELP").font(13).padding(10).pin(.centerX(0), .maxY("-5")).addTo(self.view)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

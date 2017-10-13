@@ -76,6 +76,15 @@ func CPKFloatOptional(_ any: Any?) -> CGFloat? {
     }
 }
 
+func CPKStringValueOptional(_ any: Any?) -> CGFloat? {
+    if let str = any as? String {
+        let f = Float(str)
+        return f != nil ? CGFloat(f!) : nil
+    } else {
+        return nil
+    }
+}
+
 func cpk_onePointImageWithColor(_ color: UIColor) -> UIImage {
     let rect = CGRect(x: 0, y: 0, width: 1, height: 1)
     let hasAlpha = cpk_colorHasAlphaChannel(color)
@@ -150,46 +159,46 @@ func cpk_edgeInsetsTupleFromParameters(_ p1: Any? = "",
                                        _ p3: Any? = "",
                                        _ p4: Any? = "")
     
-    -> (CGFloat?, CGFloat?, CGFloat?, CGFloat?) {
+    -> (Any?, Any?, Any?, Any?) {
         
-        var leftOffset: CGFloat?
-        var rightOffset: CGFloat?
-        var topOffset: CGFloat?
-        var bottomOffset: CGFloat?
+        var leftOffset: Any?
+        var rightOffset: Any?
+        var topOffset: Any?
+        var bottomOffset: Any?
         
-        let isValidP1 = !(p1 is String)
-        let isValidP2 = !(p2 is String)
-        let isValidP3 = !(p3 is String)
-        let isValidP4 = !(p4 is String)
+        let isValidP1 = !(p1 is String) || ((p1 as! String) != "")
+        let isValidP2 = !(p2 is String) || ((p2 as! String) != "")
+        let isValidP3 = !(p3 is String) || ((p3 as! String) != "")
+        let isValidP4 = !(p4 is String) || ((p4 as! String) != "")
         
         if isValidP1 && isValidP2 && isValidP3 && isValidP4 {
-            topOffset = CPKFloatOptional(p1)
-            leftOffset = CPKFloatOptional(p2)
-            bottomOffset = CPKFloatOptional(p3)
-            rightOffset = CPKFloatOptional(p4)
+            topOffset = (p1 is String) ? p1 : CPKFloatOptional(p1)
+            leftOffset = (p2 is String) ? p2 : CPKFloatOptional(p2)
+            bottomOffset = (p3 is String) ? p3 : CPKFloatOptional(p3)
+            rightOffset = (p4 is String) ? p4 : CPKFloatOptional(p4)
             
         } else if isValidP1 && isValidP2 && isValidP3 {
-            topOffset = CPKFloatOptional(p1)
-            leftOffset = CPKFloatOptional(p2)
-            rightOffset = CPKFloatOptional(p3)
+            topOffset = (p1 is String) ? p1 : CPKFloatOptional(p1)
+            leftOffset = (p2 is String) ? p2 : CPKFloatOptional(p2)
+            rightOffset = (p3 is String) ? p3 : CPKFloatOptional(p3)
             
         } else if isValidP1 && isValidP2 {
-            topOffset = CPKFloatOptional(p1)
-            leftOffset = CPKFloatOptional(p2)
-            bottomOffset = CPKFloatOptional(p1)
-            rightOffset = CPKFloatOptional(p2)
+            topOffset = (p1 is String) ? p1 : CPKFloatOptional(p1)
+            leftOffset = (p2 is String) ? p2 : CPKFloatOptional(p2)
+            bottomOffset = topOffset
+            rightOffset = leftOffset
             
         } else if isValidP1 {
-            topOffset = CPKFloatOptional(p1)
-            leftOffset = CPKFloatOptional(p1)
-            bottomOffset = CPKFloatOptional(p1)
-            rightOffset = CPKFloatOptional(p1)
+            topOffset = (p1 is String) ? p1 : CPKFloatOptional(p1)
+            leftOffset = topOffset
+            bottomOffset = topOffset
+            rightOffset = topOffset
             
         } else {
-            topOffset = 0
-            leftOffset = 0
-            bottomOffset = 0
-            rightOffset = 0
+            topOffset = CGFloat(0)
+            leftOffset = CGFloat(0)
+            bottomOffset = CGFloat(0)
+            rightOffset = CGFloat(0)
         }
         
         return (topOffset, leftOffset, bottomOffset, rightOffset)
@@ -312,30 +321,94 @@ func cpk_updatePadding(_ padding: [CGFloat], forView view: UIView) {
 func cpk_pinOptions(_ options: [CPKViewPinOptions], forView view: UIView) {
     view.makeCons({
         var values = [CGFloat]()
+        let priority: UILayoutPriority = 999
         
         for option in options {
             switch option {
-            case let .x(offset): $0.left.equal(offset)
-            case let .y(offset): $0.top.equal(offset)
-            case let .w(value): $0.width.equal(value)
-            case let .h(value): $0.height.equal(value)
+            case let .x(offset):
+                if let value = CPKStringValueOptional(offset) {
+                    $0.left.equal("superview").leftMargin.offset(value).priority(priority)
+                } else if let value = CPKFloatOptional(offset) {
+                    $0.left.equal(value).priority(priority)
+                }
                 
-            case let .xy(v1, v2): $0.left.top.equal(v1, v2); view.frame.origin = CGPoint(x: v1, y: v2)
-            case let .wh(v1, v2): $0.width.height.equal(v1, v2); view.frame.size = CGSize(width: v1, height: v2)
-            case let .xywh(v1, v2, v3, v4): $0.left.top.width.height.equal(v1, v2, v3, v4)
+            case let .y(offset):
+                if let value = CPKStringValueOptional(offset) {
+                    $0.top.equal("superview").topMargin.offset(value).priority(priority)
+                } else if let value = CPKFloatOptional(offset) {
+                    $0.top.equal(value).priority(priority)
+                }
                 
-            case let .maxX(offset): $0.right.equal(offset)
-            case let .maxY(offset): $0.bottom.equal(offset)
-            case let .maxXY(v1, v2): $0.right.bottom.equal(v1, v2)
+            case let .w(value):
+                view.frame.size.width = value
+                $0.width.equal(value).priority(priority)
                 
-            case let .centerX(offset): $0.centerX.equal(offset)
-            case let .centerY(offset): $0.centerY.equal(offset)
-            case let .centerXY(v1, v2): $0.center.equal(v1, v2)
+            case let .h(value):
+                view.frame.size.height = value
+                $0.height.equal(value).priority(priority)
+            
+            case let .xy(v1, v2):
+                if let value = CPKStringValueOptional(v1) {
+                    $0.left.equal("superview").leftMargin.offset(value).priority(priority)
+                } else if let value = CPKFloatOptional(v1) {
+                    $0.left.equal(value).priority(priority)
+                }
+                if let value = CPKStringValueOptional(v2) {
+                    $0.top.equal("superview").topMargin.offset(value).priority(priority)
+                } else if let value = CPKFloatOptional(v2) {
+                    $0.top.equal(value).priority(priority)
+                }
+                
+            case let .wh(v1, v2):
+                view.frame.size = CGSize(width: v1, height: v2)
+                $0.width.height.equal(v1, v2).priority(priority)
+                
+            case let .xywh(v1, v2, v3, v4):
+                view.frame = CGRect(x: v1, y: v2, width: v3, height: v4)
+                $0.left.top.width.height.equal(v1, v2, v3, v4).priority(priority);
+            
+            case let .maxX(offset):
+                if let value = CPKStringValueOptional(offset) {
+                    $0.right.equal("superview").rightMargin.offset(value).priority(priority)
+                } else if let value = CPKFloatOptional(offset) {
+                    $0.right.equal(value).priority(priority)
+                }
+                
+            case let .maxY(offset):
+                if let value = CPKStringValueOptional(offset) {
+                    $0.bottom.equal("superview").bottomMargin.offset(value).priority(priority)
+                } else if let value = CPKFloatOptional(offset) {
+                    $0.bottom.equal(value).priority(priority)
+                }
+                
+            case let .maxXY(v1, v2):
+                if let value = CPKStringValueOptional(v1) {
+                    $0.right.equal("superview").rightMargin.offset(value).priority(priority)
+                } else if let value = CPKFloatOptional(v1) {
+                    $0.right.equal(value).priority(priority)
+                }
+                if let value = CPKStringValueOptional(v2) {
+                    $0.bottom.equal("superview").bottomMargin.offset(value).priority(priority)
+                } else if let value = CPKFloatOptional(v2) {
+                    $0.bottom.equal(value).priority(priority)
+                }
+                
+            case let .centerX(offset):
+                $0.centerX.equal(offset)
+                
+            case let .centerY(offset):
+                $0.centerY.equal(offset)
+                
+            case let .centerXY(v1, v2):
+                $0.center.equal(v1, v2)
                 
             case let .whRatio(ratio): $0.width.equal(view).height.multiply(ratio)
                 
-            case .center: $0.center.equal(0)
-            case .ratio: $0.width.equal(view).height.multiply(view.frame.width / view.frame.height)
+            case .center:
+                $0.center.equal(0)
+                
+            case .ratio:
+                $0.width.equal(view).height.multiply(view.frame.width / view.frame.height)
                 
             case let .hhp(value): view.setContentHuggingPriority(value, for: .horizontal)
             case let .vhp(value): view.setContentHuggingPriority(value, for: .vertical)
@@ -350,16 +423,20 @@ func cpk_pinOptions(_ options: [CPKViewPinOptions], forView view: UIView) {
                 view.setContentCompressionResistancePriority(kLowPriority, for: .horizontal)
                 view.setContentCompressionResistancePriority(kLowPriority, for: .vertical)
                 
-            case let .___value(value): values.append(value)
+            case let .___value(value):
+                values.append(value)
             }
         }
         
         if values.count == 1 {
-            $0.height.equal(values[0])
+            view.frame.size.height = values[0]
+            $0.height.equal(values[0]).priority(priority)
         } else if values.count == 2 {
-            $0.size.equal(values[0], values[1])
+            view.frame.size = CGSize(width: values[0], height: values[1])
+            $0.size.equal(values[0], values[1]).priority(priority)
         } else if values.count == 4 {
-            $0.origin.size.equal(values[0], values[1], values[2], values[3])
+            view.frame = CGRect(x: values[0], y: values[1], width: values[2], height: values[3])
+            $0.origin.size.equal(values[0], values[1], values[2], values[3]).priority(priority)
         }
     })
 }
@@ -1029,6 +1106,7 @@ public class ConsAtts: NSObject {
 public class Cons: ConsAtts {
     private let firstItem: UIView
     private var secondItem: UIView?
+    private var secondItemReferToSuperview = false
     
     var relation = NSLayoutRelation.equal
     
@@ -1050,7 +1128,7 @@ public class Cons: ConsAtts {
     @discardableResult
     override func addAttributes(_ attributes: NSLayoutAttribute...) -> Cons {
         for att in attributes {
-            if secondItem == nil {
+            if secondItem == nil && !secondItemReferToSuperview {
                 firstItemAttributes.append(att)
             } else {
                 secondItemAttributes.append(att)
@@ -1066,6 +1144,9 @@ public class Cons: ConsAtts {
         } else if let item2 = item2OrValues.first as? String {
             if item2 == "self" {
                 self.secondItem = self.firstItem
+            } else if item2 == "superview" {
+                self.secondItem = nil
+                self.secondItemReferToSuperview = true
             } else {
                 assert(false, "invalid second item")
             }
@@ -1582,6 +1663,8 @@ public class StaticTableView: UITableView, UITableViewDelegate, UITableViewDataS
     public init(sectionsOrRows: [Any], style: UITableViewStyle) {
         super.init(frame: CGRect.zero, style: style)
         self.estimatedRowHeight = 44
+        self.estimatedSectionHeaderHeight = 0
+        self.estimatedSectionFooterHeight = 0
         self.delegate = self
         self.dataSource = self
         updateSections(sectionsOrRows: sectionsOrRows)

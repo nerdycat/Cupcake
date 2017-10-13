@@ -47,7 +47,7 @@ class StackViewController: BaseViewController {
             self.stack.axis = self.stack.axis == .vertical ? .horizontal : .vertical
         })
         
-        HStack("<-->", addView, attachGap, gap, align, axis, "<-->").gap(8).embedIn(self.view, nil, 0, 0, 0)
+        HStack("<-->", addView, attachGap, gap, align, axis, "<-->").gap(8).embedIn(self.view, nil, 0, "0", 0)
     }
     
     override func setupUI() {

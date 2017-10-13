@@ -12,10 +12,14 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
-
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        let sel = NSSelectorFromString("setContentInsetAdjustmentBehavior:")
+        if UIScrollView().responds(to: sel) {
+            UIScrollView.appearance().perform(sel, with: 2)
+        }
+        
         return true
     }
 

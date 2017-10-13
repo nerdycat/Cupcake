@@ -90,6 +90,8 @@ public class CPKStackView: UIView {
                 addAndActivateConstraintsForView(at: index)
             }
             
+            self.disableLayoutMarginsAdjustment(for: view)
+            
         } else if let array = sub as? [Any] {
             for i in 0..<array.count {
                 insertArrangedSubview(item: array[i], at: min(index + i, self.arrangedSubviews.count))
@@ -122,6 +124,7 @@ public class CPKStackView: UIView {
     public override init(frame: CGRect) {
         super.init(frame: frame)
         self.layoutMargins = UIEdgeInsets.zero
+        self.disableLayoutMarginsAdjustment(for: self)
     }
     
     public required init?(coder aDecoder: NSCoder) {
@@ -639,6 +642,17 @@ public class CPKStackView: UIView {
     private func axisDidChange() {
         removeAndDeactivateAllConstriants()
         addAndActivateConstraintsForAll()
+    }
+    
+    private func disableLayoutMarginsAdjustment(for view: UIView) {
+//        if #available(iOS 11, *) {
+//            view.insetsLayoutMarginsFromSafeArea = false
+//        }
+        
+        let sel = NSSelectorFromString("setInsetsLayoutMarginsFromSafeArea:")
+        if view.responds(to: sel) {
+            view.perform(sel, with: nil)
+        }
     }
 }
 

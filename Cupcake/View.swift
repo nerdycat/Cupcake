@@ -55,7 +55,7 @@ public extension UIView {
         .radius(-1)   //passing negative number means using auto rounding
      */
     @discardableResult public func radius(_ cornerRadius: CGFloat) -> Self {
-        if cornerRadius >= 0 {
+        if cornerRadius >= 0.1 && cornerRadius < 9999999 {
             self.layer.cornerRadius = cornerRadius
             self.cpkAutoRoundingRadius = false
         } else {
@@ -213,7 +213,9 @@ public extension UIView {
      
      * Usages:
         .pin(.x(20))                    //add left constraint
+        .pin(.x("20"))                  //add left margin constraint
         .pin(.y(20))                    //add top constraint
+        .pin(.y("20"))                  //add top margin constraint
         .pin(.xy(20, 20))               //and left and top constraints
      
         .pin(.w(100))                   //add width constraint
@@ -223,7 +225,9 @@ public extension UIView {
         .pin(.xywh(20, 20, 100, 100))   //add left, top, width and height constraints
      
         .pin(.maxX(-20))                //add right constraint
+        .pin(.maxX(-20))                //add right margin constraint
         .pin(.maxY(-20))                //add bottom constraint
+        .pin(.maxY(-20))                //add bottom margin constraint
         .pin(.maxXY(-20, -20))          //add right and bottom constraints
      
         .pin(.centerX(0))               //add centerX constriant
@@ -296,6 +300,11 @@ public extension UIView {
         .embedIn(superview, 10, 20, 30)         //top: 10, left: 20, right: 30
         .embedIn(superview, 10, 20, 30, 40)     //top: 10, left: 20, bottom: 30, right: 40
         .embedIn(superview, 10, 20, nil)        //top: 10, left: 20
+     
+     * Passing string value instead of CGFloat will constraint to superview's margin.
+     * This is useful when embed in controller's view whose margin may not be 0.
+     * Usages:
+        .embedIn(superview, "10", 20, "30", 40) //topMargin: 10, left: 20, bottomMargin: 30, right: 40
      */
     @discardableResult public func embedIn(_ superview: UIView,
                                            _ p1: Any? = "", _ p2: Any? = "",
@@ -306,16 +315,32 @@ public extension UIView {
         
         makeCons({
             if let top = edge.0 {
-                $0.top.offset(top)
+                if let topValue = top as? CGFloat {
+                    $0.top.offset(topValue)
+                } else if let topMarginValue = CPKFloatOptional(top) {
+                    $0.top.equal(superview).topMargin.offset(topMarginValue)
+                }
             }
             if let left = edge.1 {
-                $0.left.offset(left)
+                if let leftValue = left as? CGFloat {
+                    $0.left.offset(leftValue)
+                } else if let leftMarginValue = CPKFloatOptional(left) {
+                    $0.left.equal(superview).leftMargin.offset(leftMarginValue)
+                }
             }
             if let bottom = edge.2 {
-                $0.bottom.offset(-bottom)
+                if let bottomValue = bottom as? CGFloat {
+                    $0.bottom.offset(-bottomValue)
+                } else if let bottomMarginValue = CPKFloatOptional(bottom) {
+                    $0.bottom.equal(superview).bottomMargin.offset(-bottomMarginValue)
+                }
             }
             if let right = edge.3 {
-                $0.right.offset(-right)
+                if let rightValue = right as? CGFloat {
+                    $0.right.offset(-rightValue)
+                } else if let rightMarginValue = CPKFloatOptional(right) {
+                    $0.right.equal(superview).rightMargin.offset(-rightMarginValue)
+                }
             }
         })
         
@@ -325,9 +350,9 @@ public extension UIView {
 
 
 public enum CPKViewPinOptions {
-    case x(CGFloat)                 //left constraint
-    case y(CGFloat)                 //top constraint
-    case xy(CGFloat, CGFloat)       //left and top constraints
+    case x(Any)                     //passing value for left constraint, passing string value for left margin constraint
+    case y(Any)                     //passing value for top constraint, passing string value for top margin constraint
+    case xy(Any, Any)               //x + y
     
     case w(CGFloat)                 //width constraint
     case h(CGFloat)                 //height constraint
@@ -336,9 +361,9 @@ public enum CPKViewPinOptions {
     case xywh(CGFloat, CGFloat,     //left, top, width and height constraints
               CGFloat, CGFloat)
     
-    case maxX(CGFloat)              //right constraint
-    case maxY(CGFloat)              //bottom constraint
-    case maxXY(CGFloat, CGFloat)    //right and bottom constraint
+    case maxX(Any)                  //passing value for right constraint, passing string value for right margin constraint
+    case maxY(Any)                  //passing value for bottom constraint, passing string value for bottom margin constraint
+    case maxXY(Any, Any)            //maxX + maxY
     
     case centerX(CGFloat)           //centerX constraint
     case centerY(CGFloat)           //centerY constraint

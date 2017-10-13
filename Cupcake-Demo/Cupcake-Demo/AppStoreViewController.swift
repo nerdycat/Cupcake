@@ -92,6 +92,7 @@ class AppStoreViewController: UITableViewController {
         
         self.tableView.estimatedRowHeight = 84
         self.tableView.register(AppStoreCell.self, forCellReuseIdentifier: "cell")
+        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 34, 0)
         
         let path = Bundle.main.path(forResource: "appList", ofType: "plist")
         appList = NSArray(contentsOfFile: path!) as? Array<Dictionary<String, Any>>
