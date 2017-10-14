@@ -56,7 +56,7 @@ public extension NSMutableAttributedString {
         ...
      */
     @discardableResult public func font(_ style: Any) -> Self {
-        cpk_addAttribute(name: NSFontAttributeName, value: Font(style))
+        cpk_addAttribute(name: "NSFont", value: Font(style))
         return self
     }
     
@@ -72,7 +72,7 @@ public extension NSMutableAttributedString {
         ...
      */
     @discardableResult public func color(_ any: Any) -> Self {
-        cpk_addAttribute(name: NSForegroundColorAttributeName, value: Color(any)!)
+        cpk_addAttribute(name: "NSColor", value: Color(any)!)
         return self
     }
     
@@ -89,7 +89,7 @@ public extension NSMutableAttributedString {
         ...
      */
     @discardableResult public func bg(_ any: Any) -> Self {
-        cpk_addAttribute(name: NSBackgroundColorAttributeName, value: Color(any) ?? Color(Img(any))!)
+        cpk_addAttribute(name: "NSBackgroundColor", value: Color(any) ?? Color(Img(any))!)
         return self
     }
     
@@ -110,9 +110,9 @@ public extension NSMutableAttributedString {
             styles = NSNumber(value: style.rawValue | NSUnderlineStyle.styleSingle.rawValue)
         }
         
-        cpk_addAttribute(name: NSUnderlineStyleAttributeName, value: styles)
+        cpk_addAttribute(name: "NSUnderline", value: styles)
         if let underlineColor = Color(color) {
-            cpk_addAttribute(name: NSUnderlineColorAttributeName, value: underlineColor)
+            cpk_addAttribute(name: "NSUnderlineColor", value: underlineColor)
         }
         return self
     }
@@ -138,9 +138,9 @@ public extension NSMutableAttributedString {
             styles = NSNumber(value: style.rawValue | NSUnderlineStyle.styleSingle.rawValue)
         }
         
-        cpk_addAttribute(name: NSStrikethroughStyleAttributeName, value: styles)
+        cpk_addAttribute(name: "NSStrikethrough", value: styles)
         if let strikethroughColor = Color(color) {
-            cpk_addAttribute(name: NSStrikethroughColorAttributeName, value: strikethroughColor)
+            cpk_addAttribute(name: "NSStrikethroughColor", value: strikethroughColor)
         }
         return self
     }
@@ -158,9 +158,9 @@ public extension NSMutableAttributedString {
         .stroke(-4, "red")
      */
     @discardableResult public func stroke(_ width: CGFloat, _ color: Any? = nil) -> Self {
-        cpk_addAttribute(name: NSStrokeWidthAttributeName, value: width)
+        cpk_addAttribute(name: "NSStrokeWidth", value: width)
         if let strokeColor = Color(color) {
-            cpk_addAttribute(name: NSStrokeColorAttributeName, value: strokeColor)
+            cpk_addAttribute(name: "NSStrokeColor", value: strokeColor)
         }
         return self
     }
@@ -172,7 +172,7 @@ public extension NSMutableAttributedString {
         .oblique(-0.3)
      */
     @discardableResult public func oblique(_ value: CGFloat) -> Self {
-        cpk_addAttribute(name: NSObliquenessAttributeName, value: value)
+        cpk_addAttribute(name: "NSObliqueness", value: value)
         return self
     }
     
@@ -183,7 +183,7 @@ public extension NSMutableAttributedString {
         .offset(-20)
      */
     @discardableResult public func offset(_ offset: CGFloat) -> Self {
-        cpk_addAttribute(name: NSBaselineOffsetAttributeName, value: offset)
+        cpk_addAttribute(name: "NSBaselineOffset", value: offset)
         return self
     }
     
@@ -196,7 +196,7 @@ public extension NSMutableAttributedString {
      */
     @discardableResult public func link(_ url: String? = nil) -> Self {
         if let urlString = url {
-            cpk_addAttribute(name: NSLinkAttributeName, value: urlString)
+            cpk_addAttribute(name: "NSLink", value: urlString)
         } else {
             cpk_addAttribute(name: CPKLabelLinkAttributeName, value: CPKLabelLinkAttributeValue)
         }

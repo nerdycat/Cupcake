@@ -24,7 +24,7 @@ public extension UITextView {
         .str( AttStr("hello world").strikethrough() )
         ...
      */
-    @discardableResult public func str(_ any: Any) -> Self {
+    @objc @discardableResult public func str(_ any: Any) -> Self {
         if let attStr = any as? NSAttributedString {
             self.attributedText = attStr
         } else {
@@ -41,7 +41,7 @@ public extension UITextView {
         .hint("Enter here")
         .hint( AttStr("Enter here").font(13) )
      */
-    @discardableResult public func hint(_ any: Any) -> Self {
+    @objc @discardableResult public func hint(_ any: Any) -> Self {
         cpk_setPlaceholder(any)
         return self
     }
@@ -57,7 +57,7 @@ public extension UITextView {
         .font(someLabel.font)
         ...
      **/
-    @discardableResult public func font(_ any: Any) -> Self {
+    @objc @discardableResult public func font(_ any: Any) -> Self {
         self.font = Font(any)
         return self
     }
@@ -73,7 +73,7 @@ public extension UITextView {
         .color(someLabel.textColor)
         ...
      */
-    @discardableResult public func color(_ any: Any) -> Self {
+    @objc @discardableResult public func color(_ any: Any) -> Self {
         self.textColor = Color(any)
         return self
     }
@@ -83,7 +83,7 @@ public extension UITextView {
      * Usages:
         .maxLength(10)
      */
-    @discardableResult public func maxLength(_ length: CGFloat) -> Self {
+    @objc @discardableResult public func maxLength(_ length: CGFloat) -> Self {
         self.cpkMaxLength = Int(length)
         return self
     }
@@ -108,7 +108,7 @@ public extension UITextView {
         .align(.justified)
         ...
      */
-    @discardableResult public func align(_ textAlignment: NSTextAlignment) -> Self {
+    @objc @discardableResult public func align(_ textAlignment: NSTextAlignment) -> Self {
         self.textAlignment = textAlignment
         return self
     }

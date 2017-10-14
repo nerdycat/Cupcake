@@ -27,7 +27,7 @@ public extension UITextField {
         .str( AttStr("hello world").strikethrough() )
         ...
      */
-    @discardableResult public func str(_ any: Any) -> Self {
+    @objc @discardableResult public func str(_ any: Any) -> Self {
         if let attStr = any as? NSAttributedString {
             self.attributedText = attStr
         } else {
@@ -44,7 +44,7 @@ public extension UITextField {
         .hint("Enter your name")
         .hint( AttStr("Enter your name").font(13) )
      */
-    @discardableResult public func hint(_ any: Any) -> Self {
+    @objc @discardableResult public func hint(_ any: Any) -> Self {
         if let attStr = any as? NSAttributedString {
             self.attributedPlaceholder = attStr
         } else {
@@ -64,7 +64,7 @@ public extension UITextField {
         .font(someLabel.font)
         ...
      **/
-    @discardableResult public func font(_ any: Any) -> Self {
+    @objc @discardableResult public func font(_ any: Any) -> Self {
         self.font = Font(any)
         return self
     }
@@ -80,7 +80,7 @@ public extension UITextField {
         .color(someLabel.textColor)
         ...
      */
-    @discardableResult public func color(_ any: Any) -> Self {
+    @objc @discardableResult public func color(_ any: Any) -> Self {
         self.textColor = Color(any)
         return self
     }
@@ -90,7 +90,7 @@ public extension UITextField {
      * Usages:
         .maxLength(10)
      */
-    @discardableResult public func maxLength(_ length: CGFloat) -> Self {
+    @objc @discardableResult public func maxLength(_ length: CGFloat) -> Self {
         self.cpkMaxLength = Int(length)
         return self
     }
@@ -114,7 +114,7 @@ public extension UITextField {
         .secure()           //secureTextEntry = true
         .secure(false)      //secureTextEntry = false
      */
-    @discardableResult public func secure(_ secureTextEntry: Bool = true) -> Self {
+    @objc @discardableResult public func secure(_ secureTextEntry: Bool = true) -> Self {
         self.isSecureTextEntry = secureTextEntry
         return self
     }
@@ -126,7 +126,7 @@ public extension UITextField {
         .align(.justified)
         ...
      */
-    @discardableResult public func align(_ textAlignment: NSTextAlignment) -> Self {
+    @objc @discardableResult public func align(_ textAlignment: NSTextAlignment) -> Self {
         self.textAlignment = textAlignment
         return self
     }
@@ -138,7 +138,7 @@ public extension UITextField {
         .keyboard(.emailAddress)
         ...
      */
-    @discardableResult public func keyboard(_ keyboardType: UIKeyboardType) -> Self {
+    @objc @discardableResult public func keyboard(_ keyboardType: UIKeyboardType) -> Self {
         self.keyboardType = keyboardType
         return self
     }
@@ -150,7 +150,7 @@ public extension UITextField {
         .returnKey(.google)
         ...
      */
-    @discardableResult public func returnKey(_ returnKeyType: UIReturnKeyType) -> Self {
+    @objc @discardableResult public func returnKey(_ returnKeyType: UIReturnKeyType) -> Self {
         self.returnKeyType = returnKeyType
         return self
     }
@@ -162,7 +162,7 @@ public extension UITextField {
         .clearMode(.always)
         ...
      */
-    @discardableResult public func clearMode(_ clearButtonMode: UITextFieldViewMode) -> Self {
+    @objc @discardableResult public func clearMode(_ clearButtonMode: UITextFieldViewMode) -> Self {
         self.clearButtonMode = clearButtonMode
         return self
     }

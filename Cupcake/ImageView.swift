@@ -28,7 +28,7 @@ public extension UIImageView {
         .img(someImage)
         ...
     */
-    @discardableResult public func img(_ any: Any) -> Self {
+    @objc @discardableResult public func img(_ any: Any) -> Self {
         self.image = Img(any)
         
         if self.image != nil {
@@ -48,7 +48,7 @@ public extension UIImageView {
         .mode(.center)
         ...
     */
-    @discardableResult public func mode(_ contentMode: UIViewContentMode) -> Self {
+    @objc @discardableResult public func mode(_ contentMode: UIViewContentMode) -> Self {
         self.contentMode = contentMode
         return self
     }

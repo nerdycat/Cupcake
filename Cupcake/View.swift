@@ -28,7 +28,7 @@ public extension UIView {
         .bg("cat")      //using image
         ...
      */
-    @discardableResult public func bg(_ any: Any) -> Self {
+    @objc @discardableResult public func bg(_ any: Any) -> Self {
         self.backgroundColor = Color(any) ?? Color(Img(any))
         return self
     }
@@ -41,7 +41,7 @@ public extension UIView {
         .tint("red")
         .tint("#00F")
      */
-    @discardableResult public func tint(_ any: Any) -> Self {
+    @objc @discardableResult public func tint(_ any: Any) -> Self {
         self.tintColor = Color(any)
         return self
     }
@@ -54,7 +54,7 @@ public extension UIView {
         .radius(10)
         .radius(-1)   //passing negative number means using auto rounding
      */
-    @discardableResult public func radius(_ cornerRadius: CGFloat) -> Self {
+    @objc @discardableResult public func radius(_ cornerRadius: CGFloat) -> Self {
         if cornerRadius < 0 {
             self.layer.cornerRadius = self.bounds.height / 2
             self.cpkAutoRoundingRadius = true
@@ -75,7 +75,7 @@ public extension UIView {
         .border(1)
         .border(1, "red")
      */
-    @discardableResult public func border(_ borderWidth: CGFloat, _ borderColor: Any? = nil) -> Self {
+    @objc @discardableResult public func border(_ borderWidth: CGFloat, _ borderColor: Any? = nil) -> Self {
         self.layer.borderWidth = borderWidth
         self.layer.borderColor = Color(borderColor)?.cgColor
         return self
@@ -88,10 +88,10 @@ public extension UIView {
         .shadow(0.7, 2)
         .shadow(0.7, 3, 0, 0)
      */
-    @discardableResult public func shadow(_ shadowOpacity: CGFloat,
-                                          _ shadowRadius: CGFloat = 3,
-                                          _ shadowOffsetX: CGFloat = 0,
-                                          _ shadowOffsetY: CGFloat = 3) -> Self {
+    @objc @discardableResult public func shadow(_ shadowOpacity: CGFloat,
+                                                _ shadowRadius: CGFloat = 3,
+                                                _ shadowOffsetX: CGFloat = 0,
+                                                _ shadowOffsetY: CGFloat = 3) -> Self {
         
         self.layer.shadowOpacity = Float(shadowOpacity)
         self.layer.shadowRadius = shadowRadius
@@ -108,7 +108,7 @@ public extension UIView {
         .styles(myStyle1, myStyle2, "globalStyle1")
         .styles(someView)       //retrieve styles direct from view
      */
-    @discardableResult public func styles(_ s1: Any, _ s2: Any? = nil, _ s3: Any? = nil, _ s4: Any? = nil) -> Self {
+    @objc @discardableResult public func styles(_ s1: Any, _ s2: Any? = nil, _ s3: Any? = nil, _ s4: Any? = nil) -> Self {
         var array = Array<Any>()
         array.append(s1)
         
@@ -142,7 +142,7 @@ public extension UIView {
         .touchInsets(10, 20, 30)            //top: 10, left: 20, bottom: 0 , right: 30
         .touchInsets(10, 20, 30, 40)        //top: 10, left: 20, bottom: 30, right: 40
      */
-    @discardableResult public func touchInsets(_ p1: Any, _ p2: Any? = nil, _ p3: Any? = nil, _ p4: Any? = nil) -> Self {
+    @objc @discardableResult public func touchInsets(_ p1: Any, _ p2: Any? = nil, _ p3: Any? = nil, _ p4: Any? = nil) -> Self {
         self.cpkTouchInsets = cpk_edgeInsetsFromParameters(p1, p2, p3, p4)
         return self
     }
@@ -156,7 +156,7 @@ public extension UIView {
         .onClick({ _ in /* ... */ })                //if you don't care at all
         .onClick({ [weak self] _ in /* ... */ })    //capture self as weak reference when needed
     */
-    @discardableResult public func onClick(_ closure: @escaping (UIView)->()) -> Self {
+    @objc @discardableResult public func onClick(_ closure: @escaping (UIView)->()) -> Self {
         cpk_onClick(closure, nil)
         return self
     }
@@ -166,7 +166,7 @@ public extension UIView {
      * Usages:
         .addTo(superView)
      */
-    @discardableResult public func addTo(_ superview: UIView) -> Self {
+    @objc @discardableResult public func addTo(_ superview: UIView) -> Self {
         superview.addSubview(self)
         return self
     }
@@ -206,7 +206,7 @@ public extension UIView {
         .margin(10, 20, 30)             //top: 10, left: 20, bottom: 0 , right: 30
         .margin(10, 20, 30, 40)         //top: 10, left: 20, bottom: 30, right: 40
      */
-    @discardableResult public func margin(_ p1: Any, _ p2: Any? = nil, _ p3: Any? = nil, _ p4: Any? = nil) -> Self {
+    @objc @discardableResult public func margin(_ p1: Any, _ p2: Any? = nil, _ p3: Any? = nil, _ p4: Any? = nil) -> Self {
         self.layoutMargins = cpk_edgeInsetsFromParameters(p1, p2, p3, p4)
         return self
     }
@@ -271,7 +271,7 @@ public extension UIView {
             _.size.equal(100, 100)
         })
      */
-    @discardableResult public func makeCons(_ closure: (ConsMaker)->()) -> Self {
+    @objc @discardableResult public func makeCons(_ closure: (ConsMaker)->()) -> Self {
         let maker = ConsMaker(firstItem: self)
         closure(maker)
         maker.updateConstraints()
@@ -287,7 +287,7 @@ public extension UIView {
             _.size.equal(anotherView)
         })
      */
-    @discardableResult public func remakeCons(_ closure: (ConsMaker)->()) -> Self {
+    @objc @discardableResult public func remakeCons(_ closure: (ConsMaker)->()) -> Self {
         let maker = ConsMaker(firstItem: self)
         closure(maker)
         maker.remakeConstraints()
@@ -310,9 +310,9 @@ public extension UIView {
      * Usages:
         .embedIn(superview, "10", 20, "30", 40) //topMargin: 10, left: 20, bottomMargin: 30, right: 40
      */
-    @discardableResult public func embedIn(_ superview: UIView,
-                                           _ p1: Any? = "", _ p2: Any? = "",
-                                           _ p3: Any? = "", _ p4: Any? = "") -> Self {
+    @objc @discardableResult public func embedIn(_ superview: UIView,
+                                                 _ p1: Any? = "", _ p2: Any? = "",
+                                                 _ p3: Any? = "", _ p4: Any? = "") -> Self {
         
         superview.addSubview(self)
         let edge = cpk_edgeInsetsTupleFromParameters(p1, p2, p3, p4)

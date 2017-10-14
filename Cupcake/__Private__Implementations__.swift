@@ -502,9 +502,6 @@ let CPKLabelLinkAttributeValue   = "CPKLabelLinkValue"
 
 fileprivate let CPKLinkColor = UIColor(red: 0, green: 0.478431, blue: 1, alpha: 1)
 
-fileprivate let CPKFixLineSpacingIssueAttributeName = "CPKFixLineSpacingIssue"
-fileprivate let CPKFixLineSpacingIssueAttributeValue = "Fix single line Label with lineSpacing issue"
-
 
 public extension NSObject {
     
@@ -525,27 +522,27 @@ public extension NSObject {
             return false
         }
         
-        var m1 = class_getInstanceMethod(self, s1)
-        var m2 = class_getInstanceMethod(self, s2)
+        var m1 = class_getInstanceMethod(self, s1!)
+        var m2 = class_getInstanceMethod(self, s2!)
         
         if m1 == nil || m2 == nil {
             return false
         }
         
-        class_addMethod(self, s1, method_getImplementation(m1), method_getTypeEncoding(m1))
-        class_addMethod(self, s2, method_getImplementation(m2), method_getTypeEncoding(m2))
+        class_addMethod(self, s1!, method_getImplementation(m1!), method_getTypeEncoding(m1!))
+        class_addMethod(self, s2!, method_getImplementation(m2!), method_getTypeEncoding(m2!))
         
-        m1 = class_getInstanceMethod(self, s1)
-        m2 = class_getInstanceMethod(self, s2)
-        method_exchangeImplementations(m1, m2)
+        m1 = class_getInstanceMethod(self, s1!)
+        m2 = class_getInstanceMethod(self, s2!)
+        method_exchangeImplementations(m1!, m2!)
         
         return true
     }
     
-    @discardableResult
-    public static func cpk_swizzleClass(method1: Any, method2: Any) -> Bool {
-        return object_getClass(self).cpk_swizzle(method1: method1, method2: method2)
-    }
+//    @discardableResult
+//    public static func cpk_swizzleClass(method1: Any, method2: Any) -> Bool {
+//        return object_getClass(self).cpk_swizzle(method1: method1, method2: method2)
+//    }
     
     @discardableResult
     public func cpk_safePerform(selector: Selector) -> Any? {
@@ -582,6 +579,34 @@ public extension NSObject {
         }
         
         dict![key] = object
+    }
+}
+
+
+
+extension String {
+    func cpk_substring(with range: Range<String.Index>) -> String {
+        #if swift(>=4.0)
+            return String(self[range])
+        #else
+            return self.substring(with: range)
+        #endif
+    }
+    
+    func cpk_substring(to index: String.Index) -> String {
+        #if swift(>=4.0)
+            return String(self[..<index])
+        #else
+            return self.substring(to: index)
+        #endif
+    }
+    
+    func cpk_substring(from index: String.Index) -> String {
+        #if swift(>=4.0)
+            return String(self[index...])
+        #else
+            return self.substring(from: index)
+        #endif
     }
 }
 
@@ -624,20 +649,28 @@ extension NSMutableAttributedString {
         }
     }
     
+    func cpk_addAttribute(_ name: String, value: Any, range: NSRange) {
+        #if swift(>=4.0)
+            addAttribute(NSAttributedStringKey(rawValue: name), value: value, range: range)
+        #else
+            addAttribute(name, value: value, range: range)
+        #endif
+    }
+    
     func cpk_addAttribute(name: String, value: Any) {
         self.cpkIsJustSelectingRange = false
         
         self.cpkSelectedRanges.enumerateRanges({ (range, stop) in
             
             if name == CPKLabelLinkAttributeName {
-                addAttribute(name, value: value, range: range)
-                addAttribute(NSForegroundColorAttributeName, value: CPKLinkColor, range: range)
+                cpk_addAttribute(name, value: value, range: range)
+                cpk_addAttribute("NSColor", value: CPKLinkColor, range: range)
                 
             } else {
                 if self.cpkPreventOverrideAttribute {
                     cpk_addAttributeIfNotExisted(name: name, value: value, range: range)
                 } else {
-                    addAttribute(name, value: value, range: range)
+                    cpk_addAttribute(name, value: value, range: range)
                 }
             }
         });
@@ -645,14 +678,29 @@ extension NSMutableAttributedString {
     
     func cpk_addAttributeIfNotExisted(name: String, value: Any, range: NSRange) {
         let indexSets = NSMutableIndexSet(indexesIn: range)
-        enumerateAttribute(name, in: range, options: NSAttributedString.EnumerationOptions(rawValue: 0)) { (value, range, stop) in
+        
+        #if swift(>=4.0)
+            enumerateAttribute(NSAttributedStringKey(rawValue: name),
+                               in: range,
+                               options: NSAttributedString.EnumerationOptions(rawValue: 0))
+            { (value, range, stop) in
             if value != nil {
                 indexSets.remove(in: range)
             }
         }
+        #else
+            enumerateAttribute(name,
+                               in: range,
+                               options: NSAttributedString.EnumerationOptions(rawValue: 0))
+            { (value, range, stop) in
+            if value != nil {
+                indexSets.remove(in: range)
+            }
+        }
+        #endif
         
         indexSets.enumerateRanges({ (range, stop) in
-            addAttribute(name, value: value, range: range)
+            cpk_addAttribute(name, value: value, range: range)
         })
     }
     
@@ -660,7 +708,7 @@ extension NSMutableAttributedString {
         let targetRange = range ?? NSMakeRange(0, self.length)
         var mutableStyle: NSMutableParagraphStyle
         
-        if let paraStyle = attribute(NSParagraphStyleAttributeName,
+        if let paraStyle = attribute("NSParagraphStyle",
                                      at: targetRange.location,
                                      longestEffectiveRange: nil,
                                      in: targetRange) as? NSParagraphStyle {
@@ -673,11 +721,7 @@ extension NSMutableAttributedString {
         }
         
         mutableStyle.setValue(value, forKey: key)
-        addAttribute(NSParagraphStyleAttributeName, value: mutableStyle, range: targetRange)
-        
-        if key == "lineSpacing" {
-            addAttribute(CPKFixLineSpacingIssueAttributeName, value: CPKFixLineSpacingIssueAttributeValue, range: targetRange)
-        }
+        cpk_addAttribute("NSParagraphStyle", value: mutableStyle, range: targetRange)
     }
 }
 
@@ -726,12 +770,12 @@ extension UIView {
         set { cpk_setAssociated(object: newValue, forKey: #function) }
     }
     
-    func cpk_setBounds(_ frame: CGRect) {
+    @objc func cpk_setBounds(_ frame: CGRect) {
         cpk_setBounds(frame)
         cpk_updateCornerRadiusIfNeed()
     }
     
-    func cpk_point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+    @objc func cpk_point(inside point: CGPoint, with event: UIEvent?) -> Bool {
         if let insets = self.cpkTouchInsets {
             let rect = UIEdgeInsetsInsetRect(self.bounds, insets)
             return rect.contains(point)
@@ -740,7 +784,7 @@ extension UIView {
         }
     }
     
-    func cpk_masksToBoundsIfNeed() {
+    @objc func cpk_masksToBoundsIfNeed() {
         self.layer.masksToBounds = false
     }
     
@@ -776,7 +820,7 @@ extension UIView {
         }
     }
     
-    func cpk_onClickHandler() {
+    @objc func cpk_onClickHandler() {
         let callback = cpk_associatedObjectFor(key: "cpk_OnClick")
         
         if let closure = callback as? ()->() {
@@ -883,12 +927,12 @@ extension UITextField {
         set { cpk_setAssociated(object: newValue, forKey: #function); cpk_watchOnEndEvent() }
     }
     
-    public func cpk_textRect(forBounds bounds: CGRect) -> CGRect {
+    @objc public func cpk_textRect(forBounds bounds: CGRect) -> CGRect {
         let rect = self.cpk_textRect(forBounds: bounds)
         return UIEdgeInsetsInsetRect(rect, self.cpkPadding)
     }
     
-    public func cpk_editingRect(forBounds bounds: CGRect) -> CGRect {
+    @objc public func cpk_editingRect(forBounds bounds: CGRect) -> CGRect {
         let rect = cpk_editingRect(forBounds: bounds)
         return UIEdgeInsetsInsetRect(rect, self.cpkPadding)
     }
@@ -905,7 +949,7 @@ extension UITextField {
         addTarget(self, action: sel, for: .editingDidEndOnExit)
     }
     
-    func cpk_textDidChange() {
+    @objc func cpk_textDidChange() {
         let hasMarked = cpk_limitTextInput(self, maxLength: self.cpkMaxLength)
         if !hasMarked {
             if let closure = self.cpkTextChangedClosure as? (UITextField)->() {
@@ -914,7 +958,7 @@ extension UITextField {
         }
     }
     
-    func cpk_didEndOnExit() {
+    @objc func cpk_didEndOnExit() {
         if let closure = self.cpkDidEndOnExistClosure as? (UITextField)->() {
             closure(self)
         }
@@ -948,6 +992,21 @@ extension CPKViewPinOptions : ExpressibleByIntegerLiteral, ExpressibleByFloatLit
 }
 
 
+#if swift(>=4.0)
+extension UILayoutPriority : ExpressibleByIntegerLiteral, ExpressibleByFloatLiteral {
+    public init(integerLiteral value: Int) {
+        self = UILayoutPriority(rawValue: Float(value))
+    }
+    public init(floatLiteral value: Float) {
+        self = UILayoutPriority(rawValue: value)
+    }
+}
+extension NSAttributedStringKey : ExpressibleByStringLiteral {
+    public init(stringLiteral value: String) {
+        self = NSAttributedStringKey(rawValue: value)
+    }
+}
+#endif
 
 
 
@@ -1012,7 +1071,7 @@ public class AlertMaker {
         
         if let attTitle = title as? NSAttributedString {
             titleString = attTitle.string
-            titleColor = attTitle.attribute(NSForegroundColorAttributeName, at: 0, effectiveRange: nil) as? UIColor
+            titleColor = attTitle.attribute("NSColor", at: 0, effectiveRange: nil) as? UIColor
         } else {
             titleString = String(describing: title)
         }
@@ -1216,7 +1275,7 @@ public class Cons: ConsAtts {
     }
     
     private func priorityValue(atIndex index: Int) -> UILayoutPriority {
-        var priority: UILayoutPriority = UILayoutPriorityRequired
+        var priority: UILayoutPriority = 1000
         
         if index < priorityValues.count {
             priority = priorityValues[index]
@@ -1256,7 +1315,11 @@ public class Cons: ConsAtts {
                                        multiplier: multiplier,
                                        constant: constant)
             
+            #if swift(>=4.0)
+            c.priority = priority
+            #else
             c.priority = Float(priority)
+            #endif
             layoutConstraints.append(c)
         }
         
@@ -2212,7 +2275,7 @@ public class StaticRow: UIView {
         return CPKTransformLayer.self
     }
     
-    func switchDidChange() {
+    @objc func switchDidChange() {
         if let callback = onChangeHandler {
             callback(self)
         }
@@ -2511,7 +2574,7 @@ extension UITextView {
         return self.viewWithTag(31415) as? UITextViewPlaceholder
     }
     
-    public func cpk_deinit() {
+    @objc public func cpk_deinit() {
         if let label = self.cpkPlaceholderLabel {
             for keyPath in cpkTextViewObservingKeys {
                 self.removeObserver(label, forKeyPath: keyPath)
@@ -2533,7 +2596,7 @@ extension UITextView {
                                                object: self)
     }
     
-    func cpk_textDidChange() {
+    @objc func cpk_textDidChange() {
         let hasMarked = cpk_limitTextInput(self, maxLength: self.cpkMaxLength)
         if !hasMarked {
             if let closure = self.cpkTextChangedClosure as? (UITextView)->() {
@@ -2774,7 +2837,7 @@ extension UILabel {
         set { cpk_setAssociated(object: newValue, forKey: #function) }
     }
     
-    public func ner_setText(_ text: String) {
+    @objc public func ner_setText(_ text: String) {
         self.ner_setText(text)
         cpk_updateAttributedString()
     }
@@ -2791,7 +2854,7 @@ extension UILabel {
 
 extension UILabel {
     
-    func cpk_handleLinkGesture(_ gesture: LinkGestureRecognizer) {
+    @objc func cpk_handleLinkGesture(_ gesture: LinkGestureRecognizer) {
         
         func cpk_calculateTextYOffset() -> CGFloat {
             let layoutManager = self.cpkLayoutManager
@@ -2832,7 +2895,7 @@ extension UILabel {
                         }
                     }
                     
-                    if let ps = layoutManager.textStorage?.attribute(NSParagraphStyleAttributeName,
+                    if let ps = layoutManager.textStorage?.attribute("NSParagraphStyle",
                                                                      at: range.location,
                                                                      longestEffectiveRange: nil,
                                                                      in: range) as? NSParagraphStyle {
@@ -2877,7 +2940,7 @@ extension UILabel {
                     }
                 }
                 
-                attStr.enumerateAttribute(CPKLabelLinkAttributeName,
+                attStr.enumerateAttribute("CPKLabelLink",
                                           in: fullRange,
                                           options: NSAttributedString.EnumerationOptions.init(rawValue: 0),
                                           using: handler)
@@ -2919,7 +2982,7 @@ extension UILabel {
         }
     }
     
-    func cpk_addHighlightedLayers(for linkInfo: LinkInfo) {
+    @objc func cpk_addHighlightedLayers(for linkInfo: LinkInfo) {
         for rect in linkInfo.boundingRects {
             if rect.size.width > 0 && rect.size.height > 0 {
                 var color = self.cpkLinkSelectionColor ?? UIColor.darkGray

@@ -25,7 +25,7 @@ public extension UILabel {
         .str( AttStr("hello world").strikethrough() )
         ...
      */
-    @discardableResult public func str(_ any: Any) -> Self {
+    @objc @discardableResult public func str(_ any: Any) -> Self {
         if let attStr = any as? NSAttributedString {
             self.attributedText = attStr
         } else {
@@ -46,7 +46,7 @@ public extension UILabel {
         .font(someLabel.font)
         ...
      **/
-    @discardableResult public func font(_ any: Any) -> Self {
+    @objc @discardableResult public func font(_ any: Any) -> Self {
         self.font = Font(any)
         return self
     }
@@ -62,7 +62,7 @@ public extension UILabel {
         .color(someLabel.textColor)
         ...
      */
-    @discardableResult public func color(_ any: Any) -> Self {
+    @objc @discardableResult public func color(_ any: Any) -> Self {
         self.textColor = Color(any)
         return self
     }
@@ -74,7 +74,7 @@ public extension UILabel {
         .lines(0)   //multilines
         .lines()    //same as .lines(0)
      */
-    @discardableResult public func lines(_ numberOfLines: CGFloat = 0) -> Self {
+    @objc @discardableResult public func lines(_ numberOfLines: CGFloat = 0) -> Self {
         self.numberOfLines = Int(numberOfLines)
         return self
     }
@@ -84,7 +84,7 @@ public extension UILabel {
      * Usages:
         .lineGap(8)
      */
-    @discardableResult public func lineGap(_ lineSpacing: CGFloat) -> Self {
+    @objc @discardableResult public func lineGap(_ lineSpacing: CGFloat) -> Self {
         self.cpkLineGap = lineSpacing
         return self
     }
@@ -96,7 +96,7 @@ public extension UILabel {
         .align(.justified)
         ...
      */
-    @discardableResult public func align(_ textAlignment: NSTextAlignment) -> Self {
+    @objc @discardableResult public func align(_ textAlignment: NSTextAlignment) -> Self {
         self.textAlignment = textAlignment
         return self
     }

@@ -35,11 +35,12 @@ public extension String {
     @discardableResult public func subFrom(_ indexOrSubstring: Any) -> String {
         if var index = indexOrSubstring as? Int {
             if index < 0 { index += self.characters.count }
-            return self.substring(from: self.index(self.startIndex, offsetBy: index))
+            let from = self.index(self.startIndex, offsetBy: index)
+            return self.cpk_substring(from: from)
             
         } else if let substr = indexOrSubstring as? String {
             if let range = self.range(of: substr) {
-                return self.substring(from: range.lowerBound)
+                return self.cpk_substring(from: range.lowerBound)
             }
         }
         
@@ -57,11 +58,12 @@ public extension String {
     @discardableResult public func subTo(_ indexOrSubstring: Any) -> String {
         if var index = indexOrSubstring as? Int {
             if index < 0 { index += self.characters.count }
-            return self.substring(to: self.index(self.startIndex, offsetBy: index))
+            let to = self.index(self.startIndex, offsetBy: index)
+            return self.cpk_substring(to: to)
             
         } else if let substr = indexOrSubstring as? String {
             if let range = self.range(of: substr) {
-                return self.substring(to: range.lowerBound)
+                return self.cpk_substring(to: range.lowerBound)
             }
         }
         
@@ -80,32 +82,32 @@ public extension String {
             return String(self[self.index(self.startIndex, offsetBy: index)])
             
         } else if let range = indexOrRange as? Range<String.Index> {
-            return self.substring(with: range)
+            return self.cpk_substring(with: range)
             
         } else if let range = indexOrRange as? Range<Int> {
             let lower = self.index(self.startIndex, offsetBy: range.lowerBound)
             let upper = self.index(self.startIndex, offsetBy: range.upperBound)
-            return self.substring(with: lower..<upper)
+            return self.cpk_substring(with: lower..<upper)
             
         } else if let range = indexOrRange as? CountableRange<Int> {
             let lower = self.index(self.startIndex, offsetBy: range.lowerBound)
             let upper = self.index(self.startIndex, offsetBy: range.upperBound)
-            return self.substring(with: lower..<upper)
+            return self.cpk_substring(with: lower..<upper)
             
         } else if let range = indexOrRange as? ClosedRange<Int> {
             let lower = self.index(self.startIndex, offsetBy: range.lowerBound)
             let upper = self.index(self.startIndex, offsetBy: range.upperBound + 1)
-            return self.substring(with: lower..<upper)
+            return self.cpk_substring(with: lower..<upper)
             
         } else if let range = indexOrRange as? CountableClosedRange<Int> {
             let lower = self.index(self.startIndex, offsetBy: range.lowerBound)
             let upper = self.index(self.startIndex, offsetBy: range.upperBound + 1)
-            return self.substring(with: lower..<upper)
+            return self.cpk_substring(with: lower..<upper)
         
         } else if let range = indexOrRange as? NSRange {
             let lower = self.index(self.startIndex, offsetBy: range.location)
             let upper = self.index(self.startIndex, offsetBy: range.location + range.length)
-            return self.substring(with: lower..<upper)
+            return self.cpk_substring(with: lower..<upper)
         }
         
         return ""
