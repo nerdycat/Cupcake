@@ -34,7 +34,7 @@ public extension String {
      */
     @discardableResult public func subFrom(_ indexOrSubstring: Any) -> String {
         if var index = indexOrSubstring as? Int {
-            if index < 0 { index += self.characters.count }
+            if index < 0 { index += self.cpk_length() }
             let from = self.index(self.startIndex, offsetBy: index)
             return self.cpk_substring(from: from)
             
@@ -57,7 +57,7 @@ public extension String {
      */
     @discardableResult public func subTo(_ indexOrSubstring: Any) -> String {
         if var index = indexOrSubstring as? Int {
-            if index < 0 { index += self.characters.count }
+            if index < 0 { index += self.cpk_length() }
             let to = self.index(self.startIndex, offsetBy: index)
             return self.cpk_substring(to: to)
             
@@ -127,7 +127,7 @@ public extension String {
             
             let matchRange = exp.rangeOfFirstMatch(in: self,
                                                    options:options,
-                                                   range: NSMakeRange(0, self.characters.count))
+                                                   range: NSMakeRange(0, self.cpk_length()))
             
             if matchRange.location != NSNotFound {
                 return self.subAt(matchRange)
@@ -152,7 +152,7 @@ public extension String {
             
             return exp.stringByReplacingMatches(in: self,
                                                 options: options,
-                                                range: NSMakeRange(0, self.characters.count),
+                                                range: NSMakeRange(0, self.cpk_length()),
                                                 withTemplate: template)
         }
         

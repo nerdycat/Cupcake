@@ -41,7 +41,7 @@ class EnhancementViewController: BaseViewController {
             make.width.equal(nameField)
             
         }).onChange({ [unowned self] codeField in
-            if codeField.text?.characters.count == 4 {
+            if codeField.text?.count == 4 {
                 self.view.viewWithTag(101)?.becomeFirstResponder()
             }
         })

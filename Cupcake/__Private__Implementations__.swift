@@ -229,7 +229,7 @@ func cpk_limitTextInput(_ textInput: UITextInput, maxLength: Int) -> Bool {
         if maxLength > 0, let view = textInput as? UIView {
             if let text = view.value(forKey: "text") as? String {
                 
-                if text.characters.count > maxLength {
+                if text.cpk_length() > maxLength {
                     let newText = text.subTo(maxLength)
                     var needResetCursorPosition = false
                     
@@ -585,6 +585,14 @@ public extension NSObject {
 
 
 extension String {
+    func cpk_length() -> NSInteger {
+        #if swift(>=3.2)
+            return self.count
+        #else
+            return self.characters.count
+        #endif
+    }
+    
     func cpk_substring(with range: Range<String.Index>) -> String {
         #if swift(>=4.0)
             return String(self[range])
@@ -3105,7 +3113,8 @@ extension UILabel {
     override public func shadow(_ shadowOpacity: CGFloat,
                                 _ shadowRadius: CGFloat = 3,
                                 _ shadowOffsetX: CGFloat = 0,
-                                _ shadowOffsetY: CGFloat = 3) -> Self {
+                                _ shadowOffsetY: CGFloat = 3,
+                                _ shadowColor: Any? = nil) -> Self {
         
         super.shadow(shadowOpacity, shadowRadius, shadowOffsetX, shadowOffsetY)
         return self
@@ -3194,7 +3203,8 @@ extension UIImageView {
     override public func shadow(_ shadowOpacity: CGFloat,
                                 _ shadowRadius: CGFloat = 3,
                                 _ shadowOffsetX: CGFloat = 0,
-                                _ shadowOffsetY: CGFloat = 3) -> Self {
+                                _ shadowOffsetY: CGFloat = 3,
+                                _ shadowColor: Any? = nil) -> Self {
         
         super.shadow(shadowOpacity, shadowRadius, shadowOffsetX, shadowOffsetY)
         return self
@@ -3277,7 +3287,8 @@ extension UIButton {
     override public func shadow(_ shadowOpacity: CGFloat,
                                 _ shadowRadius: CGFloat = 3,
                                 _ shadowOffsetX: CGFloat = 0,
-                                _ shadowOffsetY: CGFloat = 3) -> Self {
+                                _ shadowOffsetY: CGFloat = 3,
+                                _ shadowColor: Any? = nil) -> Self {
         
         super.shadow(shadowOpacity, shadowRadius, shadowOffsetX, shadowOffsetY)
         return self
@@ -3366,7 +3377,8 @@ extension UITextField {
     override public func shadow(_ shadowOpacity: CGFloat,
                                 _ shadowRadius: CGFloat = 3,
                                 _ shadowOffsetX: CGFloat = 0,
-                                _ shadowOffsetY: CGFloat = 3) -> Self {
+                                _ shadowOffsetY: CGFloat = 3,
+                                _ shadowColor: Any? = nil) -> Self {
         
         super.shadow(shadowOpacity, shadowRadius, shadowOffsetX, shadowOffsetY)
         return self
@@ -3455,7 +3467,8 @@ extension UITextView {
     override public func shadow(_ shadowOpacity: CGFloat,
                                 _ shadowRadius: CGFloat = 3,
                                 _ shadowOffsetX: CGFloat = 0,
-                                _ shadowOffsetY: CGFloat = 3) -> Self {
+                                _ shadowOffsetY: CGFloat = 3,
+                                _ shadowColor: Any? = nil) -> Self {
         
         super.shadow(shadowOpacity, shadowRadius, shadowOffsetX, shadowOffsetY)
         return self
@@ -3544,7 +3557,8 @@ extension CPKStackView {
     override public func shadow(_ shadowOpacity: CGFloat,
                                 _ shadowRadius: CGFloat = 3,
                                 _ shadowOffsetX: CGFloat = 0,
-                                _ shadowOffsetY: CGFloat = 3) -> Self {
+                                _ shadowOffsetY: CGFloat = 3,
+                                _ shadowColor: Any? = nil) -> Self {
         
         super.shadow(shadowOpacity, shadowRadius, shadowOffsetX, shadowOffsetY)
         return self
@@ -3631,7 +3645,8 @@ extension StaticTableView {
     override public func shadow(_ shadowOpacity: CGFloat,
                                 _ shadowRadius: CGFloat = 3,
                                 _ shadowOffsetX: CGFloat = 0,
-                                _ shadowOffsetY: CGFloat = 3) -> Self {
+                                _ shadowOffsetY: CGFloat = 3,
+                                _ shadowColor: Any? = nil) -> Self {
         
         super.shadow(shadowOpacity, shadowRadius, shadowOffsetX, shadowOffsetY)
         return self

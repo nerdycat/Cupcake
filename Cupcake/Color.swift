@@ -65,8 +65,7 @@ public func Color(_ any: Any?) -> UIColor? {
         
         //system color
         if let color = UIColor.cpk_safePerform(selector: sel) as? UIColor {
-            return color.withAlphaComponent(alpha)
-            
+            return (alpha == 1 ? color : color.withAlphaComponent(alpha))
         }
         
         if string == "random" {
@@ -75,12 +74,12 @@ public func Color(_ any: Any?) -> UIColor? {
             b = Int(arc4random_uniform(256))
             
         } else if string.hasPrefix("#") {
-            if string.characters.count == 4 {
+            if string.cpk_length() == 4 {
                 r = Int(string.subAt(1), radix:16)! * 17
                 g = Int(string.subAt(2), radix:16)! * 17
                 b = Int(string.subAt(3), radix:16)! * 17
                 
-            } else if string.characters.count == 7 {
+            } else if string.cpk_length() == 7 {
                 r = Int(string.subAt(1...2), radix:16)
                 g = Int(string.subAt(3...4), radix:16)
                 b = Int(string.subAt(5...6), radix:16)

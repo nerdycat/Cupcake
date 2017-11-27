@@ -28,7 +28,7 @@ class AppStoreCell: UITableViewCell {
         ratingLabel.text = result
         
         let price = app["price"] as! String
-        actionButton.str( price.characters.count > 0 ? "$" + price : "GET")
+        actionButton.str( price.count > 0 ? "$" + price : "GET")
     }
     
     func setupUI() {

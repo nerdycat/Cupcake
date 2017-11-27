@@ -82,20 +82,27 @@ public extension UIView {
     }
     
     /**
-     * Drop shadow with opacity, radius (optional) and offset (optional).
+     * Drop shadow with opacity, radius (optional), offset (optional) and color (optional).
+     * shadow's color argument use Color() internally, so it can take any kind of values that Color() supported.
+     * See Color.swift for more information.
      * Usages:
         .shadow(1)
         .shadow(0.7, 2)
         .shadow(0.7, 3, 0, 0)
+        .shadow(0.7, 3, 0, 0, "red")
      */
     @objc @discardableResult public func shadow(_ shadowOpacity: CGFloat,
                                                 _ shadowRadius: CGFloat = 3,
                                                 _ shadowOffsetX: CGFloat = 0,
-                                                _ shadowOffsetY: CGFloat = 3) -> Self {
+                                                _ shadowOffsetY: CGFloat = 3,
+                                                _ shadowColor: Any? = nil) -> Self {
         
         self.layer.shadowOpacity = Float(shadowOpacity)
         self.layer.shadowRadius = shadowRadius
         self.layer.shadowOffset = CGSize(width: shadowOffsetX, height: shadowOffsetY)
+        if let color = Color(shadowColor) {
+            self.layer.shadowColor = color.cgColor
+        }
         return self
     }
     
@@ -174,7 +181,7 @@ public extension UIView {
     /**
      * Add multiply subviews at the same time.
      * Usages:
-        .addSubview(view1, view2, view3)
+        .addSubviews(view1, view2, view3)
      */
     @discardableResult public func addSubviews(_ children: Any...) -> Self {
         func addChildren(_ children: Array<Any>) {
@@ -229,10 +236,10 @@ public extension UIView {
         .pin(.xywh(20, 20, 100, 100))   //add left, top, width and height constraints
      
         .pin(.maxX(-20))                //add right constraint
-        .pin(.maxX(-20))                //add right margin constraint
+        .pin(.maxX("-20"))              //add right margin constraint
         .pin(.maxY(-20))                //add bottom constraint
-        .pin(.maxY(-20))                //add bottom margin constraint
-        .pin(.maxXY(-20, -20))          //add right and bottom constraints
+        .pin(.maxY("-20"))              //add bottom margin constraint
+        .pin(.maxXY("-20", "-20"))      //add right and bottom constraints
      
         .pin(.centerX(0))               //add centerX constriant
         .pin(.centerY(0))               //add centerY constraint
