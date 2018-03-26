@@ -215,8 +215,13 @@ You can present `Alert` And `ActionSheet` using the chaining syntax as well.
 
 
 ## Installation
+
+### Cocoapods
+Cupcake can be added to your project using CocoaPods by adding the following line to your Podfile:
+
 	pod "Cupcake"
-	
-	
 
+### Carthage
+If you're using Carthage you can add a dependency on Cupcake by adding it to your Cartfile:
 
+	github "nerdycat/Cupcake"
