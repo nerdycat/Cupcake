@@ -48,7 +48,7 @@ public extension UIImageView {
         .mode(.center)
         ...
     */
-    @objc @discardableResult public func mode(_ contentMode: UIViewContentMode) -> Self {
+    @objc @discardableResult public func mode(_ contentMode: UIViewContentMode_) -> Self {
         self.contentMode = contentMode
         return self
     }

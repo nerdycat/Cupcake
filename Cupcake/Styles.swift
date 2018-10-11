@@ -121,10 +121,9 @@ public extension StylesMaker {
         return addStyle(key: #function, value: any)
     }
     
-    @discardableResult public func mode(_ contentMode: UIViewContentMode) -> Self {
+    @discardableResult public func mode(_ contentMode: UIViewContentMode_) -> Self {
         return addStyle(key: #function, value: contentMode)
     }
-    
     
     //Button
     @discardableResult public func highColor(_ any: Any) -> Self {
@@ -173,7 +172,7 @@ public extension StylesMaker {
         return addStyle(key: #function, value: returnKeyType)
     }
     
-    @discardableResult public func clearMode(_ clearButtonMode: UITextFieldViewMode) -> Self {
+    @discardableResult public func clearMode(_ clearButtonMode: UITextFieldViewMode_) -> Self {
         return addStyle(key: #function, value: clearButtonMode)
     }
 }

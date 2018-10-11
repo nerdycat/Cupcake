@@ -162,7 +162,7 @@ public extension UITextField {
         .clearMode(.always)
         ...
      */
-    @objc @discardableResult public func clearMode(_ clearButtonMode: UITextFieldViewMode) -> Self {
+    @objc @discardableResult public func clearMode(_ clearButtonMode: UITextFieldViewMode_) -> Self {
         self.clearButtonMode = clearButtonMode
         return self
     }

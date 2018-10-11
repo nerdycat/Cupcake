@@ -104,21 +104,36 @@ public extension NSMutableAttributedString {
         .underline(.styleDouble, "red")     //double underline with red color
         ...
      */
-    @discardableResult public func underline(_ style: NSUnderlineStyle = .styleSingle, _ color: Any? = nil) -> Self {
+    #if swift(>=4.2)
+    @discardableResult public func underline(_ style: NSUnderlineStyle = .single, _ color: Any? = nil) -> Self {
         var styles = NSNumber(value: style.rawValue)
-        if style != .styleNone && style != .styleSingle && style != .styleThick && style != .styleDouble {
-            styles = NSNumber(value: style.rawValue | NSUnderlineStyle.styleSingle.rawValue)
+        if style != .none && style != .single && style != .thick && style != .double {
+            styles = NSNumber(value: style.rawValue | NSUnderlineStyle.single.rawValue)
         }
         
         cpk_addAttribute(name: "NSUnderline", value: styles)
-        if let underlineColor = Color(color) {
-            cpk_addAttribute(name: "NSUnderlineColor", value: underlineColor)
-        }
+        if let underlineColor = Color(color) { cpk_addAttribute(name: "NSUnderlineColor", value: underlineColor) }
         return self
     }
+    #else
+    @discardableResult public func underline(_ style: NSUnderlineStyle = .styleSingle, _ color: Any? = nil) -> Self {
+        var styles = NSNumber(value: style.rawValue)
+        if style != .styleNone && style != .styleSingle && style != .styleThick && style != .styleDouble {
+        styles = NSNumber(value: style.rawValue | NSUnderlineStyle.styleSingle.rawValue)
+    }
+    
+    cpk_addAttribute(name: "NSUnderline", value: styles)
+        if let underlineColor = Color(color) { cpk_addAttribute(name: "NSUnderlineColor", value: underlineColor) }
+        return self
+    }
+    #endif
     
     @discardableResult public func underline(_ color: Any) -> Self {
+        #if swift(>=4.2)
+        return underline(.single, color)
+        #else
         return underline(.styleSingle, color)
+        #endif
     }
     
     /**
@@ -132,10 +147,11 @@ public extension NSMutableAttributedString {
         .strikethrough(.styleDouble, "red")    //double strikethrough with red color
         ...
      */
-    @discardableResult public func strikethrough(_ style: NSUnderlineStyle = .styleSingle, _ color: Any? = nil) -> Self {
+    #if swift(>=4.2)
+    @discardableResult public func strikethrough(_ style: NSUnderlineStyle = .single, _ color: Any? = nil) -> Self {
         var styles = NSNumber(value: style.rawValue)
-        if style != .styleNone && style != .styleSingle && style != .styleThick && style != .styleDouble {
-            styles = NSNumber(value: style.rawValue | NSUnderlineStyle.styleSingle.rawValue)
+        if style != .none && style != .single && style != .thick && style != .double {
+            styles = NSNumber(value: style.rawValue | NSUnderlineStyle.single.rawValue)
         }
         
         cpk_addAttribute(name: "NSStrikethrough", value: styles)
@@ -144,9 +160,27 @@ public extension NSMutableAttributedString {
         }
         return self
     }
+    #else
+    @discardableResult public func strikethrough(_ style: NSUnderlineStyle = .styleSingle, _ color: Any? = nil) -> Self {
+        var styles = NSNumber(value: style.rawValue)
+        if style != .styleNone && style != .styleSingle && style != .styleThick && style != .styleDouble {
+        styles = NSNumber(value: style.rawValue | NSUnderlineStyle.styleSingle.rawValue)
+        }
+    
+        cpk_addAttribute(name: "NSStrikethrough", value: styles)
+        if let strikethroughColor = Color(color) {
+        cpk_addAttribute(name: "NSStrikethroughColor", value: strikethroughColor)
+        }
+        return self
+    }
+    #endif
     
     @discardableResult public func strikethrough(_ color: Any) -> Self {
+        #if swift(>=4.2)
+        return strikethrough(.single, color)
+        #else
         return strikethrough(.styleSingle, color)
+        #endif
     }
     
     /**

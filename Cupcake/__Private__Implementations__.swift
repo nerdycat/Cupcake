@@ -21,6 +21,64 @@ import UIKit.UIGestureRecognizerSubclass
 
 
 
+#if swift(>=4.2)
+
+public typealias UITextFieldViewMode_ = UITextField.ViewMode
+public typealias UITableViewStyle_ = UITableView.Style
+public typealias UITableViewCellStyle_ = UITableViewCell.CellStyle
+public typealias UITableViewCellAccessoryType_ = UITableViewCell.AccessoryType
+public typealias UIViewContentMode_ = UIView.ContentMode
+public typealias UILayoutConstraintAxis_ = NSLayoutConstraint.Axis
+
+typealias UIFontTextStyle_ = UIFont.TextStyle
+typealias NSLayoutAttribute_ = NSLayoutConstraint.Attribute
+typealias NSLayoutRelation_ = NSLayoutConstraint.Relation
+typealias NSAttributedStringKey_ = NSAttributedString.Key
+typealias UIAlertActionStyle_ = UIAlertAction.Style
+typealias UIAlertControllerStyle_ = UIAlertController.Style
+
+private let UITableViewAutomaticDimension_ = UITableView.automaticDimension
+let UILayoutFittingCompressedSize_ = UIView.layoutFittingCompressedSize
+
+func UIEdgeInsetsMake_(_ top: CGFloat, _ left: CGFloat, _ bottom: CGFloat, _ right: CGFloat) -> UIEdgeInsets {
+    return UIEdgeInsets.init(top: top, left: left, bottom: bottom, right: right)
+}
+
+func UIEdgeInsetsInsetRect_(_ rect: CGRect, _ insets: UIEdgeInsets) -> CGRect {
+    return rect.inset(by: insets)
+}
+
+#else
+
+public typealias UITextFieldViewMode_ = UITextFieldViewMode
+public typealias UITableViewStyle_ = UITableViewStyle
+public typealias UITableViewCellStyle_ = UITableViewCellStyle
+public typealias UITableViewCellAccessoryType_ = UITableViewCellAccessoryType
+public typealias UIViewContentMode_ = UIViewContentMode
+public typealias UILayoutConstraintAxis_ = UILayoutConstraintAxis
+
+typealias UIFontTextStyle_ = UIFontTextStyle
+typealias NSLayoutAttribute_ = NSLayoutAttribute
+typealias NSLayoutRelation_ = NSLayoutRelation
+typealias NSAttributedStringKey_ = NSAttributedStringKey
+typealias UIAlertActionStyle_ = UIAlertActionStyle
+typealias UIAlertControllerStyle_ = UIAlertControllerStyle
+
+private let UITableViewAutomaticDimension_ = UITableViewAutomaticDimension
+let UILayoutFittingCompressedSize_ = UILayoutFittingCompressedSize
+
+func UIEdgeInsetsMake_(_ top: CGFloat, _ left: CGFloat, _ bottom: CGFloat, _ right: CGFloat) -> UIEdgeInsets {
+    return UIEdgeInsetsMake(top, left, bottom, right)
+}
+
+func UIEdgeInsetsInsetRect_(_ rect: CGRect, _ insets: UIEdgeInsets) -> CGRect {
+    return UIEdgeInsetsInsetRect(rect, insets)
+}
+
+#endif
+
+
+
 
 
 //MARK: Utils
@@ -117,29 +175,29 @@ func cpk_imageHasAlphaChannel(_ image: UIImage) -> Bool {
 
 func cpk_edgeInsetsFromArray(_ insetArray: [CGFloat]) -> UIEdgeInsets {
     if insetArray.count == 0 {
-        return UIEdgeInsetsMake(0, 0, 0, 0)
+        return UIEdgeInsetsMake_(0, 0, 0, 0)
         
     } else if insetArray.count == 1 {
         let m1 = insetArray[0]
-        return UIEdgeInsetsMake(m1, m1, m1, m1)
+        return UIEdgeInsetsMake_(m1, m1, m1, m1)
         
     } else if insetArray.count == 2 {
         let m1 = insetArray[0]
         let m2 = insetArray[1]
-        return UIEdgeInsetsMake(m1, m2, m1, m2)
+        return UIEdgeInsetsMake_(m1, m2, m1, m2)
         
     } else if insetArray.count == 3 {
         let m1 = insetArray[0]
         let m2 = insetArray[1]
         let m3 = insetArray[2]
-        return UIEdgeInsetsMake(m1, m2, 0, m3)
+        return UIEdgeInsetsMake_(m1, m2, 0, m3)
         
     } else {
         let m1 = insetArray[0]
         let m2 = insetArray[1]
         let m3 = insetArray[2]
         let m4 = insetArray[3]
-        return UIEdgeInsetsMake(m1, m2, m3, m4)
+        return UIEdgeInsetsMake_(m1, m2, m3, m4)
     }
 }
 
@@ -659,7 +717,7 @@ extension NSMutableAttributedString {
     
     func cpk_addAttribute(_ name: String, value: Any, range: NSRange) {
         #if swift(>=4.0)
-            addAttribute(NSAttributedStringKey(rawValue: name), value: value, range: range)
+            addAttribute(NSAttributedStringKey_(rawValue: name), value: value, range: range)
         #else
             addAttribute(name, value: value, range: range)
         #endif
@@ -688,7 +746,7 @@ extension NSMutableAttributedString {
         let indexSets = NSMutableIndexSet(indexesIn: range)
         
         #if swift(>=4.0)
-            enumerateAttribute(NSAttributedStringKey(rawValue: name),
+            enumerateAttribute(NSAttributedStringKey_(rawValue: name),
                                in: range,
                                options: NSAttributedString.EnumerationOptions(rawValue: 0))
             { (value, range, stop) in
@@ -785,7 +843,7 @@ extension UIView {
     
     @objc func cpk_point(inside point: CGPoint, with event: UIEvent?) -> Bool {
         if let insets = self.cpkTouchInsets {
-            let rect = UIEdgeInsetsInsetRect(self.bounds, insets)
+            let rect = UIEdgeInsetsInsetRect_(self.bounds, insets)
             return rect.contains(point)
         } else {
             return self.cpk_point(inside: point, with: event)
@@ -921,7 +979,7 @@ extension UITextField {
     }
     
     var cpkPadding: UIEdgeInsets {
-        get { return cpk_associatedObjectFor(key: #function) as? UIEdgeInsets ?? UIEdgeInsetsMake(0, 0, 0, 0) }
+        get { return cpk_associatedObjectFor(key: #function) as? UIEdgeInsets ?? UIEdgeInsetsMake_(0, 0, 0, 0) }
         set { cpk_setAssociated(object: newValue, forKey: #function) }
     }
     
@@ -937,12 +995,12 @@ extension UITextField {
     
     @objc public func cpk_textRect(forBounds bounds: CGRect) -> CGRect {
         let rect = self.cpk_textRect(forBounds: bounds)
-        return UIEdgeInsetsInsetRect(rect, self.cpkPadding)
+        return UIEdgeInsetsInsetRect_(rect, self.cpkPadding)
     }
     
     @objc public func cpk_editingRect(forBounds bounds: CGRect) -> CGRect {
         let rect = cpk_editingRect(forBounds: bounds)
-        return UIEdgeInsetsInsetRect(rect, self.cpkPadding)
+        return UIEdgeInsetsInsetRect_(rect, self.cpkPadding)
     }
     
     private func cpk_watchTextChange() {
@@ -1009,9 +1067,9 @@ extension UILayoutPriority : ExpressibleByIntegerLiteral, ExpressibleByFloatLite
         self = UILayoutPriority(rawValue: value)
     }
 }
-extension NSAttributedStringKey : ExpressibleByStringLiteral {
+extension NSAttributedStringKey_ : ExpressibleByStringLiteral {
     public init(stringLiteral value: String) {
-        self = NSAttributedStringKey(rawValue: value)
+        self = NSAttributedStringKey_(rawValue: value)
     }
 }
 #endif
@@ -1065,15 +1123,15 @@ public class AlertMaker {
     var cpkTitle: Any?
     var cpkMessage: Any?
     var cpkTint: Any?
-    var cpkStyle: UIAlertControllerStyle
+    var cpkStyle: UIAlertControllerStyle_
     
     private var actions = [UIAlertAction]()
     
-    init(style: UIAlertControllerStyle) {
+    init(style: UIAlertControllerStyle_) {
         self.cpkStyle = style
     }
     
-    func cpk_addAction(style: UIAlertActionStyle, title: Any, handler: (()->())? ) {
+    func cpk_addAction(style: UIAlertActionStyle_, title: Any, handler: (()->())? ) {
         var titleString: String?
         var titleColor: UIColor?
         
@@ -1173,7 +1231,7 @@ public class AlertMaker {
 
 public class ConsAtts: NSObject {
     @discardableResult
-    func addAttributes(_ attributes: NSLayoutAttribute...) -> Cons {
+    func addAttributes(_ attributes: NSLayoutAttribute_...) -> Cons {
         //only for override
         return Cons(firstItem: UIView())
     }
@@ -1184,10 +1242,10 @@ public class Cons: ConsAtts {
     private var secondItem: UIView?
     private var secondItemReferToSuperview = false
     
-    var relation = NSLayoutRelation.equal
+    var relation = NSLayoutRelation_.equal
     
-    var firstItemAttributes = [NSLayoutAttribute]()
-    var secondItemAttributes = [NSLayoutAttribute]()
+    var firstItemAttributes = [NSLayoutAttribute_]()
+    var secondItemAttributes = [NSLayoutAttribute_]()
     
     var multiplierValues = [CGFloat]()
     var constantValues = [CGFloat]()
@@ -1202,7 +1260,7 @@ public class Cons: ConsAtts {
     }
     
     @discardableResult
-    override func addAttributes(_ attributes: NSLayoutAttribute...) -> Cons {
+    override func addAttributes(_ attributes: NSLayoutAttribute_...) -> Cons {
         for att in attributes {
             if secondItem == nil && !secondItemReferToSuperview {
                 firstItemAttributes.append(att)
@@ -1294,7 +1352,7 @@ public class Cons: ConsAtts {
         return priority
     }
     
-    private func secondItemValue(att1: NSLayoutAttribute) -> UIView? {
+    private func secondItemValue(att1: NSLayoutAttribute_) -> UIView? {
         var secondItem = self.secondItem
         if (secondItem == nil && att1 != .width && att1 != .height) {
             secondItem = self.firstItem.superview
@@ -1358,7 +1416,7 @@ public class ConsMaker: ConsAtts {
     }
     
     @discardableResult
-    override func addAttributes(_ attributes: NSLayoutAttribute...) -> Cons {
+    override func addAttributes(_ attributes: NSLayoutAttribute_...) -> Cons {
         let c = Cons(firstItem: firstItem)
         cons.append(c)
         
@@ -1806,7 +1864,7 @@ public class StylesMaker: NSObject {
                 
             } else if key == "mode" {
                 if let imageView = view as? UIImageView {
-                    imageView.mode(value as! UIViewContentMode)
+                    imageView.mode(value as! UIViewContentMode_)
                 }
                 
             } else if key == "reversed" {
@@ -1845,7 +1903,7 @@ public class StylesMaker: NSObject {
                 
             else if key == "clearMode" {
                 if let textField = view as? UITextField {
-                    textField.clearMode(value as! UITextFieldViewMode)
+                    textField.clearMode(value as! UITextFieldViewMode_)
                 }
             }
                 
@@ -1953,7 +2011,7 @@ public class StaticTableView: UITableView, UITableViewDelegate, UITableViewDataS
     var detailFont: Any?
     var detailColor: Any?
     
-    public init(sectionsOrRows: [Any], style: UITableViewStyle) {
+    public init(sectionsOrRows: [Any], style: UITableViewStyle_) {
         super.init(frame: CGRect.zero, style: style)
         self.estimatedRowHeight = 44
         self.estimatedSectionHeaderHeight = 0
@@ -2085,7 +2143,7 @@ public class StaticTableView: UITableView, UITableViewDelegate, UITableViewDataS
             return height == 0 ? 0.001 : height
         }
         
-        return UITableViewAutomaticDimension
+        return UITableViewAutomaticDimension_
     }
     
     public func tableView(_ tableView: UITableView, heightForFooterInSection sectionIndex: Int) -> CGFloat {
@@ -2098,7 +2156,7 @@ public class StaticTableView: UITableView, UITableViewDelegate, UITableViewDataS
             return height == 0 ? 0.001 : height
         }
         
-        return UITableViewAutomaticDimension
+        return UITableViewAutomaticDimension_
     }
     
     public func tableView(_ tableView: UITableView, titleForHeaderInSection sectionIndex: Int) -> String? {
@@ -2254,7 +2312,7 @@ public class StaticRow: UIView {
     var cellHeight: CGFloat?
     var separatorIndent: CGFloat?
     
-    var cellStyle: UITableViewCellStyle = .default
+    var cellStyle: UITableViewCellStyle_ = .default
     
     var onClickHandler: ((StaticRow)->())?
     var onButtonHandler: ((StaticRow)->())?
@@ -2360,8 +2418,8 @@ public class StaticRow: UIView {
         
         if let indent = lineIndent() {
             cell.preservesSuperviewLayoutMargins = false
-            cell.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0)
-            cell.separatorInset = UIEdgeInsetsMake(0, indent, 0, 0)
+            cell.layoutMargins = UIEdgeInsetsMake_(0, 0, 0, 0)
+            cell.separatorInset = UIEdgeInsetsMake_(0, indent, 0, 0)
         }
     }
     
@@ -2374,7 +2432,7 @@ public class StaticRow: UIView {
             rowHeight = height
         }
         
-        return rowHeight >= 0 ? rowHeight : UITableViewAutomaticDimension
+        return rowHeight >= 0 ? rowHeight : UITableViewAutomaticDimension_
     }
     
     fileprivate func lineIndent() -> CGFloat? {
@@ -2420,7 +2478,7 @@ public class StaticRow: UIView {
 
 
 extension CPKTableViewCellAccessoryType {
-    public func accessoryType() -> (UITableViewCellAccessoryType, UIView?) {
+    public func accessoryType() -> (UITableViewCellAccessoryType_, UIView?) {
         switch self {
             case .none: return (.none, nil)
             case .disclosureIndicator: return (.disclosureIndicator, nil)
@@ -2550,7 +2608,7 @@ fileprivate class UITextViewPlaceholder: UILabel {
                 self.font = font
                 self.textAlignment = textView.textAlignment
                 
-                var rect = UIEdgeInsetsInsetRect(textView.bounds, textView.textContainerInset)
+                var rect = UIEdgeInsetsInsetRect_(textView.bounds, textView.textContainerInset)
                 rect = rect.insetBy(dx: textView.textContainer.lineFragmentPadding, dy: 0)
                 rect.size.height = min(rect.height, self.sizeThatFits(CGSize(width: rect.width, height: 0)).height)
                 self.frame = rect
@@ -2594,14 +2652,14 @@ extension UITextView {
     }
     
     private func cpk_watchTextChange() {
-        NotificationCenter.default.removeObserver(self,
-                                                  name: NSNotification.Name.UITextViewTextDidChange,
-                                                  object: self)
+        #if swift(>=4.2)
+        let name = UITextView.textDidChangeNotification
+        #else
+        let name = NSNotification.Name.UITextViewTextDidChange
+        #endif
         
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(cpk_textDidChange),
-                                               name: NSNotification.Name.UITextViewTextDidChange,
-                                               object: self)
+        NotificationCenter.default.removeObserver(self, name: name, object: self)
+        NotificationCenter.default.addObserver(self, selector: #selector(cpk_textDidChange), name: name, object: self)
     }
     
     @objc func cpk_textDidChange() {

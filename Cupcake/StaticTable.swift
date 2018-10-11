@@ -311,7 +311,7 @@ public extension StaticRow {
         .style(.value2)
         ...
      */
-    @discardableResult public func style(_ style: UITableViewCellStyle) -> Self {
+    @discardableResult public func style(_ style: UITableViewCellStyle_) -> Self {
         self.cellStyle = style
         return self
     }

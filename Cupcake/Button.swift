@@ -185,10 +185,10 @@ public extension UIButton {
         self.cpkGap = spacing
         let halfGap = spacing / 2
         
-        self.titleEdgeInsets = UIEdgeInsetsMake(0, halfGap, 0, -halfGap)
-        self.imageEdgeInsets = UIEdgeInsetsMake(0, -halfGap, 0, halfGap)
+        self.titleEdgeInsets = UIEdgeInsetsMake_(0, halfGap, 0, -halfGap)
+        self.imageEdgeInsets = UIEdgeInsetsMake_(0, -halfGap, 0, halfGap)
         
-        var insets = self.cpkInsets ?? UIEdgeInsetsMake(0, 0, 0, 0)
+        var insets = self.cpkInsets ?? UIEdgeInsetsMake_(0, 0, 0, 0)
         insets.left += halfGap
         insets.right += halfGap
         self.contentEdgeInsets = insets
