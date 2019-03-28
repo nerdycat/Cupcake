@@ -43,7 +43,7 @@ public extension AlertMaker {
      * Usages:
         .title("Title")
      */
-    @discardableResult public func title(_ title: Any) -> Self {
+    @discardableResult func title(_ title: Any) -> Self {
         self.cpkTitle = title
         return self
     }
@@ -53,7 +53,7 @@ public extension AlertMaker {
      * Usages:
         .message("Message go here")
      */
-    @discardableResult public func message(_ message: Any) -> Self {
+    @discardableResult func message(_ message: Any) -> Self {
         self.cpkMessage = message
         return self
     }
@@ -67,7 +67,7 @@ public extension AlertMaker {
         .tint("#00F")
         ...
      */
-    @discardableResult public func tint(_ tint: Any) -> Self {
+    @discardableResult func tint(_ tint: Any) -> Self {
         self.cpkTint = tint
         return self
     }
@@ -79,7 +79,7 @@ public extension AlertMaker {
         .action("Option1")
         .action("Option2", { /* do something */ })
      */
-    @discardableResult public func action(_ title: Any, _ callback: (()->())? = nil) -> Self {
+    @discardableResult func action(_ title: Any, _ callback: (()->())? = nil) -> Self {
         self.cpk_addAction(style: .default, title: title, handler: callback)
         return self
     }
@@ -91,7 +91,7 @@ public extension AlertMaker {
         .cancel("Cancel")
         .cancel("Cancel", { /* do something */ }
      */
-    @discardableResult public func cancel(_ title: Any, _ callback: (()->())? = nil) -> Self {
+    @discardableResult func cancel(_ title: Any, _ callback: (()->())? = nil) -> Self {
         self.cpk_addAction(style: .cancel, title: title, handler: callback)
         return self
     }
@@ -103,7 +103,7 @@ public extension AlertMaker {
         .destructive("Delete")
         .destructive("Delete", { /* do someting */ }
      */
-    @discardableResult public func destructive(_ title: Any, _ callback: (()->())? = nil) -> Self {
+    @discardableResult func destructive(_ title: Any, _ callback: (()->())? = nil) -> Self {
         self.cpk_addAction(style: .destructive, title: title, handler: callback)
         return self
     }
@@ -115,7 +115,7 @@ public extension AlertMaker {
         .show()                 //present in the top visible controller
         .show(someController)   //present in someController
      */
-    public func show(_ inside: UIViewController? = nil) {
+    func show(_ inside: UIViewController? = nil) {
         self.cpk_present(inside)
     }
 }

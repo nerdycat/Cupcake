@@ -143,7 +143,13 @@ public class CPKStackView: UIView {
 //    }
     
     public override func willRemoveSubview(_ subview: UIView) {
-        if let index = self.arrangedSubviews.index(of: subview) {
+        #if swift(>=5)
+        let index = self.arrangedSubviews.firstIndex(of: subview)
+        #else
+        let index = self.arrangedSubviews.index(of: subview)
+        #endif
+        
+        if let index = index {
             removeAndDeactivateConstraintsForView(at: index)
             self.arrangedSubviews.remove(at: index)
             
@@ -172,7 +178,13 @@ public class CPKStackView: UIView {
             
             if newValue != oldValue {
                 if let item = object as? UIView {
-                    if let index = self.arrangedSubviews.index(of: item) {
+                    #if swift(>=5)
+                    let index = self.arrangedSubviews.firstIndex(of: item)
+                    #else
+                    let index = self.arrangedSubviews.index(of: item)
+                    #endif
+                    
+                    if let index = index {
                         
                         if item.isHidden {
                             removeAndDeactivateConstraintsForView(at: index)

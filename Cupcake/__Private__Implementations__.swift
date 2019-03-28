@@ -143,6 +143,10 @@ func CPKStringValueOptional(_ any: Any?) -> CGFloat? {
     }
 }
 
+func CPKImageOptional(_ any: Any?) -> UIImage? {
+    return (any != nil ? Img(any!) : nil)
+}
+
 func cpk_onePointImageWithColor(_ color: UIColor) -> UIImage {
     let rect = CGRect(x: 0, y: 0, width: 1, height: 1)
     let hasAlpha = cpk_colorHasAlphaChannel(color)
@@ -564,7 +568,7 @@ fileprivate let CPKLinkColor = UIColor(red: 0, green: 0.478431, blue: 1, alpha: 
 public extension NSObject {
     
     @discardableResult
-    public static func cpk_swizzle(method1: Any, method2: Any) -> Bool {
+    static func cpk_swizzle(method1: Any, method2: Any) -> Bool {
         var s1 = method1 as? Selector
         var s2 = method2 as? Selector
         
@@ -603,7 +607,7 @@ public extension NSObject {
 //    }
     
     @discardableResult
-    public func cpk_safePerform(selector: Selector) -> Any? {
+    func cpk_safePerform(selector: Selector) -> Any? {
         if self.responds(to: selector) {
             return self.perform(selector).takeRetainedValue()
         } else {
@@ -612,7 +616,7 @@ public extension NSObject {
     }
     
     @discardableResult
-    public static func cpk_safePerform(selector: Selector) -> Any? {
+    static func cpk_safePerform(selector: Selector) -> Any? {
         if self.responds(to: selector) {
             return self.perform(selector).takeRetainedValue()
         } else {
@@ -620,7 +624,7 @@ public extension NSObject {
         }
     }
     
-    public func cpk_associatedObjectFor(key: String) -> Any? {
+    func cpk_associatedObjectFor(key: String) -> Any? {
         if let dict = objc_getAssociatedObject(self, &cpkObjectAssociatedObject) as? NSMutableDictionary {
             return dict[key]
         } else {
@@ -628,7 +632,7 @@ public extension NSObject {
         }
     }
     
-    public func cpk_setAssociated(object: Any?, forKey key: String) {
+    func cpk_setAssociated(object: Any?, forKey key: String) {
         var dict = objc_getAssociatedObject(self, &cpkObjectAssociatedObject) as? NSMutableDictionary
         
         if dict == nil {
@@ -909,6 +913,26 @@ extension UIView {
             closure(view)
         } else if let closure = callback as? ((Any)->()) {
             closure(self)
+        }
+    }
+    
+    func cpk_onTap(_ closure: @escaping ()->Void) {
+        isUserInteractionEnabled = true
+        
+        let sel = #selector(UIView.cpk_onTapHandler)
+        if let button = (self as Any) as? UIButton {
+            button.addTarget(self, action: sel, for: .touchUpInside)
+        } else {
+            let tap = UITapGestureRecognizer.init(target: self, action: sel)
+            self.addGestureRecognizer(tap)
+        }
+        cpk_setAssociated(object: closure, forKey: "cpk_OnTap")
+    }
+    
+    @objc func cpk_onTapHandler() {
+        let callback = cpk_associatedObjectFor(key: "cpk_OnTap")
+        if let closure = callback as? ()->() {
+            closure()
         }
     }
     
@@ -1371,7 +1395,7 @@ public class Cons: ConsAtts {
             let constant = constantValue(atIndex: i)
             let priority = priorityValue(atIndex: i)
             
-            let secondItem = secondItemValue(att1: att1)
+            let secondItem =  secondItemValue(att1: att1)
             
             let c = NSLayoutConstraint(item: self.firstItem,
                                        attribute: att1,
@@ -1638,7 +1662,9 @@ public class StylesMaker: NSObject {
             self.radius(view.layer.cornerRadius)
         }
         
-        self.tint(view.tintColor)
+        if let tint = view.tintColor {
+            self.tint(tint)
+        }
         self.border(view.layer.borderWidth, view.layer.borderColor)
         
         self.shadow(CGFloat(view.layer.shadowOpacity),
@@ -1656,7 +1682,7 @@ public class StylesMaker: NSObject {
             if let attStr = label.attributedText {
                 self.str(attStr)
             } else if let str = label.text {
-                self.str(str).font(label.font).color(label.textColor)
+                self.str(str).font(label.font!).color(label.textColor!)
             }
             
             self.lines(CGFloat(label.numberOfLines)).align(label.textAlignment)
@@ -1806,7 +1832,9 @@ public class StylesMaker: NSObject {
     }
     
     func applyTo(view: UIView) {
-        for (key, value) in styles {
+        for (k, value) in styles {
+            var key = k.subTo("(")
+            key = key.count > 0 ? key : k
             
             if key == "radius" {
                 view.radius(value as! CGFloat)
@@ -2353,34 +2381,26 @@ public class StaticRow: UIView {
             return
         }
         
-        if let image = self.image {
-            cell.imageView?.image = image
-        }
-        
-        if let text = self.text {
-            cell.textLabel?.str(text)
+        cell.imageView?.image = image
+        cell.textLabel?.str(text)
+        cell.detailTextLabel?.str(detailText)
             
-            if !(text is NSAttributedString) {
-                if let font = self.section.table.textFont {
-                    cell.textLabel?.font(font)
-                }
-                
-                if let color = self.section.table.textColor {
-                    cell.textLabel?.color(color)
-                }
+        if text != nil && !(text is NSAttributedString) {
+            if let font = self.section.table.textFont {
+                cell.textLabel?.font(font)
+            }
+            
+            if let color = self.section.table.textColor {
+                cell.textLabel?.color(color)
             }
         }
         
-        if let detail = self.detailText {
-            cell.detailTextLabel?.str(detail)
-            
-            if !(detail is NSAttributedString) {
-                if let font = self.section.table.detailFont {
-                    cell.detailTextLabel?.font(font)
-                }
-                if let color = self.section.table.detailColor {
-                    cell.detailTextLabel?.color(color)
-                }
+        if detailText != nil && !(detailText is NSAttributedString) {
+            if let font = self.section.table.detailFont {
+                cell.detailTextLabel?.font(font)
+            }
+            if let color = self.section.table.detailColor {
+                cell.detailTextLabel?.color(color)
             }
         }
         
@@ -2673,7 +2693,7 @@ extension UITextView {
         self.cpkPlaceholderLabel?.update()
     }
     
-    func cpk_setPlaceholder(_ any: Any) {
+    func cpk_setPlaceholder(_ any: Any?) {
         var placeholderLabel = self.cpkPlaceholderLabel
         
         if placeholderLabel == nil {
@@ -2690,8 +2710,10 @@ extension UITextView {
         
         if let att = any as? NSAttributedString {
             placeholderLabel?.attributedText = att
-        } else {
+        } else if let any = any {
             placeholderLabel?.text = String(describing: any)
+        } else {
+            placeholderLabel?.text = nil
         }
         
         placeholderLabel?.update()
@@ -2816,7 +2838,7 @@ class LinkGestureRecognizer: UIGestureRecognizer {
 
 public extension UILabel {
     
-    public var cpkLayoutManager: NSLayoutManager {
+    var cpkLayoutManager: NSLayoutManager {
         var layoutManager: NSLayoutManager! = cpk_associatedObjectFor(key: #function) as? NSLayoutManager
         
         if layoutManager == nil {
@@ -2837,7 +2859,7 @@ public extension UILabel {
         
         if let attStr = self.attributedText {
             let att = NSMutableAttributedString(attributedString: attStr)
-            att.select(.all).preventOverride().font(self.font).align(self.textAlignment)
+            att.select(.all).preventOverride().font(self.font!).align(self.textAlignment)
             
             if self.numberOfLines != 1 && self.lineBreakMode != .byCharWrapping && self.lineBreakMode != .byWordWrapping {
                 let value = NSNumber(value: NSLineBreakMode.byWordWrapping.rawValue)
@@ -2859,12 +2881,12 @@ public extension UILabel {
         return layoutManager
     }
     
-    public var cpkLinkSelectionColor: UIColor? {
+    var cpkLinkSelectionColor: UIColor? {
         get { return cpk_associatedObjectFor(key: #function) as? UIColor }
         set { cpk_setAssociated(object: newValue, forKey: #function) }
     }
     
-    public var cpkLinkSelectionRadius: CGFloat? {
+    var cpkLinkSelectionRadius: CGFloat? {
         get { return cpk_associatedObjectFor(key: #function) as? CGFloat }
         set { cpk_setAssociated(object: newValue, forKey: #function) }
     }
@@ -3085,6 +3107,31 @@ extension UILabel {
 
 
 
+extension UIBarButtonItem {
+    func cpk_onClick(closure: @escaping (UIBarButtonItem)->Void) {
+        target = self
+        action = #selector(cpk_onClickHandler)
+        cpk_setAssociated(object: closure, forKey: "cpk_OnClick")
+    }
+    
+    func cpk_onTap(closure: @escaping ()->Void) {
+        target = self
+        action = #selector(cpk_onTapHandler)
+        cpk_setAssociated(object: closure, forKey: "cpk_OnTap")
+    }
+
+    @objc func cpk_onClickHandler() {
+        if let callback = cpk_associatedObjectFor(key: "cpk_OnClick") as? (UIBarButtonItem)->Void {
+            callback(self)
+        }
+    }
+    
+    @objc func cpk_onTapHandler() {
+        if let callback = cpk_associatedObjectFor(key: "cpk_OnTap") as? ()->Void {
+            callback()
+        }
+    }
+}
 
 
 
@@ -3185,6 +3232,12 @@ extension UILabel {
     }
     
     @discardableResult
+    override public func onTap(_ closure: @escaping ()->Void) -> Self {
+        cpk_onTap(closure)
+        return self
+    }
+    
+    @discardableResult
     override public func addTo(_ superView: UIView) -> Self {
         super.addTo(superView)
         return self
@@ -3275,6 +3328,12 @@ extension UIImageView {
     }
     
     @discardableResult
+    override public func onTap(_ closure: @escaping ()->Void) -> Self {
+        cpk_onTap(closure)
+        return self
+    }
+    
+    @discardableResult
     override public func addTo(_ superView: UIView) -> Self {
         super.addTo(superView)
         return self
@@ -3355,6 +3414,12 @@ extension UIButton {
     @discardableResult
     override public func onClick(_ closure: @escaping (UIButton)->()) -> Self {
         cpk_onClick(closure, nil)
+        return self
+    }
+    
+    @discardableResult
+    override public func onTap(_ closure: @escaping ()->Void) -> Self {
+        cpk_onTap(closure)
         return self
     }
     
@@ -3449,6 +3514,12 @@ extension UITextField {
     }
     
     @discardableResult
+    override public func onTap(_ closure: @escaping ()->Void) -> Self {
+        cpk_onTap(closure)
+        return self
+    }
+    
+    @discardableResult
     override public func addTo(_ superView: UIView) -> Self {
         super.addTo(superView)
         return self
@@ -3539,6 +3610,12 @@ extension UITextView {
     }
     
     @discardableResult
+    override public func onTap(_ closure: @escaping ()->Void) -> Self {
+        cpk_onTap(closure)
+        return self
+    }
+    
+    @discardableResult
     override public func addTo(_ superView: UIView) -> Self {
         super.addTo(superView)
         return self
@@ -3625,6 +3702,12 @@ extension CPKStackView {
     @discardableResult
     override public func onClick(_ closure: @escaping (CPKStackView)->()) -> Self {
         cpk_onClick(closure, nil)
+        return self
+    }
+    
+    @discardableResult
+    override public func onTap(_ closure: @escaping ()->Void) -> Self {
+        cpk_onTap(closure)
         return self
     }
     

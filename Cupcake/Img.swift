@@ -87,7 +87,7 @@ public extension UIImage {
         .resize(0.8, 0.8)       //0.8 * original size
         .resize(0.8)            //same as .resize(0.8, 0.8)
      */
-    @discardableResult public func resize(_ p1: Any, _ p2: Any? = nil) -> UIImage {
+    @discardableResult func resize(_ p1: Any, _ p2: Any? = nil) -> UIImage {
         var newWidth: CGFloat = 0
         var newHeight: CGFloat = 0
         

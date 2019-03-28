@@ -25,11 +25,13 @@ public extension UILabel {
         .str( AttStr("hello world").strikethrough() )
         ...
      */
-    @objc @discardableResult public func str(_ any: Any) -> Self {
+    @objc @discardableResult func str(_ any: Any?) -> Self {
         if let attStr = any as? NSAttributedString {
             self.attributedText = attStr
-        } else {
+        } else if let any = any {
             self.text = String(describing: any)
+        } else {
+            self.text = nil
         }
         return self
     }
@@ -46,7 +48,7 @@ public extension UILabel {
         .font(someLabel.font)
         ...
      **/
-    @objc @discardableResult public func font(_ any: Any) -> Self {
+    @objc @discardableResult func font(_ any: Any) -> Self {
         self.font = Font(any)
         return self
     }
@@ -62,7 +64,7 @@ public extension UILabel {
         .color(someLabel.textColor)
         ...
      */
-    @objc @discardableResult public func color(_ any: Any) -> Self {
+    @objc @discardableResult func color(_ any: Any) -> Self {
         self.textColor = Color(any)
         return self
     }
@@ -74,7 +76,7 @@ public extension UILabel {
         .lines(0)   //multilines
         .lines()    //same as .lines(0)
      */
-    @objc @discardableResult public func lines(_ numberOfLines: CGFloat = 0) -> Self {
+    @objc @discardableResult func lines(_ numberOfLines: CGFloat = 0) -> Self {
         self.numberOfLines = Int(numberOfLines)
         return self
     }
@@ -84,7 +86,7 @@ public extension UILabel {
      * Usages:
         .lineGap(8)
      */
-    @objc @discardableResult public func lineGap(_ lineSpacing: CGFloat) -> Self {
+    @objc @discardableResult func lineGap(_ lineSpacing: CGFloat) -> Self {
         self.cpkLineGap = lineSpacing
         return self
     }
@@ -96,7 +98,7 @@ public extension UILabel {
         .align(.justified)
         ...
      */
-    @objc @discardableResult public func align(_ textAlignment: NSTextAlignment) -> Self {
+    @objc @discardableResult func align(_ textAlignment: NSTextAlignment) -> Self {
         self.textAlignment = textAlignment
         return self
     }

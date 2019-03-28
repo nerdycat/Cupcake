@@ -11,8 +11,12 @@ import UIKit
 class ViewController: BaseViewController {
 
     override func setupUI() {
-        self.title = "Cupcake"
+        title = "Cupcake"
         
+        navigationItem.rightBarButtonItem = BarButton(.add).onTap {
+            print("add")
+        }
+
         let titles = ["Basic", "Enhancement", "Stack", "StaticTable", "Examples"]
 
         PlainTable(titles).embedIn(self.view).onClick({ [unowned self] row in

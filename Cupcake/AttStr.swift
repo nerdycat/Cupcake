@@ -55,7 +55,7 @@ public extension NSMutableAttributedString {
         .font(someLabel.font)
         ...
      */
-    @discardableResult public func font(_ style: Any) -> Self {
+    @discardableResult func font(_ style: Any) -> Self {
         cpk_addAttribute(name: "NSFont", value: Font(style))
         return self
     }
@@ -71,7 +71,7 @@ public extension NSMutableAttributedString {
         .color(someView.backgroundColor)
         ...
      */
-    @discardableResult public func color(_ any: Any) -> Self {
+    @discardableResult func color(_ any: Any) -> Self {
         cpk_addAttribute(name: "NSColor", value: Color(any)!)
         return self
     }
@@ -88,7 +88,7 @@ public extension NSMutableAttributedString {
         .bg("cat")      //using image
         ...
      */
-    @discardableResult public func bg(_ any: Any) -> Self {
+    @discardableResult func bg(_ any: Any) -> Self {
         cpk_addAttribute(name: "NSBackgroundColor", value: Color(any) ?? Color(Img(any))!)
         return self
     }
@@ -105,9 +105,10 @@ public extension NSMutableAttributedString {
         ...
      */
     #if swift(>=4.2)
-    @discardableResult public func underline(_ style: NSUnderlineStyle = .single, _ color: Any? = nil) -> Self {
+    @discardableResult func underline(_ style: NSUnderlineStyle = .single, _ color: Any? = nil) -> Self {
         var styles = NSNumber(value: style.rawValue)
-        if style != .none && style != .single && style != .thick && style != .double {
+        let lineStyle: NSUnderlineStyle = [.single, .thick, .double]
+        if style.rawValue != 0 && (style.rawValue & lineStyle.rawValue == 0) {
             styles = NSNumber(value: style.rawValue | NSUnderlineStyle.single.rawValue)
         }
         
@@ -128,7 +129,7 @@ public extension NSMutableAttributedString {
     }
     #endif
     
-    @discardableResult public func underline(_ color: Any) -> Self {
+    @discardableResult func underline(_ color: Any) -> Self {
         #if swift(>=4.2)
         return underline(.single, color)
         #else
@@ -148,9 +149,10 @@ public extension NSMutableAttributedString {
         ...
      */
     #if swift(>=4.2)
-    @discardableResult public func strikethrough(_ style: NSUnderlineStyle = .single, _ color: Any? = nil) -> Self {
+    @discardableResult func strikethrough(_ style: NSUnderlineStyle = .single, _ color: Any? = nil) -> Self {
         var styles = NSNumber(value: style.rawValue)
-        if style != .none && style != .single && style != .thick && style != .double {
+        let lineStyle: NSUnderlineStyle = [.single, .thick, .double]
+        if style.rawValue != 0 && (style.rawValue & lineStyle.rawValue == 0) {
             styles = NSNumber(value: style.rawValue | NSUnderlineStyle.single.rawValue)
         }
         
@@ -175,7 +177,7 @@ public extension NSMutableAttributedString {
     }
     #endif
     
-    @discardableResult public func strikethrough(_ color: Any) -> Self {
+    @discardableResult func strikethrough(_ color: Any) -> Self {
         #if swift(>=4.2)
         return strikethrough(.single, color)
         #else
@@ -191,7 +193,7 @@ public extension NSMutableAttributedString {
         .stroke(1)
         .stroke(-4, "red")
      */
-    @discardableResult public func stroke(_ width: CGFloat, _ color: Any? = nil) -> Self {
+    @discardableResult func stroke(_ width: CGFloat, _ color: Any? = nil) -> Self {
         cpk_addAttribute(name: "NSStrokeWidth", value: width)
         if let strokeColor = Color(color) {
             cpk_addAttribute(name: "NSStrokeColor", value: strokeColor)
@@ -205,7 +207,7 @@ public extension NSMutableAttributedString {
         .oblique(0.3)
         .oblique(-0.3)
      */
-    @discardableResult public func oblique(_ value: CGFloat) -> Self {
+    @discardableResult func oblique(_ value: CGFloat) -> Self {
         cpk_addAttribute(name: "NSObliqueness", value: value)
         return self
     }
@@ -216,7 +218,7 @@ public extension NSMutableAttributedString {
         .offset(20)
         .offset(-20)
      */
-    @discardableResult public func offset(_ offset: CGFloat) -> Self {
+    @discardableResult func offset(_ offset: CGFloat) -> Self {
         cpk_addAttribute(name: "NSBaselineOffset", value: offset)
         return self
     }
@@ -228,7 +230,7 @@ public extension NSMutableAttributedString {
         .link("http://www.google.com")
         .link()     //mark as link for UILabel
      */
-    @discardableResult public func link(_ url: String? = nil) -> Self {
+    @discardableResult func link(_ url: String? = nil) -> Self {
         if let urlString = url {
             cpk_addAttribute(name: "NSLink", value: urlString)
         } else {
@@ -242,7 +244,7 @@ public extension NSMutableAttributedString {
      * Usages:
         .lineGap(10)
      */
-    @discardableResult public func lineGap(_ spacing: CGFloat) -> Self {
+    @discardableResult func lineGap(_ spacing: CGFloat) -> Self {
         cpk_addParagraphAttribute(key: "lineSpacing", value: spacing)
         return self
     }
@@ -252,7 +254,7 @@ public extension NSMutableAttributedString {
      * Usages:
         .indent(20)
      */
-    @discardableResult public func indent(_ headIntent: CGFloat) -> Self {
+    @discardableResult func indent(_ headIntent: CGFloat) -> Self {
         cpk_addParagraphAttribute(key: "firstLineHeadIndent", value: headIntent)
         return self
     }
@@ -264,7 +266,7 @@ public extension NSMutableAttributedString {
         .align(.justified)
         ...
      */
-    @discardableResult public func align(_ alignment: NSTextAlignment) -> Self {
+    @discardableResult func align(_ alignment: NSTextAlignment) -> Self {
         cpk_addParagraphAttribute(key: "alignment", value: NSNumber(value: alignment.rawValue))
         return self
     }
@@ -287,7 +289,7 @@ public extension NSMutableAttributedString {
      
      * .select("pattern") is just the shorthand of .select(.match("pattern"))
      */
-    @discardableResult public func select(_ optionOrStringLiterals: AttStrSelectionOptions...) -> Self {
+    @discardableResult func select(_ optionOrStringLiterals: AttStrSelectionOptions...) -> Self {
         
         for option in optionOrStringLiterals {
             var regExp: NSRegularExpression?
@@ -359,7 +361,7 @@ public extension NSMutableAttributedString {
         AttStr(@"hello").color(@"red").color(@"green")                  //green color
         AttStr(@"hello").color(@"red").preventOverride.color(@"green")  //red color
      */
-    @discardableResult public func preventOverride(_ flag: Bool = true) -> Self {
+    @discardableResult func preventOverride(_ flag: Bool = true) -> Self {
         self.cpkPreventOverrideAttribute = flag
         return self
     }

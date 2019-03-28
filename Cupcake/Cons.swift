@@ -26,99 +26,99 @@ import UIKit
 
 public extension ConsAtts {
     
-    public var left: Cons {
+    var left: Cons {
         return addAttributes(.left)
     }
     
-    public var leftMargin: Cons {
+    var leftMargin: Cons {
         return addAttributes(.leftMargin)
     }
     
-    public var right: Cons {
+    var right: Cons {
         return addAttributes(.right)
     }
     
-    public var rightMargin: Cons {
+    var rightMargin: Cons {
         return addAttributes(.rightMargin)
     }
     
-    public var top: Cons {
+    var top: Cons {
         return addAttributes(.top)
     }
     
-    public var topMargin: Cons {
+    var topMargin: Cons {
         return addAttributes(.topMargin)
     }
     
-    public var bottom: Cons {
+    var bottom: Cons {
         return addAttributes(.bottom)
     }
     
-    public var bottomMargin: Cons {
+    var bottomMargin: Cons {
         return addAttributes(.bottomMargin)
     }
     
-    public var leading: Cons {
+    var leading: Cons {
         return addAttributes(.leading)
     }
     
-    public var leadingMargin: Cons {
+    var leadingMargin: Cons {
         return addAttributes(.leadingMargin)
     }
     
-    public var trailing: Cons {
+    var trailing: Cons {
         return addAttributes(.trailing)
     }
     
-    public var trailingMagin: Cons {
+    var trailingMagin: Cons {
         return addAttributes(.trailingMargin)
     }
     
-    public var width: Cons {
+    var width: Cons {
         return addAttributes(.width)
     }
     
-    public var height: Cons {
+    var height: Cons {
         return addAttributes(.height)
     }
     
-    public var centerX: Cons {
+    var centerX: Cons {
         return addAttributes(.centerX)
     }
     
-    public var centerY: Cons {
+    var centerY: Cons {
         return addAttributes(.centerY)
     }
     
-    public var centerXInMargins: Cons {
+    var centerXInMargins: Cons {
         return addAttributes(.centerXWithinMargins)
     }
     
-    public var centerYInMargins: Cons {
+    var centerYInMargins: Cons {
         return addAttributes(.centerYWithinMargins)
     }
     
-    public var baseline: Cons {
+    var baseline: Cons {
         return addAttributes(.lastBaseline)
     }
     
-    public var firstBaseline: Cons {
+    var firstBaseline: Cons {
         return addAttributes(.firstBaseline)
     }
     
-    public var center: Cons {
+    var center: Cons {
         return addAttributes(.centerX, .centerY)
     }
     
-    public var origin: Cons {
+    var origin: Cons {
         return addAttributes(.left, .top)
     }
     
-    public var size: Cons {
+    var size: Cons {
         return addAttributes(.width, .height)
     }
     
-    public var edge: Cons {
+    var edge: Cons {
         return addAttributes(.top, .left, .bottom, .right)
     }
 }
@@ -138,7 +138,7 @@ public extension Cons {
         make.width.equal(100)
         make.size.equal(100, 200)
      */
-    @discardableResult public func equal(_ item2OrValues: Any...) -> Self {
+    @discardableResult func equal(_ item2OrValues: Any...) -> Self {
         self.relation = .equal
         updateSecondItem(item2OrValues)
         return self
@@ -151,7 +151,7 @@ public extension Cons {
         make.width.lessEqual(100)
         make.size.lessEqual(100, 200)
      */
-    @discardableResult public func lessEqual(_ item2OrValues: Any...) -> Self {
+    @discardableResult func lessEqual(_ item2OrValues: Any...) -> Self {
         self.relation = .lessThanOrEqual
         updateSecondItem(item2OrValues)
         return self
@@ -164,7 +164,7 @@ public extension Cons {
         make.width.greaterEqual(100)
         make.size.greaterEqual(100, 200)
      */
-    @discardableResult public func greaterEqual(_ item2OrValues: Any...) -> Self {
+    @discardableResult func greaterEqual(_ item2OrValues: Any...) -> Self {
         self.relation = .greaterThanOrEqual
         updateSecondItem(item2OrValues)
         return self
@@ -178,7 +178,7 @@ public extension Cons {
         make.edge.offset(10, 20, 30, 40)
         ...
      */
-    @discardableResult public func offset(_ offsets: CGFloat...) -> Self {
+    @discardableResult func offset(_ offsets: CGFloat...) -> Self {
         self.constantValues = offsets
         return self
     }
@@ -190,7 +190,7 @@ public extension Cons {
         make.size.equal(view2).multiply(0.5, 0.8)
         ...
      */
-    @discardableResult public func multiply(_ multipliers: CGFloat...) -> Self {
+    @discardableResult func multiply(_ multipliers: CGFloat...) -> Self {
         self.multiplierValues = multipliers
         return self
     }
@@ -202,7 +202,7 @@ public extension Cons {
         make.edge.offset(10).priority(1000, 1000, 900, 900)
         ...
      */
-    @discardableResult public func priority(_ priorities: UILayoutPriority...) -> Self {
+    @discardableResult func priority(_ priorities: UILayoutPriority...) -> Self {
         self.priorityValues = priorities
         return self
     }
@@ -221,7 +221,7 @@ public extension Cons {
         ...
         topConstraint.isActivate = false
      */
-    @discardableResult public func saveTo(_ constraints: UnsafeMutablePointer<NSLayoutConstraint>...) -> Self {
+    @discardableResult func saveTo(_ constraints: UnsafeMutablePointer<NSLayoutConstraint>...) -> Self {
         self.storePointers = constraints
         return self
     }

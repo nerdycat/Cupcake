@@ -44,19 +44,19 @@ public func Styles(_ globalStyleNameOrView: Any) -> StylesMaker {
 public extension StylesMaker {
     
     //View
-    @discardableResult public func bg(_ any: Any) -> Self {
+    @discardableResult func bg(_ any: Any) -> Self {
         return addStyle(key: #function, value: any)
     }
     
-    @discardableResult public func tint(_ any: Any) -> Self {
+    @discardableResult func tint(_ any: Any) -> Self {
         return addStyle(key: #function, value: any)
     }
     
-    @discardableResult public func radius(_ cornerRadius: CGFloat) -> Self {
+    @discardableResult func radius(_ cornerRadius: CGFloat) -> Self {
         return addStyle(key: #function, value: cornerRadius)
     }
     
-    @discardableResult public func border(_ borderWidth: CGFloat, _ borderColor: Any? = nil) -> Self {
+    @discardableResult func border(_ borderWidth: CGFloat, _ borderColor: Any? = nil) -> Self {
         var dict: Dictionary<String, Any> = ["borderWidth": borderWidth]
         if let color = borderColor {
             dict["borderColor"] = color
@@ -64,10 +64,10 @@ public extension StylesMaker {
         return addStyle(key: #function, value: dict)
     }
     
-    @discardableResult public func shadow(_ shadowOpacity: CGFloat,
-                                          _ shadowRadius: CGFloat = 3,
-                                          _ shadowOffsetX: CGFloat = 0,
-                                          _ shadowOffsetY: CGFloat = 3) -> Self {
+    @discardableResult func shadow(_ shadowOpacity: CGFloat,
+                                   _ shadowRadius: CGFloat = 3,
+                                   _ shadowOffsetX: CGFloat = 0,
+                                   _ shadowOffsetY: CGFloat = 3) -> Self {
         
         let dict: Dictionary<String, CGFloat> = ["opacity": shadowOpacity,
                                                  "radius": shadowRadius,
@@ -77,102 +77,102 @@ public extension StylesMaker {
         return addStyle(key: #function, value: dict)
     }
     
-    @discardableResult public func pin(_ options: CPKViewPinOptions...) -> Self {
+    @discardableResult func pin(_ options: CPKViewPinOptions...) -> Self {
         return addStyle(key: #function, value: options)
     }
     
-    @discardableResult public func touchInsets(_ p1: Any,
-                                               _ p2: Any? = nil,
-                                               _ p3: Any? = nil,
-                                               _ p4: Any? = nil) -> Self {
+    @discardableResult func touchInsets(_ p1: Any,
+                                        _ p2: Any? = nil,
+                                        _ p3: Any? = nil,
+                                        _ p4: Any? = nil) -> Self {
         let insets = cpk_edgeInsetsFromParameters(p1, p2, p3, p4)
         return addStyle(key: #function, value: insets)
     }
     
     
     //Label
-    @discardableResult public func str(_ any: Any) -> Self {
+    @discardableResult func str(_ any: Any) -> Self {
         return addStyle(key: #function, value: any)
     }
     
-    @discardableResult public func font(_ any: Any) -> Self {
+    @discardableResult func font(_ any: Any) -> Self {
         return addStyle(key: #function, value: any)
     }
     
-    @discardableResult public func color(_ any: Any) -> Self {
+    @discardableResult func color(_ any: Any) -> Self {
         return addStyle(key: #function, value: any)
     }
     
-    @discardableResult public func lines(_ numberOfLines: CGFloat = 0) -> Self {
+    @discardableResult func lines(_ numberOfLines: CGFloat = 0) -> Self {
         return addStyle(key: #function, value: numberOfLines)
     }
     
-    @discardableResult public func lineGap(_ lineSpacing: CGFloat) -> Self {
+    @discardableResult func lineGap(_ lineSpacing: CGFloat) -> Self {
         return addStyle(key: #function, value: lineSpacing)
     }
     
-    @discardableResult public func align(_ textAlignment: NSTextAlignment) -> Self {
+    @discardableResult func align(_ textAlignment: NSTextAlignment) -> Self {
         return addStyle(key: #function, value: textAlignment)
     }
     
     
     //ImageView
-    @discardableResult public func img(_ any: Any) -> Self {
+    @discardableResult func img(_ any: Any) -> Self {
         return addStyle(key: #function, value: any)
     }
     
-    @discardableResult public func mode(_ contentMode: UIViewContentMode_) -> Self {
+    @discardableResult func mode(_ contentMode: UIViewContentMode_) -> Self {
         return addStyle(key: #function, value: contentMode)
     }
     
     //Button
-    @discardableResult public func highColor(_ any: Any) -> Self {
+    @discardableResult func highColor(_ any: Any) -> Self {
         return addStyle(key: #function, value: any)
     }
     
-    @discardableResult public func highImg(_ any: Any) -> Self {
+    @discardableResult func highImg(_ any: Any) -> Self {
         return addStyle(key: #function, value: any)
     }
     
-    @discardableResult public func highBg(_ any: Any) -> Self {
+    @discardableResult func highBg(_ any: Any) -> Self {
         return addStyle(key: #function, value: any)
     }
     
-    @discardableResult public func padding(_ contentEdgeInsets: CGFloat...) -> Self {
+    @discardableResult func padding(_ contentEdgeInsets: CGFloat...) -> Self {
         return addStyle(key: #function, value: contentEdgeInsets)
     }
     
-    @discardableResult public func gap(_ spacing: CGFloat) -> Self {
+    @discardableResult func gap(_ spacing: CGFloat) -> Self {
         return addStyle(key: #function, value: spacing)
     }
     
-    @discardableResult public func reversed(_ reversed: Bool = true) -> Self {
+    @discardableResult func reversed(_ reversed: Bool = true) -> Self {
         return addStyle(key: #function, value: reversed)
     }
     
     
     //TextField
-    @discardableResult public func hint(_ any: Any) -> Self {
+    @discardableResult func hint(_ any: Any) -> Self {
         return addStyle(key: #function, value: any)
     }
     
-    @discardableResult public func maxLength(_ length: CGFloat) -> Self {
+    @discardableResult func maxLength(_ length: CGFloat) -> Self {
         return addStyle(key: #function, value: length)
     }
     
-    @discardableResult public func secure(_ secureTextEntry: Bool = true) -> Self {
+    @discardableResult func secure(_ secureTextEntry: Bool = true) -> Self {
         return addStyle(key: #function, value: secureTextEntry)
     }
     
-    @discardableResult public func keyboard(_ keyboardType: UIKeyboardType) -> Self {
+    @discardableResult func keyboard(_ keyboardType: UIKeyboardType) -> Self {
         return addStyle(key: #function, value: keyboardType)
     }
     
-    @discardableResult public func returnKey(_ returnKeyType: UIReturnKeyType) -> Self {
+    @discardableResult func returnKey(_ returnKeyType: UIReturnKeyType) -> Self {
         return addStyle(key: #function, value: returnKeyType)
     }
     
-    @discardableResult public func clearMode(_ clearButtonMode: UITextFieldViewMode_) -> Self {
+    @discardableResult func clearMode(_ clearButtonMode: UITextFieldViewMode_) -> Self {
         return addStyle(key: #function, value: clearButtonMode)
     }
 }

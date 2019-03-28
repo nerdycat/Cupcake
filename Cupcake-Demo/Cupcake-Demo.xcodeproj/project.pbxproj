@@ -31,6 +31,7 @@
 		8429691F1EE900EC0060C61D /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8429690D1EE900EC0060C61D /* TextView.swift */; };
 		842969201EE900EC0060C61D /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8429690E1EE900EC0060C61D /* View.swift */; };
 		842ADB421EB9C53D0031B56C /* ExamplesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842ADB411EB9C53D0031B56C /* ExamplesViewController.swift */; };
+		84511B29224B9777000A5389 /* BarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84511B28224B9777000A5389 /* BarButton.swift */; };
 		84B599B31EB1FF56005ADDFB /* BasicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B599B21EB1FF56005ADDFB /* BasicViewController.swift */; };
 		84B599B51EB1FF6C005ADDFB /* EnhancementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B599B41EB1FF6C005ADDFB /* EnhancementViewController.swift */; };
 		84B599B71EB32A9C005ADDFB /* StackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B599B61EB32A9C005ADDFB /* StackViewController.swift */; };
@@ -66,6 +67,7 @@
 		8429690D1EE900EC0060C61D /* TextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
 		8429690E1EE900EC0060C61D /* View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		842ADB411EB9C53D0031B56C /* ExamplesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExamplesViewController.swift; sourceTree = "<group>"; };
+		84511B28224B9777000A5389 /* BarButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarButton.swift; sourceTree = "<group>"; };
 		84B599B21EB1FF56005ADDFB /* BasicViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicViewController.swift; sourceTree = "<group>"; };
 		84B599B41EB1FF6C005ADDFB /* EnhancementViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnhancementViewController.swift; sourceTree = "<group>"; };
 		84B599B61EB32A9C005ADDFB /* StackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StackViewController.swift; sourceTree = "<group>"; };
@@ -134,6 +136,7 @@
 				842969071EE900EC0060C61D /* Label.swift */,
 				842969051EE900EC0060C61D /* ImageView.swift */,
 				842969001EE900EC0060C61D /* Button.swift */,
+				84511B28224B9777000A5389 /* BarButton.swift */,
 				8429690C1EE900EC0060C61D /* TextField.swift */,
 				8429690D1EE900EC0060C61D /* TextView.swift */,
 				842969091EE900EC0060C61D /* StaticTable.swift */,
@@ -175,11 +178,12 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0820;
-				LastUpgradeCheck = 1000;
+				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = nerdycat;
 				TargetAttributes = {
 					841B2C6D1E7BC5900084B37C = {
 						CreatedOnToolsVersion = 8.2.1;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -189,6 +193,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -239,6 +244,7 @@
 				8429691F1EE900EC0060C61D /* TextView.swift in Sources */,
 				841B2C721E7BC5900084B37C /* AppDelegate.swift in Sources */,
 				84B599B71EB32A9C005ADDFB /* StackViewController.swift in Sources */,
+				84511B29224B9777000A5389 /* BarButton.swift in Sources */,
 				842969121EE900EC0060C61D /* Button.swift in Sources */,
 				842969111EE900EC0060C61D /* AttStr.swift in Sources */,
 				842969161EE900EC0060C61D /* Font.swift in Sources */,
@@ -326,6 +332,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -375,6 +382,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -389,7 +397,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "nerdycat.Cupcake-Demo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -404,7 +412,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "nerdycat.Cupcake-Demo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

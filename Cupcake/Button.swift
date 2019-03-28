@@ -26,11 +26,13 @@ public extension UIButton {
         .str( AttStr("hello world").strikethrough() )
         ...
      */
-    @objc @discardableResult public func str(_ any: Any) -> Self {
+    @objc @discardableResult func str(_ any: Any?) -> Self {
         if let attStr = any as? NSAttributedString {
             setAttributedTitle(attStr, for: .normal)
-        } else {
+        } else if let any = any {
             setTitle(String(describing: any), for: .normal)
+        } else {
+            setTitle(nil, for: .normal)
         }
         return self
     }
@@ -47,7 +49,7 @@ public extension UIButton {
         .font(someLabel.font)
         ...
      **/
-    @objc @discardableResult public func font(_ any: Any) -> Self {
+    @objc @discardableResult func font(_ any: Any) -> Self {
         self.titleLabel?.font = Font(any)
         return self
     }
@@ -63,7 +65,7 @@ public extension UIButton {
         .color(someLabel.textColor)
         ...
      */
-    @objc @discardableResult public func color(_ any: Any) -> Self {
+    @objc @discardableResult func color(_ any: Any) -> Self {
         setTitleColor(Color(any), for: .normal)
         return self
     }
@@ -79,7 +81,7 @@ public extension UIButton {
         .highColor(someLabel.textColor)
         ...
      */
-    @objc @discardableResult public func highColor(_ any: Any) -> Self {
+    @objc @discardableResult func highColor(_ any: Any?) -> Self {
         setTitleColor(Color(any), for: .highlighted)
         return self
     }
@@ -95,10 +97,10 @@ public extension UIButton {
         .img(someImage)
         ...
      */
-    @objc @discardableResult public func img(_ any: Any) -> Self {
-        let image = Img(any)
+    @objc @discardableResult func img(_ any: Any?) -> Self {
+        let image = CPKImageOptional(any)
         setImage(image, for: .normal)
-        if self.frame.isEmpty {
+        if self.frame.isEmpty, let image = image {
             self.frame.size = image.size
         }
         return self
@@ -115,8 +117,8 @@ public extension UIButton {
         .highImg(someImage)
         ...
      */
-    @objc @discardableResult public func highImg(_ any: Any) -> Self {
-        setImage(Img(any), for: .highlighted)
+    @objc @discardableResult func highImg(_ any: Any?) -> Self {
+        setImage(CPKImageOptional(any), for: .highlighted)
         return self
     }
     
@@ -133,12 +135,12 @@ public extension UIButton {
         .bg(someImage)  //using image
         ...
      */
-    @objc @discardableResult override public func bg(_ any: Any) -> Self {
-        let image = Img(any)
+    @objc @discardableResult override func bg(_ any: Any) -> Self {
+        let image = CPKImageOptional(any)
         setBackgroundImage(image, for: .normal)
         cpk_masksToBoundsIfNeed()
         
-        if self.frame.isEmpty {
+        if self.frame.isEmpty, let image = image {
             self.frame.size = image.size
         }
         return self
@@ -157,8 +159,8 @@ public extension UIButton {
         .highBg(someImage)  //using image
         ...
      */
-    @objc @discardableResult public func highBg(_ any: Any) -> Self {
-        setBackgroundImage(Img(any), for: .highlighted)
+    @objc @discardableResult func highBg(_ any: Any?) -> Self {
+        setBackgroundImage(CPKImageOptional(any), for: .highlighted)
         cpk_masksToBoundsIfNeed()
         return self
     }
@@ -171,7 +173,7 @@ public extension UIButton {
         .padding(10, 20, 30)        //top: 10, left: 20, bottom: 0 , right: 30
         .padding(10, 20, 30, 40)    //top: 10, left: 20, bottom: 30, right: 40
      */
-    @discardableResult public func padding(_ contentEdgeInsets: CGFloat...) -> Self {
+    @discardableResult func padding(_ contentEdgeInsets: CGFloat...) -> Self {
         cpk_updatePadding(contentEdgeInsets, forView: self)
         return self
     }
@@ -181,7 +183,7 @@ public extension UIButton {
      * Usages:
         .gap(10)
      */
-    @objc @discardableResult public func gap(_ spacing: CGFloat) -> Self {
+    @objc @discardableResult func gap(_ spacing: CGFloat) -> Self {
         self.cpkGap = spacing
         let halfGap = spacing / 2
         
@@ -202,7 +204,7 @@ public extension UIButton {
         .reversed()
         .reversed(false)
      */
-    @objc @discardableResult public func reversed(_ reversed: Bool = true) -> Self {
+    @objc @discardableResult func reversed(_ reversed: Bool = true) -> Self {
         let t = reversed ? CATransform3DMakeScale(-1, 1, 1) : CATransform3DIdentity
         self.layer.sublayerTransform = t
         self.imageView?.layer.transform = t
@@ -217,7 +219,7 @@ public extension UIButton {
         .lines(0)   //multilines
         .lines()    //same as .lines(0)
      */
-    @objc @discardableResult public func lines(_ numberOfLines: CGFloat = 0) -> Self {
+    @objc @discardableResult func lines(_ numberOfLines: CGFloat = 0) -> Self {
         self.titleLabel?.numberOfLines = Int(numberOfLines)
         self.titleLabel?.lineBreakMode = .byWordWrapping
         self.titleLabel?.textAlignment = .center

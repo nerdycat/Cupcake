@@ -27,11 +27,13 @@ public extension UITextField {
         .str( AttStr("hello world").strikethrough() )
         ...
      */
-    @objc @discardableResult public func str(_ any: Any) -> Self {
+    @objc @discardableResult func str(_ any: Any?) -> Self {
         if let attStr = any as? NSAttributedString {
             self.attributedText = attStr
-        } else {
+        } else if let any = any {
             self.text = String(describing: any)
+        } else {
+            self.text = nil
         }
         return self
     }
@@ -44,11 +46,13 @@ public extension UITextField {
         .hint("Enter your name")
         .hint( AttStr("Enter your name").font(13) )
      */
-    @objc @discardableResult public func hint(_ any: Any) -> Self {
+    @objc @discardableResult func hint(_ any: Any?) -> Self {
         if let attStr = any as? NSAttributedString {
             self.attributedPlaceholder = attStr
-        } else {
+        } else if let any = any {
             self.placeholder = String(describing: any)
+        } else {
+            self.placeholder = nil
         }
         return self
     }
@@ -64,7 +68,7 @@ public extension UITextField {
         .font(someLabel.font)
         ...
      **/
-    @objc @discardableResult public func font(_ any: Any) -> Self {
+    @objc @discardableResult func font(_ any: Any) -> Self {
         self.font = Font(any)
         return self
     }
@@ -80,7 +84,7 @@ public extension UITextField {
         .color(someLabel.textColor)
         ...
      */
-    @objc @discardableResult public func color(_ any: Any) -> Self {
+    @objc @discardableResult func color(_ any: Any) -> Self {
         self.textColor = Color(any)
         return self
     }
@@ -90,7 +94,7 @@ public extension UITextField {
      * Usages:
         .maxLength(10)
      */
-    @objc @discardableResult public func maxLength(_ length: CGFloat) -> Self {
+    @objc @discardableResult func maxLength(_ length: CGFloat) -> Self {
         self.cpkMaxLength = Int(length)
         return self
     }
@@ -103,7 +107,7 @@ public extension UITextField {
         .padding(10, 20, 30)        //top: 10, left: 20, bottom: 0 , right: 30
         .padding(10, 20, 30, 40)    //top: 10, left: 20, bottom: 30, right: 40
      */
-    @discardableResult public func padding(_ contentEdgeInsets: CGFloat...) -> Self {
+    @discardableResult func padding(_ contentEdgeInsets: CGFloat...) -> Self {
         cpk_updatePadding(contentEdgeInsets, forView: self)
         return self
     }
@@ -114,7 +118,7 @@ public extension UITextField {
         .secure()           //secureTextEntry = true
         .secure(false)      //secureTextEntry = false
      */
-    @objc @discardableResult public func secure(_ secureTextEntry: Bool = true) -> Self {
+    @objc @discardableResult func secure(_ secureTextEntry: Bool = true) -> Self {
         self.isSecureTextEntry = secureTextEntry
         return self
     }
@@ -126,7 +130,7 @@ public extension UITextField {
         .align(.justified)
         ...
      */
-    @objc @discardableResult public func align(_ textAlignment: NSTextAlignment) -> Self {
+    @objc @discardableResult func align(_ textAlignment: NSTextAlignment) -> Self {
         self.textAlignment = textAlignment
         return self
     }
@@ -138,7 +142,7 @@ public extension UITextField {
         .keyboard(.emailAddress)
         ...
      */
-    @objc @discardableResult public func keyboard(_ keyboardType: UIKeyboardType) -> Self {
+    @objc @discardableResult func keyboard(_ keyboardType: UIKeyboardType) -> Self {
         self.keyboardType = keyboardType
         return self
     }
@@ -150,7 +154,7 @@ public extension UITextField {
         .returnKey(.google)
         ...
      */
-    @objc @discardableResult public func returnKey(_ returnKeyType: UIReturnKeyType) -> Self {
+    @objc @discardableResult func returnKey(_ returnKeyType: UIReturnKeyType) -> Self {
         self.returnKeyType = returnKeyType
         return self
     }
@@ -162,7 +166,7 @@ public extension UITextField {
         .clearMode(.always)
         ...
      */
-    @objc @discardableResult public func clearMode(_ clearButtonMode: UITextFieldViewMode_) -> Self {
+    @objc @discardableResult func clearMode(_ clearButtonMode: UITextFieldViewMode_) -> Self {
         self.clearButtonMode = clearButtonMode
         return self
     }
@@ -175,7 +179,7 @@ public extension UITextField {
         .onChange({ _ in /* ... */ })
         .onChange({ [weak self] textField in /* ... */ }) //capture self as weak reference when needed
      */
-    @discardableResult public func onChange(_ closure: @escaping (UITextField)->()) -> Self {
+    @discardableResult func onChange(_ closure: @escaping (UITextField)->()) -> Self {
         self.cpkTextChangedClosure = cpk_generateCallbackClosure(closure, nil)
         return self
     }
@@ -189,7 +193,7 @@ public extension UITextField {
         .onFinish({ _ in /* ... */ })
         .onFinish({ [weak self] textField in /* ... */ })   //capture self as weak reference when needed
      */
-    @discardableResult public func onFinish(_ closure: @escaping (UITextField)->()) -> Self {
+    @discardableResult func onFinish(_ closure: @escaping (UITextField)->()) -> Self {
         self.cpkDidEndOnExistClosure = cpk_generateCallbackClosure(closure, nil)
         return self
     }
