@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "Cupcake"
-  s.version      = "1.3.0"
+  s.version      = "1.3.1"
   s.summary      = "An easy way to create and layout UI components for iOS."
 
   s.description  = <<-DESC
@@ -17,5 +17,6 @@ Pod::Spec.new do |s|
   s.requires_arc = true
 
   s.source_files = "Cupcake/*.swift"
+  s.swift_version = "5.0"
   
 end
