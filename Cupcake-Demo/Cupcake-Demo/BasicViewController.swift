@@ -13,9 +13,9 @@ class BasicViewController: BaseViewController {
     override func setupUI() {
         
         //View
-        let box = View.bg("red").pin(20, 20, 50, 50).border(4).onClick({ _ in
+        let box = View.bg("red").pin(20, 20, 50, 50).border(4).onTap {
             print("box")
-        })
+        }
         
         let circle = View.bg("blue").makeCons({
             $0.left.top.equal(box).right.top.offset(20, 0)
@@ -48,7 +48,7 @@ class BasicViewController: BaseViewController {
         
         let more = Button.str("More").img("arrow").color("black").gap(5).reversed().makeCons({ make in
             make.left.centerY.equal(friends).right.centerY.offset(20, 0)
-        }).onClick({ _ in
+        }).onTap({
             Alert.title("Alert").message("You just clicked the button.").action("OK").show()
         }).touchInsets(-20)
         

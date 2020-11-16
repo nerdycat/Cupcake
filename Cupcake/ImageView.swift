@@ -28,8 +28,8 @@ public extension UIImageView {
         .img(someImage)
         ...
     */
-    @objc @discardableResult public func img(_ any: Any) -> Self {
-        self.image = Img(any)
+    @objc @discardableResult func img(_ any: Any?) -> Self {
+        self.image = CPKImageOptional(any)
         
         if self.image != nil {
             if self.frame.isEmpty {
@@ -48,7 +48,7 @@ public extension UIImageView {
         .mode(.center)
         ...
     */
-    @objc @discardableResult public func mode(_ contentMode: UIViewContentMode) -> Self {
+    @objc @discardableResult func mode(_ contentMode: UIViewContentMode_) -> Self {
         self.contentMode = contentMode
         return self
     }

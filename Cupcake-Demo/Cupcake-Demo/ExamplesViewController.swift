@@ -114,7 +114,7 @@ class DashboardViewController: BaseViewController {
     class DashButton: UIButton {
         let subtitle: String!
         
-        override func setTitle(_ title: String?, for state: UIControlState) {
+        override func setTitle(_ title: String?, for state: UIControl.State) {
             if state == .normal {
                 let att = AttStr(
                     AttStr(title).font("18").color("#181D42"), "\n",

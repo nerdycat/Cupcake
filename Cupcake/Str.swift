@@ -32,7 +32,7 @@ public extension String {
         "hello world".subFrom(-5)       //"world"
         "hello world".subFrom("wo")     //"world"
      */
-    @discardableResult public func subFrom(_ indexOrSubstring: Any) -> String {
+    @discardableResult func subFrom(_ indexOrSubstring: Any) -> String {
         if var index = indexOrSubstring as? Int {
             if index < 0 { index += self.cpk_length() }
             let from = self.index(self.startIndex, offsetBy: index)
@@ -55,7 +55,7 @@ public extension String {
         "hello world".subTo(-6)         //"hello"
         "hello world".subTo(" ")        //"hello"
      */
-    @discardableResult public func subTo(_ indexOrSubstring: Any) -> String {
+    @discardableResult func subTo(_ indexOrSubstring: Any) -> String {
         if var index = indexOrSubstring as? Int {
             if index < 0 { index += self.cpk_length() }
             let to = self.index(self.startIndex, offsetBy: index)
@@ -77,7 +77,7 @@ public extension String {
         "hello world".subAt(1)          //"e"
         "hello world".subAt(1..<4)      //"ell"
      */
-    @discardableResult public func subAt(_ indexOrRange: Any) -> String {
+    @discardableResult func subAt(_ indexOrRange: Any) -> String {
         if let index = indexOrRange as? Int {
             return String(self[self.index(self.startIndex, offsetBy: index)])
             
@@ -119,7 +119,7 @@ public extension String {
      * Usages:
         "abc123".subMatch("\\d+")       //"123"
      */
-    @discardableResult public func subMatch(_ pattern: String) -> String {
+    @discardableResult func subMatch(_ pattern: String) -> String {
         let options = NSRegularExpression.Options(rawValue: 0)
         
         if let exp = try? NSRegularExpression(pattern: pattern, options: options) {
@@ -144,7 +144,7 @@ public extension String {
         "abc123".subReplace("abc", "ABC")               //ABC123
         "abc123".subReplace("([a-z]+)(\\d+)", "$2$1")   //"123abc"
      */
-    @discardableResult public func subReplace(_ pattern: String, _ template: String) -> String {
+    @discardableResult func subReplace(_ pattern: String, _ template: String) -> String {
         let options = NSRegularExpression.Options(rawValue: 0)
         
         if let exp = try? NSRegularExpression(pattern: pattern, options: options) {

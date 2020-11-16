@@ -21,6 +21,64 @@ import UIKit.UIGestureRecognizerSubclass
 
 
 
+#if swift(>=4.2)
+
+public typealias UITextFieldViewMode_ = UITextField.ViewMode
+public typealias UITableViewStyle_ = UITableView.Style
+public typealias UITableViewCellStyle_ = UITableViewCell.CellStyle
+public typealias UITableViewCellAccessoryType_ = UITableViewCell.AccessoryType
+public typealias UIViewContentMode_ = UIView.ContentMode
+public typealias UILayoutConstraintAxis_ = NSLayoutConstraint.Axis
+
+typealias UIFontTextStyle_ = UIFont.TextStyle
+typealias NSLayoutAttribute_ = NSLayoutConstraint.Attribute
+typealias NSLayoutRelation_ = NSLayoutConstraint.Relation
+typealias NSAttributedStringKey_ = NSAttributedString.Key
+typealias UIAlertActionStyle_ = UIAlertAction.Style
+typealias UIAlertControllerStyle_ = UIAlertController.Style
+
+private let UITableViewAutomaticDimension_ = UITableView.automaticDimension
+let UILayoutFittingCompressedSize_ = UIView.layoutFittingCompressedSize
+
+func UIEdgeInsetsMake_(_ top: CGFloat, _ left: CGFloat, _ bottom: CGFloat, _ right: CGFloat) -> UIEdgeInsets {
+    return UIEdgeInsets.init(top: top, left: left, bottom: bottom, right: right)
+}
+
+func UIEdgeInsetsInsetRect_(_ rect: CGRect, _ insets: UIEdgeInsets) -> CGRect {
+    return rect.inset(by: insets)
+}
+
+#else
+
+public typealias UITextFieldViewMode_ = UITextFieldViewMode
+public typealias UITableViewStyle_ = UITableViewStyle
+public typealias UITableViewCellStyle_ = UITableViewCellStyle
+public typealias UITableViewCellAccessoryType_ = UITableViewCellAccessoryType
+public typealias UIViewContentMode_ = UIViewContentMode
+public typealias UILayoutConstraintAxis_ = UILayoutConstraintAxis
+
+typealias UIFontTextStyle_ = UIFontTextStyle
+typealias NSLayoutAttribute_ = NSLayoutAttribute
+typealias NSLayoutRelation_ = NSLayoutRelation
+typealias NSAttributedStringKey_ = NSAttributedStringKey
+typealias UIAlertActionStyle_ = UIAlertActionStyle
+typealias UIAlertControllerStyle_ = UIAlertControllerStyle
+
+private let UITableViewAutomaticDimension_ = UITableViewAutomaticDimension
+let UILayoutFittingCompressedSize_ = UILayoutFittingCompressedSize
+
+func UIEdgeInsetsMake_(_ top: CGFloat, _ left: CGFloat, _ bottom: CGFloat, _ right: CGFloat) -> UIEdgeInsets {
+    return UIEdgeInsetsMake(top, left, bottom, right)
+}
+
+func UIEdgeInsetsInsetRect_(_ rect: CGRect, _ insets: UIEdgeInsets) -> CGRect {
+    return UIEdgeInsetsInsetRect(rect, insets)
+}
+
+#endif
+
+
+
 
 
 //MARK: Utils
@@ -85,6 +143,10 @@ func CPKStringValueOptional(_ any: Any?) -> CGFloat? {
     }
 }
 
+func CPKImageOptional(_ any: Any?) -> UIImage? {
+    return (any != nil ? Img(any!) : nil)
+}
+
 func cpk_onePointImageWithColor(_ color: UIColor) -> UIImage {
     let rect = CGRect(x: 0, y: 0, width: 1, height: 1)
     let hasAlpha = cpk_colorHasAlphaChannel(color)
@@ -117,29 +179,29 @@ func cpk_imageHasAlphaChannel(_ image: UIImage) -> Bool {
 
 func cpk_edgeInsetsFromArray(_ insetArray: [CGFloat]) -> UIEdgeInsets {
     if insetArray.count == 0 {
-        return UIEdgeInsetsMake(0, 0, 0, 0)
+        return UIEdgeInsetsMake_(0, 0, 0, 0)
         
     } else if insetArray.count == 1 {
         let m1 = insetArray[0]
-        return UIEdgeInsetsMake(m1, m1, m1, m1)
+        return UIEdgeInsetsMake_(m1, m1, m1, m1)
         
     } else if insetArray.count == 2 {
         let m1 = insetArray[0]
         let m2 = insetArray[1]
-        return UIEdgeInsetsMake(m1, m2, m1, m2)
+        return UIEdgeInsetsMake_(m1, m2, m1, m2)
         
     } else if insetArray.count == 3 {
         let m1 = insetArray[0]
         let m2 = insetArray[1]
         let m3 = insetArray[2]
-        return UIEdgeInsetsMake(m1, m2, 0, m3)
+        return UIEdgeInsetsMake_(m1, m2, 0, m3)
         
     } else {
         let m1 = insetArray[0]
         let m2 = insetArray[1]
         let m3 = insetArray[2]
         let m4 = insetArray[3]
-        return UIEdgeInsetsMake(m1, m2, m3, m4)
+        return UIEdgeInsetsMake_(m1, m2, m3, m4)
     }
 }
 
@@ -506,7 +568,7 @@ fileprivate let CPKLinkColor = UIColor(red: 0, green: 0.478431, blue: 1, alpha: 
 public extension NSObject {
     
     @discardableResult
-    public static func cpk_swizzle(method1: Any, method2: Any) -> Bool {
+    static func cpk_swizzle(method1: Any, method2: Any) -> Bool {
         var s1 = method1 as? Selector
         var s2 = method2 as? Selector
         
@@ -545,7 +607,7 @@ public extension NSObject {
 //    }
     
     @discardableResult
-    public func cpk_safePerform(selector: Selector) -> Any? {
+    func cpk_safePerform(selector: Selector) -> Any? {
         if self.responds(to: selector) {
             return self.perform(selector).takeRetainedValue()
         } else {
@@ -554,7 +616,7 @@ public extension NSObject {
     }
     
     @discardableResult
-    public static func cpk_safePerform(selector: Selector) -> Any? {
+    static func cpk_safePerform(selector: Selector) -> Any? {
         if self.responds(to: selector) {
             return self.perform(selector).takeRetainedValue()
         } else {
@@ -562,7 +624,7 @@ public extension NSObject {
         }
     }
     
-    public func cpk_associatedObjectFor(key: String) -> Any? {
+    func cpk_associatedObjectFor(key: String) -> Any? {
         if let dict = objc_getAssociatedObject(self, &cpkObjectAssociatedObject) as? NSMutableDictionary {
             return dict[key]
         } else {
@@ -570,7 +632,7 @@ public extension NSObject {
         }
     }
     
-    public func cpk_setAssociated(object: Any?, forKey key: String) {
+    func cpk_setAssociated(object: Any?, forKey key: String) {
         var dict = objc_getAssociatedObject(self, &cpkObjectAssociatedObject) as? NSMutableDictionary
         
         if dict == nil {
@@ -659,7 +721,7 @@ extension NSMutableAttributedString {
     
     func cpk_addAttribute(_ name: String, value: Any, range: NSRange) {
         #if swift(>=4.0)
-            addAttribute(NSAttributedStringKey(rawValue: name), value: value, range: range)
+            addAttribute(NSAttributedStringKey_(rawValue: name), value: value, range: range)
         #else
             addAttribute(name, value: value, range: range)
         #endif
@@ -688,7 +750,7 @@ extension NSMutableAttributedString {
         let indexSets = NSMutableIndexSet(indexesIn: range)
         
         #if swift(>=4.0)
-            enumerateAttribute(NSAttributedStringKey(rawValue: name),
+            enumerateAttribute(NSAttributedStringKey_(rawValue: name),
                                in: range,
                                options: NSAttributedString.EnumerationOptions(rawValue: 0))
             { (value, range, stop) in
@@ -785,7 +847,7 @@ extension UIView {
     
     @objc func cpk_point(inside point: CGPoint, with event: UIEvent?) -> Bool {
         if let insets = self.cpkTouchInsets {
-            let rect = UIEdgeInsetsInsetRect(self.bounds, insets)
+            let rect = UIEdgeInsetsInsetRect_(self.bounds, insets)
             return rect.contains(point)
         } else {
             return self.cpk_point(inside: point, with: event)
@@ -851,6 +913,26 @@ extension UIView {
             closure(view)
         } else if let closure = callback as? ((Any)->()) {
             closure(self)
+        }
+    }
+    
+    func cpk_onTap(_ closure: @escaping ()->Void) {
+        isUserInteractionEnabled = true
+        
+        let sel = #selector(UIView.cpk_onTapHandler)
+        if let button = (self as Any) as? UIButton {
+            button.addTarget(self, action: sel, for: .touchUpInside)
+        } else {
+            let tap = UITapGestureRecognizer.init(target: self, action: sel)
+            self.addGestureRecognizer(tap)
+        }
+        cpk_setAssociated(object: closure, forKey: "cpk_OnTap")
+    }
+    
+    @objc func cpk_onTapHandler() {
+        let callback = cpk_associatedObjectFor(key: "cpk_OnTap")
+        if let closure = callback as? ()->() {
+            closure()
         }
     }
     
@@ -921,7 +1003,7 @@ extension UITextField {
     }
     
     var cpkPadding: UIEdgeInsets {
-        get { return cpk_associatedObjectFor(key: #function) as? UIEdgeInsets ?? UIEdgeInsetsMake(0, 0, 0, 0) }
+        get { return cpk_associatedObjectFor(key: #function) as? UIEdgeInsets ?? UIEdgeInsetsMake_(0, 0, 0, 0) }
         set { cpk_setAssociated(object: newValue, forKey: #function) }
     }
     
@@ -937,12 +1019,12 @@ extension UITextField {
     
     @objc public func cpk_textRect(forBounds bounds: CGRect) -> CGRect {
         let rect = self.cpk_textRect(forBounds: bounds)
-        return UIEdgeInsetsInsetRect(rect, self.cpkPadding)
+        return UIEdgeInsetsInsetRect_(rect, self.cpkPadding)
     }
     
     @objc public func cpk_editingRect(forBounds bounds: CGRect) -> CGRect {
         let rect = cpk_editingRect(forBounds: bounds)
-        return UIEdgeInsetsInsetRect(rect, self.cpkPadding)
+        return UIEdgeInsetsInsetRect_(rect, self.cpkPadding)
     }
     
     private func cpk_watchTextChange() {
@@ -1009,9 +1091,9 @@ extension UILayoutPriority : ExpressibleByIntegerLiteral, ExpressibleByFloatLite
         self = UILayoutPriority(rawValue: value)
     }
 }
-extension NSAttributedStringKey : ExpressibleByStringLiteral {
+extension NSAttributedStringKey_ : ExpressibleByStringLiteral {
     public init(stringLiteral value: String) {
-        self = NSAttributedStringKey(rawValue: value)
+        self = NSAttributedStringKey_(rawValue: value)
     }
 }
 #endif
@@ -1065,15 +1147,15 @@ public class AlertMaker {
     var cpkTitle: Any?
     var cpkMessage: Any?
     var cpkTint: Any?
-    var cpkStyle: UIAlertControllerStyle
+    var cpkStyle: UIAlertControllerStyle_
     
     private var actions = [UIAlertAction]()
     
-    init(style: UIAlertControllerStyle) {
+    init(style: UIAlertControllerStyle_) {
         self.cpkStyle = style
     }
     
-    func cpk_addAction(style: UIAlertActionStyle, title: Any, handler: (()->())? ) {
+    func cpk_addAction(style: UIAlertActionStyle_, title: Any, handler: (()->())? ) {
         var titleString: String?
         var titleColor: UIColor?
         
@@ -1173,7 +1255,7 @@ public class AlertMaker {
 
 public class ConsAtts: NSObject {
     @discardableResult
-    func addAttributes(_ attributes: NSLayoutAttribute...) -> Cons {
+    func addAttributes(_ attributes: NSLayoutAttribute_...) -> Cons {
         //only for override
         return Cons(firstItem: UIView())
     }
@@ -1184,10 +1266,10 @@ public class Cons: ConsAtts {
     private var secondItem: UIView?
     private var secondItemReferToSuperview = false
     
-    var relation = NSLayoutRelation.equal
+    var relation = NSLayoutRelation_.equal
     
-    var firstItemAttributes = [NSLayoutAttribute]()
-    var secondItemAttributes = [NSLayoutAttribute]()
+    var firstItemAttributes = [NSLayoutAttribute_]()
+    var secondItemAttributes = [NSLayoutAttribute_]()
     
     var multiplierValues = [CGFloat]()
     var constantValues = [CGFloat]()
@@ -1202,7 +1284,7 @@ public class Cons: ConsAtts {
     }
     
     @discardableResult
-    override func addAttributes(_ attributes: NSLayoutAttribute...) -> Cons {
+    override func addAttributes(_ attributes: NSLayoutAttribute_...) -> Cons {
         for att in attributes {
             if secondItem == nil && !secondItemReferToSuperview {
                 firstItemAttributes.append(att)
@@ -1294,7 +1376,7 @@ public class Cons: ConsAtts {
         return priority
     }
     
-    private func secondItemValue(att1: NSLayoutAttribute) -> UIView? {
+    private func secondItemValue(att1: NSLayoutAttribute_) -> UIView? {
         var secondItem = self.secondItem
         if (secondItem == nil && att1 != .width && att1 != .height) {
             secondItem = self.firstItem.superview
@@ -1313,7 +1395,7 @@ public class Cons: ConsAtts {
             let constant = constantValue(atIndex: i)
             let priority = priorityValue(atIndex: i)
             
-            let secondItem = secondItemValue(att1: att1)
+            let secondItem =  secondItemValue(att1: att1)
             
             let c = NSLayoutConstraint(item: self.firstItem,
                                        attribute: att1,
@@ -1358,7 +1440,7 @@ public class ConsMaker: ConsAtts {
     }
     
     @discardableResult
-    override func addAttributes(_ attributes: NSLayoutAttribute...) -> Cons {
+    override func addAttributes(_ attributes: NSLayoutAttribute_...) -> Cons {
         let c = Cons(firstItem: firstItem)
         cons.append(c)
         
@@ -1580,7 +1662,9 @@ public class StylesMaker: NSObject {
             self.radius(view.layer.cornerRadius)
         }
         
-        self.tint(view.tintColor)
+        if let tint = view.tintColor {
+            self.tint(tint)
+        }
         self.border(view.layer.borderWidth, view.layer.borderColor)
         
         self.shadow(CGFloat(view.layer.shadowOpacity),
@@ -1598,7 +1682,7 @@ public class StylesMaker: NSObject {
             if let attStr = label.attributedText {
                 self.str(attStr)
             } else if let str = label.text {
-                self.str(str).font(label.font).color(label.textColor)
+                self.str(str).font(label.font!).color(label.textColor!)
             }
             
             self.lines(CGFloat(label.numberOfLines)).align(label.textAlignment)
@@ -1748,7 +1832,9 @@ public class StylesMaker: NSObject {
     }
     
     func applyTo(view: UIView) {
-        for (key, value) in styles {
+        for (k, value) in styles {
+            var key = k.subTo("(")
+            key = key.count > 0 ? key : k
             
             if key == "radius" {
                 view.radius(value as! CGFloat)
@@ -1806,7 +1892,7 @@ public class StylesMaker: NSObject {
                 
             } else if key == "mode" {
                 if let imageView = view as? UIImageView {
-                    imageView.mode(value as! UIViewContentMode)
+                    imageView.mode(value as! UIViewContentMode_)
                 }
                 
             } else if key == "reversed" {
@@ -1845,7 +1931,7 @@ public class StylesMaker: NSObject {
                 
             else if key == "clearMode" {
                 if let textField = view as? UITextField {
-                    textField.clearMode(value as! UITextFieldViewMode)
+                    textField.clearMode(value as! UITextFieldViewMode_)
                 }
             }
                 
@@ -1953,7 +2039,7 @@ public class StaticTableView: UITableView, UITableViewDelegate, UITableViewDataS
     var detailFont: Any?
     var detailColor: Any?
     
-    public init(sectionsOrRows: [Any], style: UITableViewStyle) {
+    public init(sectionsOrRows: [Any], style: UITableViewStyle_) {
         super.init(frame: CGRect.zero, style: style)
         self.estimatedRowHeight = 44
         self.estimatedSectionHeaderHeight = 0
@@ -2085,7 +2171,7 @@ public class StaticTableView: UITableView, UITableViewDelegate, UITableViewDataS
             return height == 0 ? 0.001 : height
         }
         
-        return UITableViewAutomaticDimension
+        return UITableViewAutomaticDimension_
     }
     
     public func tableView(_ tableView: UITableView, heightForFooterInSection sectionIndex: Int) -> CGFloat {
@@ -2098,7 +2184,7 @@ public class StaticTableView: UITableView, UITableViewDelegate, UITableViewDataS
             return height == 0 ? 0.001 : height
         }
         
-        return UITableViewAutomaticDimension
+        return UITableViewAutomaticDimension_
     }
     
     public func tableView(_ tableView: UITableView, titleForHeaderInSection sectionIndex: Int) -> String? {
@@ -2254,7 +2340,7 @@ public class StaticRow: UIView {
     var cellHeight: CGFloat?
     var separatorIndent: CGFloat?
     
-    var cellStyle: UITableViewCellStyle = .default
+    var cellStyle: UITableViewCellStyle_ = .default
     
     var onClickHandler: ((StaticRow)->())?
     var onButtonHandler: ((StaticRow)->())?
@@ -2295,34 +2381,26 @@ public class StaticRow: UIView {
             return
         }
         
-        if let image = self.image {
-            cell.imageView?.image = image
-        }
-        
-        if let text = self.text {
-            cell.textLabel?.str(text)
+        cell.imageView?.image = image
+        cell.textLabel?.str(text)
+        cell.detailTextLabel?.str(detailText)
             
-            if !(text is NSAttributedString) {
-                if let font = self.section.table.textFont {
-                    cell.textLabel?.font(font)
-                }
-                
-                if let color = self.section.table.textColor {
-                    cell.textLabel?.color(color)
-                }
+        if text != nil && !(text is NSAttributedString) {
+            if let font = self.section.table.textFont {
+                cell.textLabel?.font(font)
+            }
+            
+            if let color = self.section.table.textColor {
+                cell.textLabel?.color(color)
             }
         }
         
-        if let detail = self.detailText {
-            cell.detailTextLabel?.str(detail)
-            
-            if !(detail is NSAttributedString) {
-                if let font = self.section.table.detailFont {
-                    cell.detailTextLabel?.font(font)
-                }
-                if let color = self.section.table.detailColor {
-                    cell.detailTextLabel?.color(color)
-                }
+        if detailText != nil && !(detailText is NSAttributedString) {
+            if let font = self.section.table.detailFont {
+                cell.detailTextLabel?.font(font)
+            }
+            if let color = self.section.table.detailColor {
+                cell.detailTextLabel?.color(color)
             }
         }
         
@@ -2360,8 +2438,8 @@ public class StaticRow: UIView {
         
         if let indent = lineIndent() {
             cell.preservesSuperviewLayoutMargins = false
-            cell.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0)
-            cell.separatorInset = UIEdgeInsetsMake(0, indent, 0, 0)
+            cell.layoutMargins = UIEdgeInsetsMake_(0, 0, 0, 0)
+            cell.separatorInset = UIEdgeInsetsMake_(0, indent, 0, 0)
         }
     }
     
@@ -2374,7 +2452,7 @@ public class StaticRow: UIView {
             rowHeight = height
         }
         
-        return rowHeight >= 0 ? rowHeight : UITableViewAutomaticDimension
+        return rowHeight >= 0 ? rowHeight : UITableViewAutomaticDimension_
     }
     
     fileprivate func lineIndent() -> CGFloat? {
@@ -2420,7 +2498,7 @@ public class StaticRow: UIView {
 
 
 extension CPKTableViewCellAccessoryType {
-    public func accessoryType() -> (UITableViewCellAccessoryType, UIView?) {
+    public func accessoryType() -> (UITableViewCellAccessoryType_, UIView?) {
         switch self {
             case .none: return (.none, nil)
             case .disclosureIndicator: return (.disclosureIndicator, nil)
@@ -2550,7 +2628,7 @@ fileprivate class UITextViewPlaceholder: UILabel {
                 self.font = font
                 self.textAlignment = textView.textAlignment
                 
-                var rect = UIEdgeInsetsInsetRect(textView.bounds, textView.textContainerInset)
+                var rect = UIEdgeInsetsInsetRect_(textView.bounds, textView.textContainerInset)
                 rect = rect.insetBy(dx: textView.textContainer.lineFragmentPadding, dy: 0)
                 rect.size.height = min(rect.height, self.sizeThatFits(CGSize(width: rect.width, height: 0)).height)
                 self.frame = rect
@@ -2594,14 +2672,14 @@ extension UITextView {
     }
     
     private func cpk_watchTextChange() {
-        NotificationCenter.default.removeObserver(self,
-                                                  name: NSNotification.Name.UITextViewTextDidChange,
-                                                  object: self)
+        #if swift(>=4.2)
+        let name = UITextView.textDidChangeNotification
+        #else
+        let name = NSNotification.Name.UITextViewTextDidChange
+        #endif
         
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(cpk_textDidChange),
-                                               name: NSNotification.Name.UITextViewTextDidChange,
-                                               object: self)
+        NotificationCenter.default.removeObserver(self, name: name, object: self)
+        NotificationCenter.default.addObserver(self, selector: #selector(cpk_textDidChange), name: name, object: self)
     }
     
     @objc func cpk_textDidChange() {
@@ -2615,7 +2693,7 @@ extension UITextView {
         self.cpkPlaceholderLabel?.update()
     }
     
-    func cpk_setPlaceholder(_ any: Any) {
+    func cpk_setPlaceholder(_ any: Any?) {
         var placeholderLabel = self.cpkPlaceholderLabel
         
         if placeholderLabel == nil {
@@ -2632,8 +2710,10 @@ extension UITextView {
         
         if let att = any as? NSAttributedString {
             placeholderLabel?.attributedText = att
-        } else {
+        } else if let any = any {
             placeholderLabel?.text = String(describing: any)
+        } else {
+            placeholderLabel?.text = nil
         }
         
         placeholderLabel?.update()
@@ -2758,7 +2838,7 @@ class LinkGestureRecognizer: UIGestureRecognizer {
 
 public extension UILabel {
     
-    public var cpkLayoutManager: NSLayoutManager {
+    var cpkLayoutManager: NSLayoutManager {
         var layoutManager: NSLayoutManager! = cpk_associatedObjectFor(key: #function) as? NSLayoutManager
         
         if layoutManager == nil {
@@ -2779,7 +2859,7 @@ public extension UILabel {
         
         if let attStr = self.attributedText {
             let att = NSMutableAttributedString(attributedString: attStr)
-            att.select(.all).preventOverride().font(self.font).align(self.textAlignment)
+            att.select(.all).preventOverride().font(self.font!).align(self.textAlignment)
             
             if self.numberOfLines != 1 && self.lineBreakMode != .byCharWrapping && self.lineBreakMode != .byWordWrapping {
                 let value = NSNumber(value: NSLineBreakMode.byWordWrapping.rawValue)
@@ -2801,12 +2881,12 @@ public extension UILabel {
         return layoutManager
     }
     
-    public var cpkLinkSelectionColor: UIColor? {
+    var cpkLinkSelectionColor: UIColor? {
         get { return cpk_associatedObjectFor(key: #function) as? UIColor }
         set { cpk_setAssociated(object: newValue, forKey: #function) }
     }
     
-    public var cpkLinkSelectionRadius: CGFloat? {
+    var cpkLinkSelectionRadius: CGFloat? {
         get { return cpk_associatedObjectFor(key: #function) as? CGFloat }
         set { cpk_setAssociated(object: newValue, forKey: #function) }
     }
@@ -3027,6 +3107,31 @@ extension UILabel {
 
 
 
+extension UIBarButtonItem {
+    func cpk_onClick(closure: @escaping (UIBarButtonItem)->Void) {
+        target = self
+        action = #selector(cpk_onClickHandler)
+        cpk_setAssociated(object: closure, forKey: "cpk_OnClick")
+    }
+    
+    func cpk_onTap(closure: @escaping ()->Void) {
+        target = self
+        action = #selector(cpk_onTapHandler)
+        cpk_setAssociated(object: closure, forKey: "cpk_OnTap")
+    }
+
+    @objc func cpk_onClickHandler() {
+        if let callback = cpk_associatedObjectFor(key: "cpk_OnClick") as? (UIBarButtonItem)->Void {
+            callback(self)
+        }
+    }
+    
+    @objc func cpk_onTapHandler() {
+        if let callback = cpk_associatedObjectFor(key: "cpk_OnTap") as? ()->Void {
+            callback()
+        }
+    }
+}
 
 
 
@@ -3127,6 +3232,12 @@ extension UILabel {
     }
     
     @discardableResult
+    override public func onTap(_ closure: @escaping ()->Void) -> Self {
+        cpk_onTap(closure)
+        return self
+    }
+    
+    @discardableResult
     override public func addTo(_ superView: UIView) -> Self {
         super.addTo(superView)
         return self
@@ -3217,6 +3328,12 @@ extension UIImageView {
     }
     
     @discardableResult
+    override public func onTap(_ closure: @escaping ()->Void) -> Self {
+        cpk_onTap(closure)
+        return self
+    }
+    
+    @discardableResult
     override public func addTo(_ superView: UIView) -> Self {
         super.addTo(superView)
         return self
@@ -3297,6 +3414,12 @@ extension UIButton {
     @discardableResult
     override public func onClick(_ closure: @escaping (UIButton)->()) -> Self {
         cpk_onClick(closure, nil)
+        return self
+    }
+    
+    @discardableResult
+    override public func onTap(_ closure: @escaping ()->Void) -> Self {
+        cpk_onTap(closure)
         return self
     }
     
@@ -3391,6 +3514,12 @@ extension UITextField {
     }
     
     @discardableResult
+    override public func onTap(_ closure: @escaping ()->Void) -> Self {
+        cpk_onTap(closure)
+        return self
+    }
+    
+    @discardableResult
     override public func addTo(_ superView: UIView) -> Self {
         super.addTo(superView)
         return self
@@ -3481,6 +3610,12 @@ extension UITextView {
     }
     
     @discardableResult
+    override public func onTap(_ closure: @escaping ()->Void) -> Self {
+        cpk_onTap(closure)
+        return self
+    }
+    
+    @discardableResult
     override public func addTo(_ superView: UIView) -> Self {
         super.addTo(superView)
         return self
@@ -3567,6 +3702,12 @@ extension CPKStackView {
     @discardableResult
     override public func onClick(_ closure: @escaping (CPKStackView)->()) -> Self {
         cpk_onClick(closure, nil)
+        return self
+    }
+    
+    @discardableResult
+    override public func onTap(_ closure: @escaping ()->Void) -> Self {
+        cpk_onTap(closure)
         return self
     }
     

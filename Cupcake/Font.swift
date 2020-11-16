@@ -41,7 +41,7 @@ public func Font(_ any: Any) -> UIFont {
         }
         
         let value = "UICTFontTextStyle" + string.capitalized
-        return UIFont.preferredFont(forTextStyle: UIFontTextStyle(rawValue: value))
+        return UIFont.preferredFont(forTextStyle: UIFontTextStyle_(rawValue: value))
     }
     
     return UIFont.systemFont(ofSize: CPKFloat(any))

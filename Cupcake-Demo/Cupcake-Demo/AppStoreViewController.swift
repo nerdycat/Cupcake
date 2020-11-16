@@ -53,7 +53,7 @@ class AppStoreCell: UITableViewCell {
         HStack(indexLabel, iconView, 10, midStack, "<-->", 10, actionStack).embedIn(self.contentView, 10, 0, 10, 15)
     }
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupUI()
     }
@@ -69,7 +69,7 @@ class AppStoreViewController: UITableViewController {
     var appList: Array<Dictionary<String, Any>>!
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
+        return UITableView.automaticDimension
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -92,7 +92,7 @@ class AppStoreViewController: UITableViewController {
         
         self.tableView.estimatedRowHeight = 84
         self.tableView.register(AppStoreCell.self, forCellReuseIdentifier: "cell")
-        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 34, 0)
+        self.tableView.contentInset = UIEdgeInsets.init(top: 0, left: 0, bottom: 34, right: 0)
         
         let path = Bundle.main.path(forResource: "appList", ofType: "plist")
         appList = NSArray(contentsOfFile: path!) as? Array<Dictionary<String, Any>>

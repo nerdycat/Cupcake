@@ -24,11 +24,13 @@ public extension UITextView {
         .str( AttStr("hello world").strikethrough() )
         ...
      */
-    @objc @discardableResult public func str(_ any: Any) -> Self {
+    @objc @discardableResult func str(_ any: Any?) -> Self {
         if let attStr = any as? NSAttributedString {
             self.attributedText = attStr
-        } else {
+        } else if let any = any {
             self.text = String(describing: any)
+        } else {
+            self.text = nil
         }
         return self
     }
@@ -41,7 +43,7 @@ public extension UITextView {
         .hint("Enter here")
         .hint( AttStr("Enter here").font(13) )
      */
-    @objc @discardableResult public func hint(_ any: Any) -> Self {
+    @objc @discardableResult func hint(_ any: Any?) -> Self {
         cpk_setPlaceholder(any)
         return self
     }
@@ -57,7 +59,7 @@ public extension UITextView {
         .font(someLabel.font)
         ...
      **/
-    @objc @discardableResult public func font(_ any: Any) -> Self {
+    @objc @discardableResult func font(_ any: Any) -> Self {
         self.font = Font(any)
         return self
     }
@@ -73,7 +75,7 @@ public extension UITextView {
         .color(someLabel.textColor)
         ...
      */
-    @objc @discardableResult public func color(_ any: Any) -> Self {
+    @objc @discardableResult func color(_ any: Any) -> Self {
         self.textColor = Color(any)
         return self
     }
@@ -83,7 +85,7 @@ public extension UITextView {
      * Usages:
         .maxLength(10)
      */
-    @objc @discardableResult public func maxLength(_ length: CGFloat) -> Self {
+    @objc @discardableResult func maxLength(_ length: CGFloat) -> Self {
         self.cpkMaxLength = Int(length)
         return self
     }
@@ -96,7 +98,7 @@ public extension UITextView {
         .padding(10, 20, 30)        //top: 10, left: 20, bottom: 0 , right: 30
         .padding(10, 20, 30, 40)    //top: 10, left: 20, bottom: 30, right: 40
      */
-    @discardableResult public func padding(_ contentEdgeInsets: CGFloat...) -> Self {
+    @discardableResult func padding(_ contentEdgeInsets: CGFloat...) -> Self {
         cpk_updatePadding(contentEdgeInsets, forView: self)
         return self
     }
@@ -108,7 +110,7 @@ public extension UITextView {
         .align(.justified)
         ...
      */
-    @objc @discardableResult public func align(_ textAlignment: NSTextAlignment) -> Self {
+    @objc @discardableResult func align(_ textAlignment: NSTextAlignment) -> Self {
         self.textAlignment = textAlignment
         return self
     }
@@ -121,7 +123,7 @@ public extension UITextView {
         .onChange({ _ in /* ... */ })
         .onChange({ [weak self] textView in /* ... */ }) //capture self as weak reference when needed
      */
-    @discardableResult public func onChange(_ closure: @escaping (UITextView)->()) -> Self {
+    @discardableResult func onChange(_ closure: @escaping (UITextView)->()) -> Self {
         self.cpkTextChangedClosure = cpk_generateCallbackClosure(closure, nil)
         return self
     }

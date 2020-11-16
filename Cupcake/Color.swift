@@ -69,9 +69,21 @@ public func Color(_ any: Any?) -> UIColor? {
         }
         
         if string == "random" {
-            r = Int(arc4random_uniform(256))
-            g = Int(arc4random_uniform(256))
-            b = Int(arc4random_uniform(256))
+            // generate cryptographically secure random bytes
+            // avoid warnings reported by security scans like Veracode
+            // https://developer.apple.com/documentation/security/1399291-secrandomcopybytes
+            
+            var bytes = [UInt8](repeating: 0, count: 3)
+            let status = SecRandomCopyBytes(kSecRandomDefault, bytes.count, &bytes)
+            if status == errSecSuccess {
+                r = Int(bytes[0])
+                g = Int(bytes[1])
+                b = Int(bytes[2])
+            } else {
+                r = 0
+                g = 0
+                b = 0
+            }
             
         } else if string.hasPrefix("#") {
             if string.cpk_length() == 4 {

@@ -3,8 +3,8 @@
 </p>
 
 <p align="center">
-<img src="https://camo.githubusercontent.com/11874553c483b3630dff4ac1e54f1d0fb030bb86/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f53776966742d332e302532422d6f72616e67652e737667" alt="Language" />
 <img src="https://camo.githubusercontent.com/987c5cc551bc4988195dffc73b6822e11eb451cc/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f7377696674342d636f6d70617469626c652d3442433531442e7376673f7374796c653d666c6174" alt="Swift4" />
+<img src="https://camo.githubusercontent.com/440edeeeb3b2c1b118c6184fd929167587dea9a2/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f73776966742d352e302d6f72616e67652e737667" alt="Swift5" />
 <img src="https://camo.githubusercontent.com/1d276aa371242346c77c3a5b8db34beaa2014722/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f694f532d382e302532422d626c75652e737667" alt="Platform" />
 <img src="http://cocoapod-badges.herokuapp.com/v/Cupcake/badge.png" alt="Version" />
 <img src="http://cocoapod-badges.herokuapp.com/l/Cupcake/badge.png" alt="License" />
@@ -215,8 +215,13 @@ You can present `Alert` And `ActionSheet` using the chaining syntax as well.
 
 
 ## Installation
+
+### Cocoapods
+Cupcake can be added to your project using CocoaPods by adding the following line to your Podfile:
+
 	pod "Cupcake"
-	
-	
 
+### Carthage
+If you're using Carthage you can add a dependency on Cupcake by adding it to your Cartfile:
 
+	github "nerdycat/Cupcake"

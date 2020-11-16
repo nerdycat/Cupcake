@@ -33,7 +33,7 @@ public class CPKStackView: UIView {
     
     private var _alignment: CPKStackAlignment = .left
     private var _spacing: CGFloat = 0
-    private var _axis: UILayoutConstraintAxis = .horizontal
+    private var _axis: UILayoutConstraintAxis_ = .horizontal
     private var _headAttachSpace: CGFloat?
     
     public private(set) var arrangedSubviews = [UIView]()
@@ -49,7 +49,7 @@ public class CPKStackView: UIView {
         set { if _spacing != newValue { _spacing = newValue; spacingDidChange() } }
     }
     
-    public var axis: UILayoutConstraintAxis {
+    public var axis: UILayoutConstraintAxis_ {
         get { return _axis }
         set { if _axis != newValue { _axis = newValue; axisDidChange() } }
     }
@@ -82,9 +82,16 @@ public class CPKStackView: UIView {
             view.translatesAutoresizingMaskIntoConstraints = false
             view.addObserver(self, forKeyPath: "hidden", options: [.new, .old], context: nil)
             
+            #if swift(>=4.2)
+            if view.layoutMargins == UIEdgeInsetsMake_(8, 8, 8, 8) {
+                view.layoutMargins = UIEdgeInsets.zero
+            }
+            #else
             if UIEdgeInsetsEqualToEdgeInsets(view.layoutMargins, UIEdgeInsetsMake(8, 8, 8, 8)) {
                 view.layoutMargins = UIEdgeInsets.zero
             }
+            #endif
+            
             
             if !view.isHidden {
                 addAndActivateConstraintsForView(at: index)
@@ -136,7 +143,13 @@ public class CPKStackView: UIView {
 //    }
     
     public override func willRemoveSubview(_ subview: UIView) {
-        if let index = self.arrangedSubviews.index(of: subview) {
+        #if swift(>=5)
+        let index = self.arrangedSubviews.firstIndex(of: subview)
+        #else
+        let index = self.arrangedSubviews.index(of: subview)
+        #endif
+        
+        if let index = index {
             removeAndDeactivateConstraintsForView(at: index)
             self.arrangedSubviews.remove(at: index)
             
@@ -148,7 +161,7 @@ public class CPKStackView: UIView {
     }
     
     public override func sizeThatFits(_ size: CGSize) -> CGSize {
-        return systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+        return systemLayoutSizeFitting(UILayoutFittingCompressedSize_)
     }
     
 
@@ -165,7 +178,13 @@ public class CPKStackView: UIView {
             
             if newValue != oldValue {
                 if let item = object as? UIView {
-                    if let index = self.arrangedSubviews.index(of: item) {
+                    #if swift(>=5)
+                    let index = self.arrangedSubviews.firstIndex(of: item)
+                    #else
+                    let index = self.arrangedSubviews.index(of: item)
+                    #endif
+                    
+                    if let index = index {
                         
                         if item.isHidden {
                             removeAndDeactivateConstraintsForView(at: index)
@@ -256,7 +275,7 @@ public class CPKStackView: UIView {
     @discardableResult
     private func addAlignmentConstraint(at index: Int) -> [NSLayoutConstraint] {
         var newConstraints = [NSLayoutConstraint]()
-        var att = NSLayoutAttribute.notAnAttribute
+        var att = NSLayoutAttribute_.notAnAttribute
         
         if self.alignment == .fill {
             
@@ -337,7 +356,7 @@ public class CPKStackView: UIView {
             newConstraints.append(makeConstraint(index, .topMargin, .equal, -1, .topMargin, enclosurePriority))
             newConstraints.append(makeConstraint(index, .topMargin, .greaterThanOrEqual, -1, .topMargin, 1000))
             
-            var att: NSLayoutAttribute = .bottomMargin
+            var att: NSLayoutAttribute_ = .bottomMargin
             if self.alignment == .baseline {
                 att = .lastBaseline
             }
@@ -391,8 +410,8 @@ public class CPKStackView: UIView {
             return nil
         }
         
-        var att1 = NSLayoutAttribute.notAnAttribute
-        var att2 = NSLayoutAttribute.notAnAttribute
+        var att1 = NSLayoutAttribute_.notAnAttribute
+        var att2 = NSLayoutAttribute_.notAnAttribute
         
         if self.axis == .vertical {
             att1 = (item1 == self ? .topMargin : .bottomMargin)
@@ -524,7 +543,7 @@ public class CPKStackView: UIView {
                 }
                 
                 if !hasConstraint {
-                    let att: NSLayoutAttribute = (self.axis == .vertical ? .height : .width)
+                    let att: NSLayoutAttribute_ = (self.axis == .vertical ? .height : .width)
                     let c = makeConstraint(i, att, .equal, index, att, 1, 0, kSpringPriority)
                     self.springConstraints.append(c)
                     newConstraints.append(c)
@@ -559,10 +578,10 @@ public class CPKStackView: UIView {
     
     //MARK: Utils
     private func makeConstraint(_ index1: Int,
-                                _ att1: NSLayoutAttribute,
-                                _ relation: NSLayoutRelation,
+                                _ att1: NSLayoutAttribute_,
+                                _ relation: NSLayoutRelation_,
                                 _ index2: Int,
-                                _ att2: NSLayoutAttribute,
+                                _ att2: NSLayoutAttribute_,
                                 _ multiplier: CGFloat,
                                 _ constant: CGFloat,
                                 _ priority: UILayoutPriority) -> NSLayoutConstraint {
@@ -583,10 +602,10 @@ public class CPKStackView: UIView {
     }
     
     private func makeConstraint(_ index1: Int,
-                                _ att1: NSLayoutAttribute,
-                                _ relation: NSLayoutRelation,
+                                _ att1: NSLayoutAttribute_,
+                                _ relation: NSLayoutRelation_,
                                 _ index2: Int,
-                                _ att2: NSLayoutAttribute,
+                                _ att2: NSLayoutAttribute_,
                                 _ priority: UILayoutPriority) -> NSLayoutConstraint {
         
         return makeConstraint(index1, att1, relation, index2, att2, 1, 0, priority)
@@ -675,9 +694,9 @@ class CPKTransformLayer: CATransformLayer {
 
 
 public class StackSpring: UIView {
-    private var _axis: UILayoutConstraintAxis = .horizontal
+    private var _axis: UILayoutConstraintAxis_ = .horizontal
     
-    fileprivate var axis: UILayoutConstraintAxis {
+    fileprivate var axis: UILayoutConstraintAxis_ {
         get { return _axis }
         set {
             if _axis != newValue {

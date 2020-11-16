@@ -67,21 +67,25 @@ public enum CPKStackAlignment : Int {
     ).embedIn(self.view, 390, 20, 20).border(1)
  */
 
-public func HStack(_ items: Any...) -> CPKStackView {
+public func HStack(_ items: Any?...) -> CPKStackView {
     cpk_swizzleMethodsIfNeed()
     let stack = CPKStackView()
     stack.axis = .horizontal
     stack.alignment = .center
-    stack.addArrangedSubviews(items: items)
+    
+    let newItems = items.filter { $0 != nil } as [Any]
+    stack.addArrangedSubviews(items: newItems)
     return stack
 }
 
-public func VStack(_ items: Any...) -> CPKStackView {
+public func VStack(_ items: Any?...) -> CPKStackView {
     cpk_swizzleMethodsIfNeed()
     let stack = CPKStackView()
     stack.axis = .vertical
     stack.alignment = .left
-    stack.addArrangedSubviews(items: items)
+    
+    let newItems = items.filter { $0 != nil } as [Any]
+    stack.addArrangedSubviews(items: newItems)
     return stack
 }
 
@@ -94,7 +98,7 @@ public extension CPKStackView {
      * Usages:
         .gap(10)
      */
-    @discardableResult public func gap(_ spacing: CGFloat) -> Self {
+    @discardableResult func gap(_ spacing: CGFloat) -> Self {
         self.spacing = spacing
         return self
     }
@@ -108,7 +112,7 @@ public extension CPKStackView {
         .align(.fill)
         ...
      */
-    @discardableResult public func align(_ alignment: CPKStackAlignment) -> Self {
+    @discardableResult func align(_ alignment: CPKStackAlignment) -> Self {
         self.alignment = alignment
         return self
     }

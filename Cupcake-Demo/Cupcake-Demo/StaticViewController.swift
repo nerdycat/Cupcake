@@ -213,7 +213,7 @@ class DisplayViewController: BaseViewController {
                 })
             ).header("BRIGHTNESS"),
             
-            Section(autoLockRow)
+            Section(autoLockRow!)
         ).embedIn(self.view)
     }
     

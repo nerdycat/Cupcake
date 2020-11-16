@@ -13,9 +13,9 @@ class EnhancementViewController: BaseViewController {
     override func setupUI() {
         
         //Label with lineSpacing and link
-        let str = "With #Cupcake, @Label now support lineSpacing and Link handing. Additionally, @TextField and @TextView both have the abilities to set max length and placeholder. "
+        let str = "With #Cupcake, @Label now support lineSpacing and Link handling. Additionally, @TextField and @TextView both have the abilities to set max length and placeholder. "
         
-        let attStr = AttStr(str).select("Link handing", .hashTag, .nameTag).link()
+        let attStr = AttStr(str).select("Link handling", .hashTag, .nameTag).link()
         
         let label = Label.str(attStr).lineGap(10).lines().onLink({ text in
             print(text)
