@@ -2589,7 +2589,7 @@ fileprivate class UITextViewPlaceholder: UILabel {
             let textField = UITextField()
             textField.placeholder = " "
             
-            var color = textField.value(forKeyPath: "_placeholderLabel.textColor") as? UIColor
+            var color = textField.value(forKeyPath: "placeholderLabel.textColor") as? UIColor
             if color == nil {
                 color = UIColor(red: 199/255, green: 199/255, blue: 205/255, alpha: 1)
             }
